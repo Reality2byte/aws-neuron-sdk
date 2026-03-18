@@ -25,15 +25,6 @@ Neuron Open Source GitHub Repositories
    .. grid-item-card:: 
       :class-body: sphinx-design-class-title-small
  
-      **NKI Language and APIs Open Source**
-      ^^^
-      Source code for the NKI languages and APIs.
-
-      * Neuron GitHub source repository (NKI APIs): https://github.com/aws-neuron/nki
-
-   .. grid-item-card:: 
-      :class-body: sphinx-design-class-title-small
- 
       **Neuron Kernel Library Open Source**
       ^^^
       Source code and specifications for the pre-built kernels that ship with the NKI Library .
