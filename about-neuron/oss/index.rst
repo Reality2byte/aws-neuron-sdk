@@ -74,7 +74,6 @@ For the specific details on licenses and contributing to each OSS repo, review t
 
 * Contribute to TorchNeuron: https://github.com/aws-neuron/torch-neuronx/blob/main/CONTRIBUTING.md
 * Contribute to the NKI Library: https://github.com/aws-neuron/nki-library/blob/main/CONTRIBUTING.md
-* Contribute to the NKI Compiler and NKI APIs: https://github.com/aws-neuron/nki/blob/main/CONTRIBUTING.md
 * Contribute the the NKI samples: https://github.com/aws-neuron/nki-samples/blob/main/CONTRIBUTING.md
   
 .. Re-add this when available: * Contribute to vLLM Neuron: https://github.com/vllm-project/vllm-neuron/blob/main/CONTRIBUTING.md
