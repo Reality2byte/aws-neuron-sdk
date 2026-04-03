@@ -10,20 +10,24 @@ To use this command, simply type ``neuron-ls`` in your terminal.
 
 .. rubric:: neuron-ls CLI
 
-.. program:: neuron-ls
+.. code-block:: text
 
-.. option:: neuron-ls [options]
+    neuron-ls [options]
 
-    **Available options:**
+**Options**
 
-    - :option:`--wide, -w`: Displays the table in a wider format.
+``--wide, -w``
+    Displays the table in a wider format.
 
-    - :option:`--show-all-procs, -a`: Show all processes using the Neuron Devices, including processes that aren't using
-      Neuron Runtime 2.x such as ``neuron-monitor`` or ``neuron-ls`` itself.
+``--show-all-procs, -a``
+    Show all processes using the Neuron Devices, including processes that aren't using
+    Neuron Runtime 2.x such as ``neuron-monitor`` or ``neuron-ls`` itself.
 
-    - :option:`--topology, -t`: Display topology information about the system's Neuron Devices.
+``--topology, -t``
+    Display topology information about the system's Neuron Devices.
 
-    - :option:`--json-output, -j`: Output in JSON format.
+``--json-output, -j``
+    Output in JSON format.
 
 .. note::
 
@@ -203,6 +207,7 @@ These are a few examples on running the tool on a trn2n.48xlarge:
   Legend:
 
           *––► = Wrap-around link
+
 ::
 
   $ neuron-ls -j

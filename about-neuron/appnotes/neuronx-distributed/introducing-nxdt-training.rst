@@ -77,6 +77,6 @@ using resources in Support section.
 
 :ref:`Troubleshooting <nxdt_known_issues>` 
 
-:ref:`Support <neuron_support>`
+:ref:`Support <neuron-quickstart>`
 
 .. [#f1] Supported through NxD Core.

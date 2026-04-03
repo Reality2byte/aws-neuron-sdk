@@ -1,5 +1,12 @@
 .. _jax-neuronx-envvars:
 
+
+.. meta::
+   :description: JAX NeuronX Environment Variables - AWS Neuron SDK documentation
+   :keywords: API reference, AWS Neuron, JAX, JAX NeuronX
+   :date-modified: 2026-03-13
+
+
 JAX NeuronX Environment Variables
 ======================================
 
@@ -12,7 +19,7 @@ JAX Neuronx are:
 
 ``NEURON_CC_FLAGS``
 
--  Compiler options. Full compiler options are described in the :ref:`mixed-precision-casting-options`.
+-  Compiler options. Full compiler options are described in the :ref:`neuronx-cc-training-mixed-precision`.
 
 ``XLA_FLAGS``
 

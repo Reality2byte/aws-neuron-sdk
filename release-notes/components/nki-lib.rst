@@ -1,14 +1,87 @@
 .. meta::
     :description: Complete release notes for the NKI Library component across all AWS Neuron SDK versions.
     :keywords: nki library, nki-lib, release notes, aws neuron sdk
-    :date-modified: 02/26/2026
+    :date-modified: 04/09/2026
 
 .. _nki-lib_rn:
 
 Release Notes for Neuron Component: NKI Library
 ================================================
 
-The release notes for the {component name} Neuron component. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
+The release notes for the NKI Library Neuron component. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
+
+.. _nki-lib-2-29-0-rn:
+
+NKI Library (NKI-Lib) (Neuron 2.29.0 Release)
+--------------------------------------------------------------------
+
+Date of Release: 04/09/2026
+
+What's New
+~~~~~~~~~~
+
+This release promotes ``find_nonzero_indices`` from experimental to a core subkernel and adds 7 new experimental kernels (Conv1D, Transformer TKG, 3 collective communication kernels, Top-K Reduce, and Dynamic Elementwise Add). Existing kernels receive sequence packing support, MXFP quantization paths, and expanded dimension limits. PyTorch reference implementations are added for 22 kernels.
+
+New Core Additions
+^^^^^^^^^^^^^^^^^^
+
+* :doc:`find_nonzero_indices </nki/library/api/find-nonzero-indices>` (promoted from experimental) — Finds indices of nonzero elements along the T dimension using GpSimd ``nonzero_with_count`` ISA. Optimized for LNC2 sharding. Supports token counts up to 65536 and column counts up to 128.
+
+New Experimental Kernels
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* :doc:`Conv1D </nki/library/api/conv1d>` — 1D convolution using tensor engine with replication strategy. Supports stride, padding, dilation, optional bias, activation fusion, and LNC sharding.
+* :doc:`Transformer TKG </nki/library/api/transformer-tkg>` — Multi-layer transformer forward pass megakernel for token generation. Executes attention block, all-reduce, MLP, and residual connections across a configurable number of layers.
+* :doc:`Fine-Grained All-Gather </nki/library/api/fg-allgather>` — Ring-based all-gather for TRN2 using collective permute with double buffering to overlap communication and data movement.
+* :doc:`FGCC (All-Gather + Matmul) </nki/library/api/fgcc>` — Fused all-gather and matrix multiplication for TRN2, overlapping communication with compute.
+* :doc:`SBUF-to-SBUF All-Gather </nki/library/api/sb2sb-allgather>` — Two variants: ``allgather_sb2sb`` for small tensors fitting in SBUF and ``allgather_sb2sb_tiled`` with tiling and LNC support for larger tensors.
+* :doc:`Top-K Reduce </nki/library/api/topk-reduce>` — Gathers scattered rows by packed global token index and reduces along the K dimension for MoE output. Supports LNC sharding on the hidden dimension.
+* :doc:`Dynamic Elementwise Add </nki/library/api/dynamic-elementwise-add>` — Elementwise addition with runtime-variable M-dimension tiling using dynamic loop bounds.
+
+Improvements
+~~~~~~~~~~~~~~~
+
+* :doc:`Attention CTE Kernel </nki/library/api/attention-cte>`: Added ``mm_out_dtype`` parameter for controlling matmul output dtype. Added ``bound_min``/``bound_max`` parameters for sequence packing support (per-query KV range bounds). Increased max batch size from 32 to 512. Increased max sequence length from 36864 to 131072.
+* :doc:`Attention BWD Kernel </nki/library/api/attention-cte>`: Added ``bound_min``/``bound_max`` parameters for sequence packing support. Added support for large batch size.
+* :doc:`Attention TKG Kernel </nki/library/api/attention-tkg>`: Added ``start_pos_ids`` parameter for explicit KV cache position control to support sliding window masking.
+* :doc:`Attention Block TKG Kernel </nki/library/api/attention-block-tkg>`: Added ``rmsnorm_QK_pre_rope_W_Q``/``rmsnorm_QK_pre_rope_W_K`` parameters for fused QK-norm before RoPE. Added KVDP attention sharding support (``KVDP``, ``KVDP_replica_group``). Added ``enable_fa_s_prior_tiling`` for overriding flash attention s_prior tiling.
+* :doc:`MLP Kernel </nki/library/api/mlp>`: Added ``sbm`` (BufferManager) parameter for custom SBUF memory management. Added MXFP4/MXFP8 quantization path.
+* :doc:`MoE TKG Kernel </nki/library/api/moe-tkg>`: Added new dynamic all-expert algorithm that uses ``block_size`` and ``is_all_expert_dynamic`` args. Expanded support for small I and added support for sharding on T in all-expert MX kernel.
+* :doc:`Output Projection CTE Kernel </nki/library/api/output-projection-cte>`: Added ``output_dtype`` parameter for controlling output data type.
+* :doc:`Output Projection TKG Kernel </nki/library/api/output-projection-tkg>`: Added ``sbm`` (BufferManager) parameter for custom SBUF memory management.
+* :doc:`QKV Kernel </nki/library/api/qkv>`: Added ``is_h_dim_4h_transposed`` and ``weight_layout`` parameters for flexible weight layout support.
+* **rmsnorm_tkg** / **layernorm_tkg**: Added ``shard_on_h`` parameter for sharding on the hidden dimension.
+* Added PyTorch reference implementations for 22 kernels for testing and validation.
+
+Breaking Changes
+~~~~~~~~~~~~~~~~
+
+* :doc:`Router Top-K Kernel </nki/library/api/router-topk>`: The ``output_in_sbuf``, ``x_input_in_sbuf``, and ``expert_affin_in_sb`` parameters have been removed. The kernel now auto-detects SBUF inputs from the tensor buffer type. Callers passing these keyword arguments must remove them.
+* :doc:`QKV Kernel </nki/library/api/qkv>`: The ``is_input_swizzled`` parameter has been removed and replaced by ``is_h_dim_4h_transposed`` (same position, same default ``False``) and a new ``weight_layout`` parameter. Callers using ``is_input_swizzled`` by name must rename to ``is_h_dim_4h_transposed``.
+* :doc:`QKV Kernel </nki/library/api/qkv>` (TKG variant): New parameter ``is_h_dim_4h_transposed`` has been inserted after ``quantization_type``. Callers using positional arguments for ``qkv_w_scale`` or later parameters must update to use keyword arguments.
+* :doc:`Attention CTE Kernel </nki/library/api/attention-cte>`: New parameter ``mm_out_dtype`` has been inserted between ``softmax_dtype`` and ``cp_offset``. Callers using positional arguments for ``cp_offset``, ``global_cp_deg``, or ``cp_strided_q_slicing`` must update to use keyword arguments.
+* :doc:`Attention TKG Kernel </nki/library/api/attention-tkg>`: New parameter ``start_pos_ids`` has been inserted after ``rope_pos_ids``. Callers using positional arguments beyond ``rope_pos_ids`` must update to use keyword arguments.
+* :doc:`Attention BWD Kernel </nki/library/api/attention-cte>`: New parameters ``bound_min`` and ``bound_max`` have been inserted between ``sinks_ref`` and ``use_causal_mask``. Callers using positional arguments for ``use_causal_mask`` or later parameters must update to use keyword arguments.
+* :doc:`Attention Block TKG Kernel </nki/library/api/attention-block-tkg>`: The keyword-only marker (``*``) has been removed and multiple parameters have been reordered. New pre-RoPE QK-norm parameters (``rmsnorm_QK_pre_rope_W_Q``, ``rmsnorm_QK_pre_rope_W_K``) have been added. ``softmax_scale``, ``k_scale``, and ``v_scale`` have been moved to optional parameters with defaults. All callers must review their argument ordering.
+* **rmsnorm_tkg** / **layernorm_tkg**: New parameter ``shard_on_h`` has been inserted before ``use_heap_memory`` and ``sbm``. Callers using positional arguments beyond ``single_core_forced`` (rmsnorm) or ``eps`` (layernorm) must update to use keyword arguments. Helper functions ``process_rmsnorm_tile``, ``rmsnorm_tkg_llama_impl``, and ``layernorm_tkg_llama_impl`` have been made private (prefixed with ``_``).
+* **SbufManager** has been renamed to **BufferManager**. A backward-compatible alias ``SbufManager = BufferManager`` is provided, so existing code using ``SbufManager`` will continue to work.
+* MoE TKG: Replaced boolean sharding flags (``shard_on_I``, ``shard_on_T``) with ``LNCShardingStrategy`` enum in down projection interfaces.
+* MoE TKG MX quantization files restructured: ``down_projection_mx_shard_I.py`` and ``gate_up_projection_mx_shard_I.py`` replaced with ``all_expert_mx_utils.py``, ``down_projection_mx.py``, and ``gate_up_projection_mx.py``. Callers importing from the old file paths must update their imports.
+* ``find_nonzero_indices`` has been moved from ``nkilib.experimental.subkernels`` to ``nkilib.core.subkernels``. A backward-compatible re-export is provided, so imports via the experimental path continue to work.
+* Removed usage of ``nki.language.par_dim`` throughout the library.
+
+Bug Fixes
+~~~~~~~~~
+
+* Fixed MLP CTE indexing in gate proj row scales.
+* Fixed QKV TKG ``sb2sb_wrapper_kernel`` signature missing QK-norm parameters.
+* Fixed MLP failure for FP4 quantization with specific dimension combinations (``vnc=2, h=3072, i=384``).
+* Fixed ``bwmm_shard_on_H`` with explicit TensorCopy from PSUM to SBUF for NKI Beta 3 compatibility.
+
+Known Issues
+~~~~~~~~~~~~
+
+
 
 .. _nki-lib-2-28-0-rn:   
 

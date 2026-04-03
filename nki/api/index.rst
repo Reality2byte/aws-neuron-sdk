@@ -6,7 +6,7 @@ NKI API Reference Manual
 .. toctree::
     :maxdepth: 2
 
-    nki.jit
+    nki
     nki.isa
     nki.language
     nki.collectives

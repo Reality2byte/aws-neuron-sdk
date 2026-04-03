@@ -1,7 +1,7 @@
 .. meta::
     :description: Release notes for the Neuron Kernel Interface (NKI) component across all Neuron SDK versions
     :keywords: NKI, Neuron Kernel Interface, release notes, nki.language, nki.isa, kernels
-    :date-modified: 02/26/2026
+    :date-modified: 04/09/2026
 
 .. _nki_rn:
 
@@ -9,6 +9,160 @@ Release Notes for Neuron Component: Neuron Kernel Interface (NKI)
 ==================================================================
 
 The release notes for the Neuron Kernel Interface (NKI) component. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
+
+.. _nki-2-29-0-rn:   
+
+Neuron Kernel Interface (NKI) [0.3.0] (Neuron 2.29.0 Release)
+---------------------------------------------------------------------
+
+Date of Release: 04/09/2026
+
+AWS Neuron SDK 2.29.0 introduces NKI 0.3.0, a significant update to the Neuron Kernel Interface for General Availability. NKI 0.3.0 features NKI Standard Library (nki-stdlib), which provides developer-visible code for all NKI APIs and native language objects (e.g., NkiTensor). This release provides new exposed Trainium capabilities and features in the NKI API and re-introduces nki.language APIs. NKI 0.3.0 includes a CPU Simulator, which executes NKI kernels entirely on CPU using NumPy — enabling developers to validate kernel logic on laptops and CI environments without Trainium hardware. NKI 0.3.0 also includes the ``nki.typing`` module for declaring expected tensor shapes, a dedicated ``nki.isa.exponential`` instruction optimized for Softmax computation, matmul accumulation control, explicit memory address placement, and variable-length all-to-all collectives via ``nki.collectives.all_to_all_v``. NKI 0.3.0 includes several API breaking changes that improve correctness and consistency along with updated documentation.
+
+For the full list of changes and update examples, see the :ref:`NKI 0.3.0 Update Guide <nki-0-3-0-update-guide>`.
+
+New Features
+~~~~~~~~~~~~
+
+* **NKI Standard Library (nki-stdlib)**: NKI 0.3.0 ships with the NKI Standard Library (nki-stdlib), which provides developer-visible code for all NKI APIs and native language objects (e.g., ``NkiTensor``).
+
+* **NKI CPU Simulator** *(Experimental)*: Executes NKI kernels entirely on CPU using NumPy, enabling local development, debugging, and functional correctness testing without Trainium hardware. Set the environment variable ``NKI_SIMULATOR=1`` to run existing kernels without code changes, or wrap the kernel call with ``nki.simulate(kernel)``. See :doc:`nki.simulate API Reference </nki/api/nki.simulate>`.
+
+* **nki.language APIs** *(Experimental)*: Re-introduces ``nki.language`` APIs as convenience wrappers around ``nki.isa`` APIs, including ``nl.load``, ``nl.store``, ``nl.copy``, ``nl.matmul``, ``nl.transpose``, ``nl.softmax``, and other high-level operations. See :doc:`nki.language API Reference </nki/api/nki.language>`.
+
+* **nki.typing module**: New module for type-annotating kernel tensor parameters. Use ``nt.tensor[shape]`` to declare expected tensor shapes.
+
+* **nki.isa.exponential**: Dedicated exponential instruction with max subtraction, faster than ``nisa.activation(op=nl.exp)`` and useful for Softmax calculation. Trn3 (NeuronCore-v4) only. See :doc:`nki.isa.exponential </nki/api/generated/nki.isa.exponential>`.
+
+* **nki.collectives.all_to_all_v**: Variable-length all-to-all collective. Unlike ``all_to_all``, uses a metadata tensor to specify per-rank send/recv counts. See :doc:`nki.collectives API Reference </nki/api/nki.collectives>`.
+
+* **Matmul accumulation**: ``nc_matmul`` and ``nc_matmul_mx`` now have an ``accumulate`` parameter that controls whether the operation overwrites or accumulates on the destination PSUM tile. The default (``accumulate=None``) auto-detects, matching Beta 2 behavior. See :doc:`nki.isa.nc_matmul </nki/api/generated/nki.isa.nc_matmul>`.
+
+* **Address placement**: The ``address`` parameter was added to ``nki.language.ndarray`` for explicit memory placement. See :doc:`nki.language.ndarray </nki/api/generated/nki.language.ndarray>`.
+
+Deprecated and Removed APIs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``nki.isa.tensor_copy_dynamic_src`` / ``nki.isa.tensor_copy_dynamic_dst`` — Deprecated and scheduled for removal. Use ``nisa.tensor_copy()`` with ``.ap()`` and ``scalar_offset`` instead.
+
+* ``nki.jit(platform_target=...)`` — Deprecated. Set the target platform via the ``NEURON_PLATFORM_TARGET_OVERRIDE`` environment variable instead. This is a breaking change.
+
+.. TODO: Create an NKI environment variables reference page and link from here.
+
+* ``nki.jit(mode=...)`` — Deprecated and ignored. The NKI Compiler now auto-detects the framework from kernel arguments. This is a breaking change.
+
+Breaking Changes
+~~~~~~~~~~~~~~~~
+
+.. note::
+
+   NKI 0.3.0 requires all NKI kernels in a model to be updated to NKI 0.3.0. Mixing NKI 0.3.0 and NKI Beta 2 kernels in the same model is not supported. For models that have not yet been updated, continue using Neuron SDK 2.28.
+
+* ``nisa.dma_copy`` — No longer supports reading directly from PSUM. Copy the PSUM tensor to SBUF first using ``nisa.tensor_copy``.
+
+* ``nisa.dma_copy`` — Enforces matching source and destination element types when using ``dge_mode=dge_mode.hwdge``. Use ``.view()`` to reinterpret types.
+
+* ``nisa.dma_copy`` — ``dst_rmw_op`` and ``unique_indices`` parameters removed. Use ``nisa.dma_compute`` instead.
+
+* ``nisa.dma_compute`` — ``scales`` and ``reduce_op`` parameters swapped positions. ``scales`` is now optional. ``unique_indices`` parameter added. Update call sites to use the new parameter order: ``nisa.dma_compute(dst, srcs, reduce_op, scales=None, unique_indices=True)``.
+
+* ``nisa.memset`` — Enforces strict type matching between ``value`` and destination dtype. x4 packed types enforce ``value=0``. Kernels that pass float values to integer-typed tensors (e.g., ``value=2.0`` instead of ``value=2``) will now raise an error at compile time.
+
+* ``nisa.sendrecv`` — ``use_gpsimd_dma`` replaced by ``dma_engine`` enum. Update existing kernels to use the new enum.
+
+* ``nisa.affine_select`` — ``offset`` moved from 3rd positional argument to keyword argument with default ``0``.
+
+* ``nisa.register_move`` — ``imm`` renamed to ``src``, now accepts ``VirtualRegister``. Update keyword argument from ``imm=`` to ``src=``.
+
+* ``nl.shared_constant`` — ``dtype`` parameter removed. Remove the ``dtype`` argument from ``nl.shared_constant`` calls; the type is now inferred from the constant.
+
+* ``nki.collectives.collective_permute_implicit_current_processing_rank_id`` — ``num_channels`` parameter removed. Remove ``num_channels`` from call sites and pass ``channel_ids`` list to ``collective_permute_implicit()`` instead.
+
+* Output tensors must use ``buffer=nl.shared_hbm``. Using ``nl.hbm`` causes compilation failures.
+
+* Raw integer enum constants no longer accepted. Use named enum members.
+
+* String buffer names no longer accepted. Use buffer objects (e.g., ``nl.sbuf``).
+
+* Keyword-only argument separator (``*``) in kernel signatures is not supported.
+
+* ``is`` / ``is not`` operators are not supported. Use ``==`` / ``!=``.
+
+* ``list`` kernel arguments are not supported. Convert to tuples.
+
+For before-and-after code examples, see the :ref:`NKI 0.3.0 Update Guide <nki-0-3-0-update-guide>`.
+
+.. note::
+
+   The previously announced removal of the ``neuronxcc.nki.*`` namespace has been postponed to a future release. Both the ``neuronxcc.nki.*`` and ``nki.*`` namespaces continue to be supported in this release.
+
+Other Changes
+~~~~~~~~~~~~~
+
+* ``nki.isa.dma_engine`` alias repurposed as the ``dma_engine`` enum for DMA transfer engine selection.
+
+* ``nki.isa.iota`` — ``offset`` now optional with default ``0``.
+
+* ``nki.isa.core_barrier`` — ``engine`` default changed from ``unknown`` to ``gpsimd`` (no behavioral change).
+
+* ``nki.language.num_programs`` — ``axes`` default changed from ``None`` to ``0``.
+
+* ``nki.language.program_id`` — ``axis`` now defaults to ``0``.
+
+* ``nki.language.ndarray`` — ``buffer`` default changed from ``None`` to ``nl.sbuf``.
+
+* ``nki.language.zeros`` — ``buffer`` default changed from ``None`` to ``nl.sbuf``.
+
+* ``nki.language.sequential_range`` — ``stop`` and ``step`` now have default values (``None`` and ``1``).
+
+Bug Fixes
+~~~~~~~~~
+
+* Fixed incorrect axis handling in ``nisa.tensor_reduce``. Beta 2 incorrectly allowed ``axis=1`` to refer to the last free dimension even for 3D/4D tensors. NKI 0.3.0 corrects this so that axis values correspond to the actual tensor dimensions.
+
+* Fixed ``nisa.range_select`` silently overriding user-specified parameters. The ``on_false_value`` and ``reduce_cmd`` parameters were incorrectly ignored by the compiler — ``on_false_value`` was always set to ``-3.4028235e+38`` and ``reduce_cmd`` was always set to ``reset_reduce``, regardless of the values passed in. NKI 0.3.0 honors the ``reduce_cmd`` parameter and documents the ``FP32_MIN`` hardware constraint for ``on_false_value``.
+
+Known Issues
+~~~~~~~~~~~~
+
+**Math Operations**
+
+* ``nki.language.divide`` is not supported — Division is not available as a hardware instruction. As a workaround, multiply by the reciprocal: ``nl.multiply(x, nl.reciprocal(y))``.
+
+* ``nki.language.fmod`` and ``nki.language.mod`` are not supported — Modulo operations are not available as hardware instructions. These APIs work in simulation but will fail when compiled for Trainium hardware.
+
+* ``nki.language.power`` does not support scalar exponents — ``nl.power(tile, scalar)`` is not supported. Use ``nl.power(tile, tile)`` instead, where both operands are tiles.
+
+**Broadcasting**
+
+* Binary operations do not support broadcasting — Operations like ``nl.add(a, b)`` require both operands to have the same shape. Broadcasting (e.g., adding a ``(128, 1)`` tile to a ``(128, 512)`` tile) is not yet supported.
+
+* ``nki.language.softmax`` and ``nki.language.rms_norm`` fail on hardware — These functions rely on internal broadcasting between full-size and reduced-size tiles, which is not supported on hardware. They work correctly in simulation.
+
+**Random Number Generation**
+
+* ``nki.language.random_seed`` requires a tensor, not a scalar — Pass a ``[1, 1]`` tensor on SBUF instead of a Python integer. For example: ``nl.random_seed(nl.full((1, 1), 42, dtype=nl.int32, buffer=nl.sbuf))``.
+
+* ``nki.language.rand`` and ``nki.language.random_seed`` engine behavior — On NeuronCore-v4+ (Trn3+), ``rand`` uses ``nisa.rand2`` on the Vector Engine. On earlier NeuronCores, ``rand`` uses ``nisa.rng`` which may run on a different engine than ``random_seed``, potentially causing ``random_seed`` to have no effect on ``rand`` output.
+
+**Matrix Operations**
+
+* ``nki.language.matmul`` without ``transpose_x=True`` is not supported — Calling ``nl.matmul(x, y)`` without setting ``transpose_x=True`` will fail. As a workaround, always use ``nl.matmul(x, y, transpose_x=True)`` and pre-arrange data accordingly.
+
+**Data Movement**
+
+* ``nki.language.store`` does not support PSUM tiles directly — Storing a tile that resides in PSUM requires manually copying it to SBUF first using ``nisa.tensor_copy``. A future release will handle this automatically.
+
+* ``nki.language.copy`` uses lossy FP32 casting — ``nl.copy`` uses the Scalar Engine which internally casts through FP32, which is lossy for integer types with values exceeding FP32 precision (e.g., int32 values > 2^23). Additionally, cross-buffer copies (e.g., PSUM to SBUF) are not supported.
+
+**Control Flow**
+
+* ``nki.language.dynamic_range`` loop variable cannot be used in index arithmetic — The induction variable of a ``dynamic_range`` loop is a scalar, not a register. It cannot be used as a ``scalar_offset`` in access patterns or in arithmetic expressions for computing tile offsets. Use ``nl.affine_range`` or ``nl.static_range`` if you need to compute offsets from the loop variable.
+
+**Multi-Core (LNC2)**
+
+* LNC2 requires identical control flow across cores — When running with Logical NeuronCore 2 (LNC2), the NKI compiler expects each physical NeuronCore to execute identical control flow. Programs with dynamic control flow that differs across cores may deadlock or produce incorrect results. This constraint is not enforced at compile time.
+
 
 .. _nki-2-28-0-rn:   
 
@@ -91,7 +245,7 @@ Breaking Changes
    been postponed from Neuron 2.28 to Neuron 2.29. Both the ``neuronxcc.nki.*`` 
    and ``nki.*`` namespaces continue to be supported in this release. We 
    encourage customers to migrate to the ``nki.*`` namespace using the 
-   :doc:`NKI Migration Guide </nki/deep-dives/nki-migration-guide>`.
+   :doc:`NKI Beta 2 Migration Guide </nki/deep-dives/nki-beta2-migration-guide>`.
 
 Bug Fixes
 ~~~~~~~~~
@@ -171,7 +325,7 @@ Bug Fixes
   ``NotImplementedError("removed during code migration")`` message. Each now raises a specific
   message naming the unsupported API. Additionally, calling an ``nki.jit`` kernel with no
   arguments now raises a clear error instead.
-  See :doc:`NKI Migration Guide </nki/deep-dives/nki-migration-guide>`.
+  See :doc:`NKI Beta 2 Migration Guide </nki/deep-dives/nki-beta2-migration-guide>`.
 
 * Fixed nested ``nki_jit`` decorators not being allowed. The NKI compiler only recognized
   ``@nki.jit``-decorated functions when they were plain function objects. Nested decorators
@@ -182,9 +336,9 @@ Bug Fixes
 Known Issues
 ~~~~~~~~~~~~
 
-* ``nki.isa.range_select``: The ``on_false_value`` and ``reduce_cmd`` parameters are incorrectly 
-ignored by the NKI compiler. The ``on_false_value`` is always set to ``(-3.4028235e+38)`` 
-and ``reduce_cmd`` is always set to ``reduce_cmd.reset_reduce``, regardless of the values passed in.
+* ``nki.isa.range_select``: The ``on_false_value`` and ``reduce_cmd`` parameters are incorrectly
+  ignored by the NKI compiler. The ``on_false_value`` is always set to ``(-3.4028235e+38)``
+  and ``reduce_cmd`` is always set to ``reduce_cmd.reset_reduce``, regardless of the values passed in.
 
 .. _nki-2-27-0-rn:
 
@@ -237,7 +391,7 @@ Improvements
   * added :doc:`Get Started with NKI </nki/get-started/quickstart-implement-run-kernel>`
   * added :doc:`NKI Language Guide </nki/get-started/nki-language-guide>`
   * added :doc:`About the NKI Compiler </nki/deep-dives/nki-compiler>`
-  * added :doc:`About NKI Beta Versions </nki/deep-dives/nki-beta-versions>`
+  * added :doc:`About NKI Beta 2 Migration </nki/deep-dives/nki-beta2-migration-guide>`
   * added :doc:`MXFP Matrix Multiplication with NKI </nki/deep-dives/mxfp-matmul>`
   * updated :doc:`Matrix Multiplication Tutorial </nki/guides/tutorials/matrix_multiplication>`
   * updated :doc:`Profile a NKI Kernel </nki/deep-dives/use-neuron-profile>`

@@ -23,16 +23,120 @@ What's New in the AWS Neuron SDK
         :link-type: doc
         :class-header: sd-bg-primary sd-text-white
 
-        **Latest release**: 2.28.1 (3/13/2026)
+        **Latest release**: 2.29.0 (04/09/2026)
 
 ----
 
-.. _whats-new-2026-02-26-v2_28_1:
+.. _whats-new-2026-04-02-v2_29:
+
+AWS Neuron SDK 2.29.0: NKI Now Stable, CPU Simulator, and Expanded NKI Library
+-------------------------------------------------------------------------------
+
+**Posted on**: April 09, 2026
+
+Today we are releasing AWS Neuron SDK 2.29.0. This release brings NKI 0.3.0 out of Beta into Stable, featuring the new NKI Standard Library and an experimental CPU Simulator for local kernel development without Trainium hardware. The NKI Library adds 7 new experimental kernels including Conv1D, a Transformer TKG megakernel, and fused communication-compute primitives, along with improvements to existing attention, MLP, and MoE kernels. NxD Inference delivers performance gains for Qwen2 VL, Qwen3 VL, and Flux.1 models. Neuron Runtime introduces new APIs for collective stream management and network proxy tuning. Neuron Explorer is now out of Beta and Stable, with full Device widget support in the System Trace Viewer and availability on the VS Code Extension Marketplace. The Neuron Driver adds support for new Trn3 Gen2 Ultraserver configurations.
+
+
+Neuron Kernel Interface (NKI)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+AWS Neuron SDK 2.29.0 introduces NKI 0.3.0, the latest update to the Neuron Kernel Interface. NKI 0.3.0 is now out of Beta and Stable. It features the NKI Standard Library (``nki-stdlib``), which provides developer-visible code for all NKI APIs and native language objects (such as ``NkiTensor``). This release provides new exposed Trainium capabilities and features in the NKI API and re-introduces ``nki.language`` APIs.
+
+**NKI CPU Simulator (Experimental)**: NKI 0.3.0 includes a CPU Simulator, which executes NKI kernels entirely on CPU and allows for a fast development cycle on inexpensive CPUs and compute instances to validate kernel correctness, using standard Python step-by-step debugging tools and instrumentation to print results for every line of kernel code. Activate it with ``NKI_SIMULATOR=1`` or use ``nki.simulate(kernel)``.
+
+**New Language APIs (Experimental)**: Re-introduced ``nki.language`` high-level convenience wrappers including ``nl.load``, ``nl.store``, ``nl.copy``, ``nl.matmul``, ``nl.transpose``, and ``nl.softmax``. 
+
+**New ISA and Hardware Features**: Added the ability to set DMA priority of DMA operations and collectives operations for Trn3 (NeuronCore-v4). A dedicated ``nki.isa.exponential`` instruction is optimized for vectorising exponents (``exp``) with VectorE. Matmul accumulation control is added via the ``accumulate`` parameter on ``nc_matmul`` and ``nc_matmul_mx``. Variable-length all-to-all collectives are now available via ``nki.collectives.all_to_all_v``.
+
+**Breaking Changes**: NKI 0.3.0 includes several API breaking changes that improve correctness and consistency. All kernels must be updated to NKI 0.3.0; mixing with Beta 2 kernels in the same model is not supported. For the full list of changes and migration examples, see the :doc:`NKI 0.3.0 Update Guide </nki/deep-dives/nki-0-3-0-update-guide>`.
+
+For more details, see :ref:`nki-2-29-0-rn`.
+
+
+NKI Library
+^^^^^^^^^^^
+
+**New Experimental Kernels (7 added)**: Conv1D provides 1D convolution with stride, padding, dilation, bias, activation fusion, and LNC sharding. Transformer TKG is a multi-layer transformer forward pass megakernel for token generation. Fine-Grained All-Gather and FGCC (All-Gather + Matmul) enable ring-based communication with compute overlap on Trn2. SBUF-to-SBUF All-Gather provides two variants for small and large tensors. Top-K Reduce supports MoE output gathering with LNC sharding. Dynamic Elementwise Add handles runtime-variable M-dimension tiling. The ``find_nonzero_indices`` subkernel is promoted from experimental to core.
+
+**Key Improvements to Existing Kernels**: Attention CTE increases max batch size from 32 to 512 and max sequence length from 36,864 to 131,072 with sequence packing support. Attention Block TKG adds fused QK-norm before RoPE and KVDP attention sharding. MLP adds BufferManager support and MXFP4/MXFP8 quantization paths. MoE TKG introduces a dynamic all-expert algorithm with ``block_size``. QKV adds flexible weight layout support. PyTorch reference implementations are added for 22 kernels.
+
+**Breaking Changes**: Multiple kernel signatures have changed with new parameters inserted mid-signature; callers using positional arguments must switch to keyword arguments. ``SbufManager`` is renamed to ``BufferManager``. MoE TKG replaces boolean sharding flags with ``LNCShardingStrategy`` enum. For the full list of breaking changes, see :ref:`nki-lib-2-29-0-rn`.
+
+For more details, see :ref:`nki-lib-2-29-0-rn`.
+
+
+Inference Updates
+^^^^^^^^^^^^^^^^^
+
+**NxD Inference 0.9.17155**: Qwen2 VL gains vision data parallelism with 7% QPS improvement for image-heavy workloads. Qwen3 VL adds text-model sequence parallelism with 2.2x QPS throughput improvement. Flux.1 adds CFG parallelism with 19% end-to-end latency improvement and 23% instance throughput improvement.
+
+**vLLM Neuron Plugin 0.5.0**: Updated alongside NxD Inference with model performance improvements.
+
+**Hardware Support Change**: NxD Inference no longer supports Trn1/Inf2. Only Trn2 and newer hardware is supported. Pin to Neuron SDK 2.28 for Trn1/Inf2 support.
+
+For more details, see :ref:`nxd-inference-2-29-0-rn`.
+
+
+Runtime and Driver
+^^^^^^^^^^^^^^^^^^
+
+**Neuron Runtime Library 2.31**: New ``nrt_cc_create_stream`` API creates a collective stream to be used by host-initiated collectives, replacing the previous environment variable approach. New ``nrt_get_attached_efa_bdf`` API returns the BDF string of the EFA device for optimal network interface selection. New environment variables ``NEURON_RT_ONE_THREAD_PER_CORE`` (up to 2x improvement in collective communication latency) and ``NEURON_RT_RANKS_PER_NETWORK_PROXY`` provide fine-grained control over network proxy threading. RDMA support extends to Trn3. Collectives XU gains profiling support, context caching with up to 90% performance improvement, and removal of the 512 queue set instance limit. The async API version is bumped from 2.x to 3.0; applications using the async API must be recompiled.
+
+**Neuron Driver 2.27**: Adds support for new Trn3 Gen2 Ultraserver configurations: US3 (2-node), US4 (4-node), US16 (4-node), and US18 (4-node). Top-level DMA reset support is added during TPB reset on Trn3 and later platforms.
+
+**Neuron Collectives 2.31**: EFA device processing is restructured to per-stream granularity for improved stability. Fixed incorrect interface selection in multi-ultraserver collectives and crash on channel initialization failures.
+
+For more details, see :ref:`runtime-2-29-0-rn`.
+
+
+Neuron Explorer
+^^^^^^^^^^^^^^^
+
+Neuron Explorer is now out of Beta and Stable. The System Trace Viewer now supports the full suite of Device widgets, enabling multi-device profile analysis across all linked Device Profiles within a single System Profile. The Summary Viewer includes system-level profile data for both system and device profiles. New System Timeline HBM Usage shows device HBM usage with memory allocation breakdown by category. Box Selection Summary enables viewing aggregated device profile information for a selected region in the trace viewer. Neuron Explorer for VS Code is now available on the Visual Studio Code Extension Marketplace and Open VSX, enabling simpler installation and automatic updates.
+
+For more details, see :ref:`dev-tools-2-29-0-rn`.
+
+
+PyTorch Framework
+^^^^^^^^^^^^^^^^^
+
+PyTorch 2.7 and 2.8 have reached end of support starting with this release. Use PyTorch 2.9 on Ubuntu 24.04. Starting with PyTorch 2.10 support (planned for a future Neuron release), AWS Neuron will transition from PyTorch/XLA to native PyTorch support via TorchNeuron.
+
+For more details, see :ref:`pytorch-2-29-0-rn`.
+
+
+End of Support and Migration Notices
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Effective this release:**
+
+* PyTorch 2.7 and 2.8 have reached end of support. Pin to Neuron SDK 2.28 if required.
+* NeuronX Distributed Training (NxDT) and NxD Core training APIs reach end of support; DLCs and DLAMI virtual environments pinned to SDK 2.28.0.
+* ``neuron-profile analyze`` subcommand is no longer supported. Migrate to Neuron Explorer.
+* Ubuntu 22.04 Multi-Framework DLAMI is no longer published. Use Ubuntu 24.04.
+
+**Hardware support:**
+
+* NxD Inference no longer supports Trn1/Inf2. Pin to Neuron SDK 2.28 for continued support.
+
+**NKI namespace migration:**
+
+* Removal of ``neuronxcc.nki.*`` namespace postponed to a future release. Both ``neuronxcc.nki.*`` and ``nki.*`` namespaces continue to work. Migration to ``nki.*`` is encouraged.
+
+**Effective with PyTorch 2.10 support:**
+
+* PyTorch/XLA will be replaced by TorchNeuron.
+
+* Read the :doc:`Neuron 2.29.0 component release notes </release-notes/2.29.0>` for specific Neuron component improvements and details.
+
+----
+
+.. _whats-new-2026-03-13-v2_28_1:
 
 AWS Neuron SDK 2.28.1 Patch Available
 --------------------------------------
 
-**Posted on**: Match 13, 2026
+**Posted on**: March 13, 2026
 
 AWS Neuron provides a patch version, 2.28.1, to address a Neuron Driver compatibility issue with Linux kernel 6.18. 
 
@@ -102,7 +206,7 @@ PyTorch Framework (torch-neuronx)
 
 For more details, see :ref:`pytorch-2-28-0-rn`.
 
-* Read the :doc:`Neuron 2.28.0 component release notes </release-notes/2.28.0>` for specific Neuron component improvements and details.
+* Read the :doc:`Neuron 2.28.1 component release notes </release-notes/prev/2.28.1>` for specific Neuron component improvements and details.
 
 .. _whats-new-2025-12-19-v2_27:
 

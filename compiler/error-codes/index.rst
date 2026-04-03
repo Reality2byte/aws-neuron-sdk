@@ -18,6 +18,9 @@ This page lists the error codes you can encounter while developing with the Neur
    * - :ref:`NCC_EARG001 <error-code-earg001>`
      - Unsupported Logical Neuron Core (LNC) configuration.
      - You attempted to use a Logical Neuron Core configuration that is not supported by the target Neuron architecture.
+   * - :ref:`NCC_EBIR023 <error-code-ebir023>`
+     - MLP kernel intermediate size exceeds the maximum supported value of 4096.
+     - Consider tiling large intermediate tensors in your kernel to stay within the supported limit, or increase tensor parallelism to shard the intermediate dimension across more cores.
    * - :ref:`NCC_EBVF030 <error-code-ebvf030>`
      - The number of instructions generated exceeds the limit.
      - Consider applying model parallelism as partitioning the model will help break large computational graphs into smaller subgraphs.
@@ -105,6 +108,7 @@ This page lists the error codes you can encounter while developing with the Neur
     :maxdepth: 1
 
     EARG001
+    EBIR023
     EBVF030
     EHCA005
     EOOM001

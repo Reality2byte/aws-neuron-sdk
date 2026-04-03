@@ -1,5 +1,12 @@
 .. _torch_neuronx_core_placement_guide:
 
+
+.. meta::
+   :description: NeuronCore Allocation and Model Placement for Inference (|torch-neuronx|) - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 NeuronCore Allocation and Model Placement for Inference (|torch-neuronx|)
 =========================================================================
 

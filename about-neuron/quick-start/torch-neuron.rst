@@ -29,9 +29,9 @@ This page provide links that will assist you to quickly start with :ref:`pytorch
 
    .. tab-item:: torch-neuronx (``Trn1, Inf2``)
 
-        .. include:: tab-inference-torch-neuronx.txt
+        .. include:: /includes/setup/tab-inference-torch-neuronx.txt
 
 
    .. tab-item:: torch-neuron (``Inf1``)
 
-        .. include:: tab-inference-torch-neuron.txt
+        .. include:: /includes/setup/tab-inference-torch-neuron.txt

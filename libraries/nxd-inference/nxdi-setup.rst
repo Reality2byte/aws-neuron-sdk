@@ -54,8 +54,8 @@ Before you install NxD Inference, you must install the Neuron SDK and its
 dependencies, including PyTorch Neuron (``torch-neuronx``). Follow instructions
 for one of the following operating systems:
 
-* :ref:`PyTorch NeuronX Setup on Ubuntu 22 <setup-torch-neuronx-ubuntu22>`
-* :ref:`PyTorch NeuronX Setup on Amazon Linux 2023 <setup-torch-neuronx-al2023>`
+* :ref:`PyTorch NeuronX Setup on Ubuntu 22 <setup-torch-neuronx>`
+* :ref:`PyTorch NeuronX Setup on Amazon Linux 2023 <setup-torch-neuronx>`
 
 
 Install NxD Inference

@@ -1,0 +1,10 @@
+.. card:: Tensorflow Neuron (``tensorflow-neuronx``) Setup for  Inf2, Trn1/Trn1n Instances
+            :class-body: sphinx-design-class-title-small
+
+            See :doc:`TensorFlow NeuronX setup </archive/tensorflow/index>`.
+
+
+.. card:: Tensorflow Neuron (``tensorflow-neuron``) Setup for Inf1 Instances
+            :class-body: sphinx-design-class-title-small
+
+            See :doc:`TensorFlow Neuron setup </archive/tensorflow/index>`.

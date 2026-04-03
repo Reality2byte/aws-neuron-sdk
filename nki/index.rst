@@ -1,6 +1,11 @@
 .. _neuron-nki:
 
-Neuron Kernel Interface (NKI) - Beta
+.. meta::
+   :description: Neuron Kernel Interface (NKI) - Low-level programming interface for custom kernel development on AWS Trainium and Inferentia with direct NeuronCore ISA access.
+   :keywords: NKI, Neuron Kernel Interface, custom kernels, NeuronCore, AWS Neuron, Trainium, Inferentia, ISA, tile programming, torch.compile
+   :date-modified: 2026-04-02
+
+Neuron Kernel Interface (NKI)
 ====================================
 
 Neuron Kernel Interface (NKI) is a bare-metal language and compiler for directly programming NeuronDevices
@@ -34,7 +39,7 @@ is executable on NeuronDevices. At a high level, Neuron Compiler runs the follow
    architecture-specific instructions.
 
 4. **Hardware-specific optimizations.** These optimizations are mainly
-   done at the instruction level [#]_ in compiler back-end,
+   done at the instruction level in compiler back-end,
    with a key goal of reducing memory pressure and improving instruction-level parallelism. For example, memory
    allocation and instruction scheduling are done in this stage.
 
@@ -64,9 +69,6 @@ API Reference Guide
       :maxdepth: 1
       :hidden:
 
-      API Reference Manual <api/index>
+      NKI FAQ <nki_faq>
 
-.. rubric:: Footnotes
 
-.. [#] A small number of loop-level optimizations are performed after hardware intrinsic mappings in the current
-       Beta release. Subject to future changes.

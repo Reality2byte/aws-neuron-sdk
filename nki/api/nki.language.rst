@@ -16,7 +16,168 @@ Creation operations
 
    ndarray
    zeros
-   shared_constant
+   ones
+   full
+   zeros_like
+   empty_like
+   shared_identity_matrix
+   rand
+   random_seed
+
+.. _nl_tensor_ops:
+
+Tensor operations
+------------------
+
+.. autosummary::
+   :toctree: generated
+   :nosignatures:
+
+   load
+   load_transpose2d
+   store
+   copy
+   matmul
+   transpose
+
+.. _nl_math:
+
+Math operations
+----------------
+
+.. autosummary::
+   :toctree: generated
+   :nosignatures:
+
+   abs
+   add
+   arctan
+   ceil
+   cos
+
+   .. divide : not supported
+
+   exp
+   floor
+   log
+   maximum
+   minimum
+   multiply
+   negative
+   power
+   reciprocal
+   rsqrt
+   sign
+   sin
+   sqrt
+   square
+   subtract
+   tan
+   tanh
+   trunc
+
+.. _nl_activation_and_backpropagation:
+
+Activation and Backpropagation functions
+-----------------------------------------
+
+.. autosummary::
+   :toctree: generated
+   :nosignatures:
+
+   relu
+   sigmoid
+   silu
+   silu_dx
+   gelu
+   gelu_dx
+   gelu_apprx_sigmoid
+   gelu_apprx_sigmoid_dx
+   gelu_apprx_tanh
+   mish
+   softplus
+   softmax
+   erf
+   erf_dx
+
+
+.. _nl_normalization_and_regularization:
+
+Normalization and Regularization functions
+------------------------------------------
+
+.. autosummary::
+   :toctree: generated
+   :nosignatures:
+
+   dropout
+   rms_norm
+
+
+.. _nl_reduction:
+
+Reduction operations
+---------------------
+
+.. autosummary::
+   :toctree: generated
+   :nosignatures:
+
+   all
+   max
+   mean
+   min
+   prod
+   sum
+   var
+
+.. _nl_comparison:
+
+Comparison operations
+----------------------
+
+.. autosummary::
+   :toctree: generated
+   :nosignatures:
+
+   equal
+   not_equal
+   less
+   less_equal
+   greater
+   greater_equal
+
+.. _nl_logical:
+
+Logical operations
+-------------------
+
+.. autosummary::
+   :toctree: generated
+   :nosignatures:
+
+   logical_and
+   logical_or
+   logical_xor
+   logical_not
+
+.. _nl_bitwise:
+
+Bitwise operations
+-------------------
+
+.. autosummary::
+   :toctree: generated
+   :nosignatures:
+
+   bitwise_and
+   bitwise_or
+   bitwise_xor
+   invert
+   left_shift
+   right_shift
+
+.. _nl_tensor_manipulation_operations:
 
 Tensor manipulation operations
 -------------------------------
@@ -25,7 +186,23 @@ Tensor manipulation operations
    :toctree: generated
    :nosignatures:
 
+   broadcast_to
    ds
+   expand_dims
+
+
+.. _nl_indexing:
+
+Indexing operations
+------------------------------
+
+.. autosummary::
+   :toctree: generated
+   :nosignatures:
+
+   where
+   gather_flattened
+
 
 .. _nl_iterators:
 
@@ -36,9 +213,13 @@ Iterators
    :toctree: generated
    :nosignatures:
 
-   static_range
    affine_range
+   dynamic_range
    sequential_range
+   static_range
+
+
+.. _nl_memory_hierarchy:
 
 Memory Hierarchy
 -----------------
@@ -52,6 +233,12 @@ Memory Hierarchy
    hbm
    private_hbm
    shared_hbm
+   is_psum
+   is_sbuf
+   is_hbm
+   is_on_chip
+
+.. _nl_others:
 
 Others
 -------
@@ -60,10 +247,11 @@ Others
    :toctree: generated
    :nosignatures:
 
+   device_print
+   no_reorder
    program_id
    num_programs
    program_ndim
-   device_print
 
 .. _nl_datatypes:
 
@@ -73,7 +261,7 @@ Data Types
 .. autosummary::
    :toctree: generated
    :nosignatures:
-  
+
    bool_
    int8
    int16
@@ -93,12 +281,17 @@ Data Types
    float4_e2m1fn_x4
 
 
+.. _nl_constants:
+
 Constants
------------
+----------
 
-.. autosummary::
-   :toctree: generated
-   :template: nki-custom-class-attr-only-template.rst
-   :nosignatures:
+.. list-table::
 
-   tile_size
+   * - :doc:`tile_size <nki.language.tile_size>`
+     - Hardware tile size constants (pmax, psum_fmax, gemm_stationary_fmax, etc.)
+
+.. toctree::
+   :hidden:
+
+   nki.language.tile_size

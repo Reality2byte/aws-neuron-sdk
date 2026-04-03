@@ -102,6 +102,13 @@ How-To Guides
 .. grid:: 1 1 2 2
    :gutter: 3
 
+   .. grid-item-card:: How to use the NKI CPU Simulator
+      :link: nki-simulator
+      :link-type: ref
+      :class-body: sphinx-design-class-title-small
+
+      Develop and debug NKI kernels on your CPU with no hardware required.
+
    .. grid-item-card:: How to Insert NKI Kernels into Models
       :link: nki_framework_custom_op
       :link-type: ref
@@ -122,5 +129,6 @@ How-To Guides
 
    Tutorials </nki/guides/tutorials/index>
    Architecture </nki/guides/architecture/index>
+   NKI CPU Simulator </nki/guides/nki_simulator>
    Insert NKI Kernels into Models </nki/guides/framework_custom_op>
    Use NKI Scheduling APIs </nki/guides/how-to-scheduling-apis>

@@ -11,7 +11,7 @@ Introducing PyTorch 2.8 Support
 What are we introducing?
 ------------------------
 
-Starting with the :ref:`Neuron 2.26 <neuron-2.26.0-whatsnew>` release, customers can now upgrade to PyTorch NeuronX (``torch-neuronx``) with specific support for PyTorch version 2.8.
+Starting with the :ref:`Neuron 2.26 <neuron-2-26-0-whatsnew>` release, customers can now upgrade to PyTorch NeuronX (``torch-neuronx``) with specific support for PyTorch version 2.8.
 
 :ref:`setup-torch-neuronx` is updated to include installation instructions for PyTorch NeuronX 2.8 for Ubuntu 22.04. Note that PyTorch NeuronX 2.8 is supported on Python 3.10 and 3.11, with 3.12+ support coming in a future release.
 

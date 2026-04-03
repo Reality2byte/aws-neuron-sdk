@@ -1,5 +1,12 @@
 .. _torch-neuronx-profiling-api:
 
+
+.. meta::
+   :description: PyTorch NeuronX Profiling API - AWS Neuron SDK documentation
+   :keywords: API reference, AWS Neuron, Inferentia, PyTorch, Trainium, profiling, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 PyTorch NeuronX Profiling API
 ===============================
 

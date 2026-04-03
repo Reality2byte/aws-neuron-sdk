@@ -1,5 +1,12 @@
 .. _torch_neuronx_dataparallel_api:
 
+
+.. meta::
+   :description: PyTorch NeuronX DataParallel API - AWS Neuron SDK documentation
+   :keywords: API reference, AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 PyTorch NeuronX DataParallel API
 ==================================
 

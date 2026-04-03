@@ -42,12 +42,12 @@ This section provides links that will assist you to quickly start with a fresh i
 Please continue with the installation instructions for EFA and PyTorch Neuron by following the corresponding AL2023 setup guide below (please skip the "Launch the Instance" and "Install Drivers and Tools" sections). 
 
 
-.. card:: Pytorch Neuron (``torch-neuronx``) Setup on Amazon Linux 2023
-            :link: setup-torch-neuronx-al2023
-            :link-type: ref
+.. card:: Pytorch Neuron (``torch-neuronx``) Setup
+            :link: /setup/pytorch/manual
+            :link-type: doc
             :class-body: sphinx-design-class-title-small
 
-.. card:: Pytorch Neuron (``torch-neuron``) Setup on Amazon Linux 2023
-            :link: setup-torch-neuron-al2023
-            :link-type: ref
+.. card:: Pytorch Neuron (``torch-neuron``) Setup for Inf1
+            :link: /setup/legacy-inf1/pytorch
+            :link-type: doc
             :class-body: sphinx-design-class-title-small

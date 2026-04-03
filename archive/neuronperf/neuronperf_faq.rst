@@ -36,11 +36,6 @@ PyTorch and TensorFlow support all instance types.
 MXNet support is limited to inf1.
 
 
-Is NeuronPerf Open Source?
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Yes. You can :download:`download the source here </src/neuronperf.tar.gz>`.
-
 What is the secret to obtaining the best numbers?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

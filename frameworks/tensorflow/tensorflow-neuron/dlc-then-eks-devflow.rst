@@ -1,1 +1,0 @@
-.. include:: /devflows/inference/dlc-then-eks-devflow.rst

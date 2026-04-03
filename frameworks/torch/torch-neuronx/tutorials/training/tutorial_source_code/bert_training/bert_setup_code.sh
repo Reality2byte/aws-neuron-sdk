@@ -1,4 +1,5 @@
 #!/bin/bash
+# IMPORTANT: Neuron will stop supporting XLA-based training support in a future release. For now, this code sample is provided strictly for reference.
 set -eExuo
 
 # Install the required Python packages

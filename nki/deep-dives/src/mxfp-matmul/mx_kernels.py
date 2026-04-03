@@ -60,10 +60,10 @@ def kernel_offline_quantized_mx_matmul(stationary_mx_data, stationary_mx_scale, 
 
   # Copy the PSUM result back to SBUF
   result_sbuf = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
-  nisa.tensor_copy(dst=result_sbuf, src=result_psum, dtype=nl.bfloat16)  
+  nisa.tensor_copy(dst=result_sbuf, src=result_psum)  
 
   # Store to HBM
-  result_hbm = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.hbm)  
+  result_hbm = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.shared_hbm)  
   nisa.dma_copy(dst=result_hbm, src=result_sbuf)
   
   return result_hbm
@@ -130,10 +130,10 @@ def kernel_on_device_quantize_matmul_mx(stationary_mx_data, stationary_mx_scale,
 
   # Copy the PSUM result back to SBUF
   result_sbuf = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
-  nisa.tensor_copy(dst=result_sbuf, src=result_psum, dtype=nl.bfloat16)  
+  nisa.tensor_copy(dst=result_sbuf, src=result_psum)  
 
   # Store to HBM
-  result_hbm = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.hbm)  
+  result_hbm = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.shared_hbm)  
   nisa.dma_copy(dst=result_hbm, src=result_sbuf)
 
   return result_hbm
@@ -192,10 +192,10 @@ def kernel_copy_strided_quantize_matmul_mx(stationary_hbm, moving_hbm, mx_dtype,
 
   # Copy the PSUM result back to SBUF
   result_sbuf = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
-  nisa.tensor_copy(dst=result_sbuf, src=result_psum, dtype=nl.bfloat16)  
+  nisa.tensor_copy(dst=result_sbuf, src=result_psum)  
 
   # Store to HBM
-  result_hbm = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.hbm)  
+  result_hbm = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.shared_hbm)  
   nisa.dma_copy(dst=result_hbm, src=result_sbuf)
 
   return result_hbm
@@ -278,10 +278,10 @@ def kernel_copy_strided_quantize_matmul_mx_packed_scale(stationary_hbm, moving_h
 
   # Copy the PSUM result back to SBUF
   result_sbuf = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
-  nisa.tensor_copy(dst=result_sbuf, src=result_psum, dtype=nl.bfloat16)  
+  nisa.tensor_copy(dst=result_sbuf, src=result_psum)  
 
   # Store to HBM
-  result_hbm = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.hbm)  
+  result_hbm = nl.ndarray(result_psum.shape, dtype=nl.bfloat16, buffer=nl.shared_hbm)  
   nisa.dma_copy(dst=result_hbm, src=result_sbuf)
 
   return result_hbm

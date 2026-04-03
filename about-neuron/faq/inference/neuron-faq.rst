@@ -38,7 +38,7 @@ To use Inferentia within the Inf1 instances, the developer needs to perform one-
 of the pre-trained model to generate a NEFF, and use this as the inference
 model in fleet of Inf1 instances.
 
--  :ref:`tensorflow-neuron`
+-  :doc:`TensorFlow Neuron </archive/tensorflow/index>`
 -  :ref:`neuron-pytorch`
 -  :ref:`neuron-mxnet`
 

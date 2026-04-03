@@ -1,5 +1,12 @@
 .. _pytorch-neuronx-install-prev-al2:
 
+
+.. meta::
+   :description: Install previous PyTorch NeuronX releases on Amazon Linux 2
+   :keywords: AWS Neuron, PyTorch, Trainium, Inferentia, setup, torch-neuronx, previous releases, Amazon Linux 2, AL2
+   :date-modified: 2026-03-30
+
+
 Install Previous PyTorch Neuron Releases for Amazon Linux (``torch-neuronx``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -8,7 +15,7 @@ Install Previous PyTorch Neuron Releases for Amazon Linux (``torch-neuronx``)
 
 
 
-This section will assist you to install previous Neuron releases.
+Use the tabs below to install a specific previous Neuron SDK release of PyTorch NeuronX on Amazon Linux 2. Select the Neuron version you need.
 
 
 .. tab-set::

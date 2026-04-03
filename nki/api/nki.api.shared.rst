@@ -8,7 +8,7 @@ Supported Data Types
 ========================
 
 :ref:`tbl-dtype` below lists all supported data types by NKI.
-Almost all of the NKI APIs accept a data type field, `dtype`, 
+Almost all of the NKI APIs accept a data type field, `dtype`,
 which must be a `nki.language` data type.
 
 .. _tbl-dtype:
@@ -166,7 +166,7 @@ the Scalar Engine will generate invalid output results.
    +--------------------------------------------+-----------------------------------------------------+---------------------+
    | Exponential                                | ``nki.language.exp``                                | ``[-inf, inf]``     |
    +--------------------------------------------+-----------------------------------------------------+---------------------+
-   | Natural Log                                | ``nki.language.log``                                  ``[2^-64, 2^64]``   |
+   | Natural Log                                | ``nki.language.log``                                | ``[2^-64, 2^64]``   |
    +--------------------------------------------+-----------------------------------------------------+---------------------+
    | Sine                                       | ``nki.language.sin``                                | ``[-PI, PI]``       |
    +--------------------------------------------+-----------------------------------------------------+---------------------+

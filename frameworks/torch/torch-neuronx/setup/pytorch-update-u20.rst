@@ -1,10 +1,9 @@
 
 .. _pytorch-neuronx-ubuntu20-update:
 
-Update to latest PyTorch Neuron  (``torch-neuronx``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. Update PyTorch NeuronX to the latest release on Ubuntu 20.04
 
-If you already have a previous Neuron release installed, this section provide links that will assist you to update to latest Neuron release.
+If you already have a previous Neuron release installed, select the PyTorch version tab below to get the update commands for your environment.
 
 
 .. tab-set::

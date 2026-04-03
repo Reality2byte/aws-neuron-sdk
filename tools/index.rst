@@ -77,6 +77,9 @@ AWS Neuron provides a comprehensive suite of developer tools for optimizing, mon
    :maxdepth: 1
    :hidden:
 
+   Neuron Profiler 2.0 </tools/profiler/neuron-profiler-2-0-beta-user-guide>
+   Neuron Profiler </tools/profiler/neuron-profile-user-guide>
+   System Tools </tools/neuron-sys-tools/index>
    Third-party Tools </tools/third-party-solutions>
    Tutorials </tools/tutorials/index>
    Release Notes </release-notes/components/dev-tools>

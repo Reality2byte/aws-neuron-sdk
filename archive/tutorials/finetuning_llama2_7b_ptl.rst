@@ -5,15 +5,15 @@
    :nofollow:
    :description: This tutorial for the AWS Neuron SDK is currently archived and not maintained. It is provided for reference only.
 
-Fine-tuning Llama2 7B with tensor parallelism and ZeRO-1 optimizer using Neuron PyTorch-Lightning 
-=========================================================================================
+Fine-tuning Llama2 7B with tensor parallelism and ZeRO-1 optimizer using Neuron PyTorch-Lightning
+=================================================================================================
 
-This tutorial shows how to fine-tune Llama2 7B with tensor parallelism and ZeRO-1 using Neuron PyTorch-Lightning APIs. For pre-training information and additional context, see the :ref:`Llama2 7B Tutorial <llama2_7b_tp_zero1_ptl_tutorial>`
+This tutorial shows how to fine-tune Llama2 7B with tensor parallelism and ZeRO-1 using Neuron PyTorch-Lightning APIs. For pre-training information and additional context, see the Llama2 7B Tutorial
 and :ref:`Neuron PT-Lightning Developer Guide <ptl_developer_guide>`. 
 
 
 Setting up the environment
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For this experiment, we will use AWS ParallelCluster with at least four trn1.32xlarge compute nodes.
 To set up a cluster and prepare it for use, see `Train your model on ParallelCluster <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/devflows/training/parallelcluster/parallelcluster-training.html>`__.
@@ -94,13 +94,15 @@ Then, set the dataset for the fine-tuning job. In this example, we will use Doll
 of instruction-following records on categories outlined in the InstructGPT paper, including brainstorming, classification,
 closed QA, generation, information extraction, open QA, and summarization.
 
-{
-  "instruction": "Alice's parents have three daughters: Amy, Jessy, and what's the name of the third daughter?",
-  
-  "context": "",
-  
-  "response": "The name of the third daughter is Alice"
-}
+.. code-block:: json
+
+   {
+     "instruction": "Alice's parents have three daughters: Amy, Jessy, and what's the name of the third daughter?",
+     
+     "context": "",
+     
+     "response": "The name of the third daughter is Alice"
+   }
 
 Configure the following flags in ``tp_zero1_llama2_7b_hf_finetune_ptl.sh``:
 
@@ -112,7 +114,7 @@ Configure the following flags in ``tp_zero1_llama2_7b_hf_finetune_ptl.sh``:
 At this point, you are all set to start fine-tuning.
 
 Running fine-tuning
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 By this step, the cluster is all set up for running experiments. 
 Before running training, first pre-compile the graphs using the :ref:`neuron_parallel_compile <pytorch-neuronx-parallel-compile-cli>`.

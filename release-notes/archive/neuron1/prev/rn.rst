@@ -150,7 +150,7 @@ for successful installation or upgrade**.
 This release introduces
 :ref:`Neuron Runtime 2.x <introduce-libnrt>`, upgrades :ref:`PyTorch Neuron <neuron-pytorch>` to
 PyTorch 1.9.1, adds support for new APIs (:func:`torch.neuron.DataParallel` and ``torch_neuron.is_available()``),
-adds new features and capabilities (compiler ``--fast-math`` :ref:`option for better fine-tuning of accuracy/performance neuron-cc-training-mixed-precision` and :ref:`MXNet FlexEG feature <flexeg>`),
+adds new features and capabilities (compiler ``--fast-math`` option for better fine-tuning of accuracy/performance and :ref:`MXNet FlexEG feature <flexeg>`),
 improves :ref:`tools <neuron-tools>`, adds support for additional :ref:`operators <neuron-supported-operators>`,
 improves :ref:`performance <appnote-performance-benchmark>`
 (Up to 20% additional throughput and up to 25% lower latency),
@@ -312,7 +312,7 @@ Neuron 1.15.0 is the first release to support TensorFlow 2. In this release Tens
 
   *  Run the TensorFlow 2  :ref:`HuggingFace distilBERT Tutorial </src/examples/tensorflow/huggingface_bert/huggingface_bert.ipynb>`.
   *  Read :ref:`tf2_faq`
-  *  See newly introduced :ref:`TensorFlow 2.x (``tensorflow-neuron``) Tracing API <tensorflow-ref-neuron-tracing-api>`.
+  *  See newly introduced TensorFlow 2.x (``tensorflow-neuron``) Tracing API.
   *  See :ref:`tensorflow-ref-neuron-accelerated-ops`.
 
 
@@ -375,7 +375,7 @@ This release (Neuron 1.14.0) introduces first release of PyTorch Neuron 1.8.1, t
 * Software Deprecation
 
     * End of support for Neuron Conda packages in Deep Learning AMI, users should use pip upgrade commands to upgrade to latest Neuron version in DLAMI, see `blog <https://aws.amazon.com/blogs/developer/neuron-conda-packages-eol/>`_.
-    * End of support for Ubuntu 16, see  :ref:`documentation <eol-ubuntu16>`_.
+    * End of support for Ubuntu 16, see :ref:`documentation <eol-ubuntu16>`.
 
 
 Neuron 1.14.0 (05/28/2021)
@@ -458,8 +458,8 @@ Important to know:
 
 1. This update continues to support the torch-neuron version of PyTorch 1.5.1 for backwards compatibility.
 2. As Python 3.5 reached end-of-life in October 2020, and many packages including TorchVision and Transformers have
-stopped support for Python 3.5, we will begin to stop supporting Python 3.5 for frameworks, starting with
-PyTorch-Neuron version :ref:`neuron-torch-11170` in this release. You can continue to use older versions with Python 3.5.
+   stopped support for Python 3.5, we will begin to stop supporting Python 3.5 for frameworks, starting with
+   PyTorch-Neuron version :ref:`neuron-torch-11170` in this release. You can continue to use older versions with Python 3.5.
 
 November 17, 2020 Release
 --------------------------

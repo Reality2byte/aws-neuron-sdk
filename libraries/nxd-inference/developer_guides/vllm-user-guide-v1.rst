@@ -1,4 +1,5 @@
 .. _nxdi-vllm-user-guide-v1:
+.. _nxdi-vllm-user-guide:
 
 vLLM User Guide for NxD Inference
 ============================================
@@ -20,13 +21,13 @@ processing follow the default vLLM behavior.
 Versioning
 ^^^^^^^^^^
 
-Plugin Version: ``0.4.1``
+Plugin Version: ``0.5.0``
 
-Neuron SDK Version: ``2.28.0``
+Neuron SDK Version: ``2.29.0``
 
-vLLM Version: ``0.13.0``
+vLLM Version: ``0.16.0``
 
-PyTorch Version: ``2.9.0``
+PyTorch Version: ``2.9.1``
 
 
 Supported Models
@@ -58,7 +59,7 @@ Refer to :ref:`these setup instructions<nxdi-setup>` for information on using Ne
 
 **Prerequisites:**
 
-- Latest AWS Neuron SDK (`Neuron SDK 2.28.0 <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/release-notes/2.28.0.html>`_)
+- Latest AWS Neuron SDK (`Neuron SDK 2.29.0 <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/release-notes/2.29.0.html>`_)
 - Python 3.10+ (compatible with vLLM requirements)
 - Supported AWS instances: Inf2, Trn1/Trn1n, Trn2
 
@@ -66,21 +67,21 @@ Refer to :ref:`these setup instructions<nxdi-setup>` for information on using Ne
 Quickstart using Docker
 """""""""""""""""""""""""""
 
-You can use a preconfigured Deep Learning Container (DLC) with the AWS vLLM-Neuron plugin pre-installed.
-Refer to the `vllm-inference-neuronx container <https://github.com/aws-neuron/deep-learning-containers?tab=readme-ov-file#vllm-inference-neuronx>`_
+You can use a Deep Learning Container (DLC) which bundles the SDK and dependencies.
+Refer to the `pytorch-inference-neuronx container <https://github.com/aws-neuron/deep-learning-containers?tab=readme-ov-file#pytorch-inference-neuronx>`_
 on `https://github.com/aws-neuron/deep-learning-containers <https://github.com/aws-neuron/deep-learning-containers>`_ to get started.
 
-For a complete step-by-step tutorial on deploying the vLLM Neuron DLC, see :ref:`quickstart_vllm_dlc_deploy`.
+For a complete step-by-step tutorial, see :ref:`Option B in the DLC quickstart <quickstart_vllm_dlc_option_b>`. After entering the container, proceed to `Manually install from source`_ below to install the vLLM Neuron plugin.
 
 Manually install from source
 """""""""""""""""""""""""""""""
 
 Install the plugin from GitHub sources using the following commands. The plugin will automatically install the correct version of vLLM along with other required dependencies.
-This version of the plugin is intended to work with the Neuron SDK 2.28.0, PyTorch 2.9, and vLLM 0.13.0. This is not needed if using a DLC container with the vllm-neuron plugin already installed.
+This version of the plugin is intended to work with the Neuron SDK 2.29.0, PyTorch 2.9, and vLLM 0.16.0.
 
 .. code-block:: bash
 
-    git clone --branch "0.4.1" https://github.com/vllm-project/vllm-neuron.git
+    git clone --branch "0.5.0" https://github.com/vllm-project/vllm-neuron.git
     cd vllm-neuron
     pip install --extra-index-url=https://pip.repos.neuron.amazonaws.com -e .
 
@@ -95,29 +96,31 @@ Here is a very basic example to get started:
 
 .. code-block:: python
 
-   from vllm import LLM, SamplingParams
+  from vllm import LLM, SamplingParams
 
-   # Initialize the model
-   llm = LLM(
-       model="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-       max_num_seqs=4,
-       max_model_len=128,
-       tensor_parallel_size=2,
-       block_size=32
-   )
+  if __name__ == '__main__':
+      # Initialize the model
+      llm = LLM(
+          model="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+          max_num_seqs=4,
+          max_model_len=128,
+          tensor_parallel_size=2,
+          block_size=32,
+          num_gpu_blocks_override=16
+      )
 
-   # Generate text
-   prompts = [
-       "Hello, my name is",
-       "The president of the United States is",
-       "The capital of France is",
-   ]
-   sampling_params = SamplingParams(temperature=0.0)
-   outputs = llm.generate(prompts, sampling_params)
+      # Generate text
+      prompts = [
+          "Hello, my name is",
+          "The president of the United States is",
+          "The capital of France is",
+      ]
+      sampling_params = SamplingParams(temperature=0.0)
+      outputs = llm.generate(prompts, sampling_params)
 
-   for output in outputs:
-       print(f"Prompt: {output.prompt}")
-       print(f"Generated: {output.outputs[0].text}")
+      for output in outputs:
+          print(f"Prompt: {output.prompt}")
+          print(f"Generated: {output.outputs[0].text}")
 
 Feature Support
 ------------------
@@ -449,6 +452,8 @@ is big enough to fit the maximum model length, preemption is never needed in our
 As a result, AWS Neuron disabled the preemption checks done by the scheduler in our fork. This significantly improves
 E2E performance of the Neuron integration.
 
+.. _nxdi-on-device-sampling:
+
 Decoding
 ^^^^^^^^^^
 
@@ -501,14 +506,14 @@ Prefix Caching
 ^^^^^^^^^^^^^^^^
 
 Starting in Neuron SDK 2.24, prefix caching is supported on the AWS Neuron fork of vLLM. Prefix caching allows developers to improve TTFT by 
-re-using the KV Cache of the common shared prompts across inference requests. See :ref:`Prefix Caching<nxdi_prefix_caching>` for more information on how to 
+re-using the KV Cache of the common shared prompts across inference requests. See :ref:`Prefix Caching <nxdi_prefix_caching>` for more information on how to 
 enable prefix caching with vLLM. 
 
 
 Examples
 --------
 
-For more in depth NxD Inference tutorials that include vLLM deployment steps, refer to :ref:`Tutorials<nxdi-tutorials>`.
+For more in depth NxD Inference tutorials that include vLLM deployment steps, refer to :ref:`Tutorials <nxdi-tutorials-index>`.
 
 The following examples use `TinyLlama/TinyLlama-1.1B-Chat-v1.0 <https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0>`_
 
@@ -536,6 +541,7 @@ the following command:
         --max-model-len 128 \
         --max-num-seqs 4 \
         --block-size 32 \
+        --num-gpu-blocks-override 16 \
         --port 8000
 
 In addition to the sampling parameters supported by OpenAI, we also support ``top_k``.

@@ -32,22 +32,22 @@ Before learning about NKI, it's important to understand the hardware where NKI k
 
 .. image:: /nki/img/overviews/about-nki-1.png
 
-Trainium chips are AI chips built by AWS for AI training and inference. They deliver high performance, use power efficiently, offer flexibility, and can be programmed in different ways, all while reducing costs. Trainium uses groups of large cores (called NeuronCores), each with four specialized engines that work together:
+Trainium chips are AI chips built by AWS for AI training and inference. They are highly optimized for performance, power efficiency, and cost efficiency for a broad range of AI/ML workloads. Trainium uses a small number of powerful cores (called NeuronCores), each with four specialized engines that work together:
 
-* **Tensor Engine**: Handles matrix multiplications
-* **Vector Engine**: Processes multi-input vector operations and reductions
-* **Scalar Engine**: Performs element-wise non-linear functions with hardware acceleration
-* **GpSimd Engine**: General-purpose programmable processors for custom operations
+* **Tensor Engine**: Handles matrix operations like matrix-multiplications and convolutions
+* **Vector Engine**: Processes multi-input vector operations and reductions (e.g. Normalization, ResidualAdd)
+* **Scalar Engine**: Performs element-wise functions, including non-linearities (e.g. GELU, Square)
+* **GpSimd Engine**: Deeply embedded general-purpose programmable processors for custom operations
 
-Trainium devices also have dedicated **Collective Communication Engines** (**CC-Cores**) that move data between NeuronCores and between Trainium chips. These engines handle operations like AllReduce and AllGather while computation continues, allowing work to be spread across multiple chips without slowing down the compute engines during gradient synchronization.
+Trainium devices also have dedicated **Collective Communication Engines** (**CC-Cores**) that move data between NeuronCores and between Trainium chips. These engines handle operations like AllReduce, ReduceScatter, AllGather and All2all, while the core computation continues processing in parallel, allowing more efficient scaling to multiple cores and chips.
 
 The memory system has three levels:
 
-* **HBM** (High Bandwidth Memory): Provides device memory storage
-* **SBUF** (State Buffer): On-chip SRAM for active computation, managed by software
-* **PSUM** (Partial Sum Buffer): Stores and accumulates matrix multiplication results near the memory
+* **HBM** (High Bandwidth Memory): Provides device working memory.  
+* **SBUF** (State Buffer): On-chip scratchpad SRAM that serves as a software-managed cache. Holds active tensors locally and acts as a landing buffer for DMA transfers.  
+* **PSUM** (Partial Sum Buffer): Stores and accumulates matrix operations results.  
 
-Unlike traditional CPUs and GPUs which adopt hardware managed caches, Trainium software (NKI and Neuron Graph Compiler) explicitly manages the allocation and data movment within the entire memory hierarchy. This architecture allows developers to optimize hardware usage directly, resulting in more consistent and predictable performance. NKI exposes all NISA primitives needed to manage the memory hierarchy.
+Unlike traditional CPUs and GPUs which adopt hardware managed caches, Trainium software (NKI and the Neuron Graph Compiler) explicitly manages the allocation and data movment within the entire memory hierarchy. This architecture allows developers to optimize hardware usage directly, resulting in more consistent and predictable performance. NKI exposes all NISA primitives needed to manage the memory hierarchy.
 
 .. _nki_arch_guides:
 

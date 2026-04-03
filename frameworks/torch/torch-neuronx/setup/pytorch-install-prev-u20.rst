@@ -1,14 +1,9 @@
+
 .. _pytorch-neuronx-install-prev-u20:
 
-Install Previous PyTorch NeuronX Releases for Ubuntu 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. Install previous PyTorch NeuronX releases for Ubuntu 20.04
 
-.. toctree::
-   :maxdepth: 1
-
-
-
-This section will assist you to install previous Neuron releases.
+Use the tabs below to install a specific previous Neuron SDK release of PyTorch NeuronX on Ubuntu 20.04. Select the Neuron version you need.
 
 .. tab-set::
 

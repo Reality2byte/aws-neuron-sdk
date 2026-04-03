@@ -9,8 +9,8 @@ the user when they use ``print`` or ``xm.mark_step``.  Requesting results tells
 ``torch-xla`` that the recorded graph needs to be executed. 
 
 Before executing the graph on a Neuron device, ``torch-xla`` would call Neuron Compiler (``neuronx-cc``) to compile the graph into Neuron specific 
-graph. Then the graph is executed on the :ref:`NeuronCore/s <neuroncores-arch>`. Compiling the graph involves 
-running optimizations that can make use of the :ref:`NeuronCore/s <neuroncores-arch>` efficiently. Running these 
+graph. Then the graph is executed on the NeuronCores. Compiling the graph involves 
+running optimizations that can make use of the NeuronCores efficiently. Running these 
 optimizations can be expensive and can result in long compile times. To save the 
 users from compiling these graphs at every iteration, ``torch-xla`` maintains an 
 in-memory cache called Just in Time (JIT) cache. When the user re-runs the same graph (eg. 2nd 

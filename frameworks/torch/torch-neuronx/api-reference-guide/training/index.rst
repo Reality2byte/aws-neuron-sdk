@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: API Reference Guide for Training (``torch-neuronx``) - AWS Neuron SDK documentation
+   :keywords: API reference, AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training
+   :date-modified: 2026-03-13
+
+
 API Reference Guide for Training (``torch-neuronx``) 
 ====================================================
 
@@ -17,7 +24,10 @@ API Reference Guide for Training (``torch-neuronx``)
     :animate: fade-in
     :open:
     
-    .. include:: /frameworks/torch/torch-neuronx/api-reference-guide/training/index.txt
+    * :ref:`pytorch-neuronx-parallel-compile-cli`
+    * :ref:`neuron-caching`
+    * :ref:`pytorch-neuronx-envvars`
+    * :ref:`torch-neuronx-profiling-api`
 
 
 

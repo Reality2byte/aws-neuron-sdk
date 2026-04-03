@@ -33,7 +33,7 @@ In this step, you install the Neuron-enabled vLLM plugin inside your Python envi
 .. code-block:: bash
 
    # Activate your Neuron virtual environment
-   source ~/aws_neuronx_venv_pytorch_2_8_nxd_inference/bin/activate
+   source ~/aws_neuronx_venv_pytorch_2_9_nxd_inference/bin/activate
 
    # Clone the vLLM Neuron plugin repository
    git clone https://github.com/vllm-project/vllm-neuron.git

@@ -1,0 +1,36 @@
+.. card:: Setup  (``tensorflow-neuron``)
+            :class-body: sphinx-design-class-title-small
+
+            See :doc:`TensorFlow Neuron setup </archive/tensorflow/index>`.
+
+
+.. dropdown::  Tutorials (``tensorflow-neuron``)
+    :class-title: sphinx-design-class-title-med
+    :animate: fade-in
+                
+    .. include:: /archive/tensorflow/tensorflow-neuron/tutorials/tutorials-tensorflow-neuron.txt
+
+
+.. dropdown::  Additional Examples (``tensorflow-neuron``)
+    :class-title: sphinx-design-class-title-med
+    :class-body: sphinx-design-class-body-small
+    :animate: fade-in
+
+    .. include:: /archive/tensorflow/tensorflow-neuron/additional-examples.txt
+
+
+.. dropdown::  API Reference Guide (``tensorflow-neuron``)
+    :class-title: sphinx-design-class-title-med
+    :class-body: sphinx-design-class-body-small
+    :animate: fade-in
+
+    .. include:: /archive/tensorflow/tensorflow-neuron/api-reference-guide.txt
+
+
+.. dropdown::  Misc (``tensorflow-neuron``)
+    :class-title: sphinx-design-class-title-med
+    :class-body: sphinx-design-class-body-small
+    :animate: fade-in
+                
+    .. include:: /archive/tensorflow/tensorflow-neuron/misc-tensorflow-neuron.txt
+

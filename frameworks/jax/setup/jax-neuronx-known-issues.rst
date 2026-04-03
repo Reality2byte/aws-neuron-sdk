@@ -1,5 +1,12 @@
 .. _jax-neuron-known-issues:
 
+
+.. meta::
+   :description: JAX NeuronX Known Issues - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, JAX, JAX NeuronX, Trainium, setup, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 JAX NeuronX Known Issues
 ------------------------
 - ``Threefry`` RNG algorithm is not completely supported. Use ``rbg`` algorithm instead. This can be configured by setting the following config option ``jax.config.update("jax_default_prng_impl", "rbg")``

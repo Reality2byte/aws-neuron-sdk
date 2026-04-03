@@ -1,7 +1,7 @@
 .. meta::
     :description: Comprehensive guide to the NKI language for AWS Neuron SDK, covering tensor operations, control flow, memory management, and programming patterns for Trainium accelerators.
     :keywords: NKI, AWS Neuron, Language Guide, Tensor Operations, Trainium
-    :date-modified: 12/01/2025
+    :date-modified: 03/30/2026
 
 .. _nki-language-guide:
 
@@ -14,19 +14,45 @@ Let us start by looking at a simple NKI function.
 
 .. code-block:: python
 
-   @nki.jit
-   def my_function(x : tensor, y : tensor) -> tensor:
-     assert x.shape == y.shape, "expecting tensors of the same shape"
-     assert x.dtype == y.dtype, "expecting tensors with the same element type"
-     
-     # allocate an output tensor for the result
-     output = nki.language.ndarray(x.shape, x.dtype, buffer=sbuf)
-     
-     print(f"adding tensors of type {x.dtype} and {x.shape}")
-     nki.isa.tensor_tensor(output, x, y, op=nki.langauge.add)
-     return output
+    @nki.jit
+    def nki_tensor_add_kernel(a_input, b_input):
+        """
+        NKI kernel to compute element-wise addition of two input tensors.
+        """
 
-The first thing you may notice about this NKI function is that it looks very much like a Python function. In fact, all NKI functions are syntactically valid Python functions. However, it is important to understand that NKI functions are not Python functions: they will be compiled by the NKI compiler and run on the Trainium accelerator. Because of this, not all Python constructs and libraries are supported within a NKI function.
+        # Check both input tensor shapes/dtypes are the same for element-wise operation.
+        assert a_input.shape == b_input.shape
+        assert a_input.dtype == b_input.dtype
+
+        print(f"adding tensors of type {a_input.dtype} and shape {a_input.shape}")
+
+        # Check the first dimension's size to ensure it does not exceed on-chip
+        # memory tile size, since this simple kernel does not tile inputs.
+        assert a_input.shape[0] <= nl.tile_size.pmax
+
+        # Allocate space for the input tensors in SBUF and copy the inputs from HBM
+        # to SBUF with DMA copy.
+        a_tile = nl.ndarray(shape=a_input.shape, dtype=a_input.dtype, buffer=nl.sbuf)
+        nisa.dma_copy(dst=a_tile, src=a_input)
+
+        b_tile = nl.ndarray(shape=b_input.shape, dtype=b_input.dtype, buffer=nl.sbuf)
+        nisa.dma_copy(dst=b_tile, src=b_input)
+
+        # Allocate space for the result and use tensor_tensor to perform
+        # element-wise addition. Note: the first argument of 'tensor_tensor'
+        # is the destination tensor.
+        c_tile = nl.ndarray(shape=a_input.shape, dtype=a_input.dtype, buffer=nl.sbuf)
+        nisa.tensor_tensor(dst=c_tile, data1=a_tile, data2=b_tile, op=nl.add)
+
+        # Create a tensor in HBM and copy the result into HBM.
+        c_output = nl.ndarray(dtype=a_input.dtype, shape=a_input.shape, buffer=nl.shared_hbm)
+        nisa.dma_copy(dst=c_output, src=c_tile)
+
+        # Return kernel output as function output.
+        return c_output
+        
+.. important::
+   The first thing you may notice about this NKI function is that it looks very much like a Python function. In fact, all NKI functions are syntactically valid Python functions. However, it is important to understand that NKI functions are not Python functions: they will be compiled by the NKI compiler and run on the Trainium accelerator. Because of this, not all Python constructs and libraries are supported within a NKI function.
 
 The second thing to notice is that NKI has a sequential programming model. This means that the logical order of operations follows the syntactic order of the statements in the function. As you learn more about the Trainium hardware, you will see that the hardware can often do many things at the same time across the different compute engines on the Trainium devices. When we compile NKI functions, we will respect the sequential order of operations written by the programmer. The compiler may reorder operations that have no data dependencies, but this is functionally transparent to NKI programmers. Later you will see how to control which engines operations run on and even how to influence the ordering of operations with no data dependencies for better performance, but all of this is done in the context of the sequential ordering of the code.
 
@@ -34,9 +60,11 @@ The third thing to notice about this simple function is that is has a print stat
 
 .. code-block:: text
 
-   adding tensors of type float16 and shape (128,512)
+   adding tensors of type float16 and shape (128, 512)
 
-However, when we run this compiled function on Trainium devices they will not output anything. This is usually what you want. The compiler gives important debugging information during compilation, but when you deploy your function across 1000 Trainium devices, they will not waste any time generating debug output. Note, there is a special print function that does run on the Trainium devices, called device_print, that can be used if this is really what you need, see the API references for more information.
+However, when we run this compiled function on Trainium devices they will not output anything. This is usually what you want. The compiler gives important debugging information during compilation, but when you deploy your function across 1000 Trainium devices, they will not waste any time generating debug output. 
+
+**Note**: There is a special print function that does run on the Trainium devices, called ``device_print``, that can be used if this is really what you need, see the API references for more information.
 
 We have just seen that the print statement is evaluated at compile-time, and not at runtime. In fact, most things in NKI programs are evaluated at compile time. In general, calls to nki.isa.* functions will result in on-device operations, and (almost) all other things will be evaluated by the compiler at compile time. We will discuss some exceptions to this rule below, but for now it is generally the case that only the nki.isa.* calls result in run-time operations, and everything else is evaluated by the compiler at compile-time.
 
@@ -70,7 +98,7 @@ NKI values and containers are very similar to their Python equivalents. For inst
    l = [1,2,3]    # create a list with 3 elements 
    l.append(4.1)  # append a value to the list
    l.extend(("Hello", "List")) # extend list with multiple values
-   size = l.count() # return number of elements in list
+   size = len(l) # return number of elements in list
    third = l[2]  # get third element of list (index 2)
 
    # search list for a specific value
@@ -81,43 +109,44 @@ NKI values and containers are very similar to their Python equivalents. For inst
    l.remove(1)
 
    # print out list in reverse order
-   for x in l.reverse():
+   l.reverse()
+   for x in l:
      print(x)
 
 The NKI dictionary type is also similar to the Python version, but with the restriction that the keys must be string values.
 
 .. code-block:: python
 
-   d = dict() # create an empty dictionary
-   d['a'] = 1 # set a value in the dictionary
+    d = dict() # create an empty dictionary
+    d['a'] = 1 # set a value in the dictionary
 
-   print(d.keys())  # print out keys in dictionary
-   print(d.items())  # print out values in dictionary
+    print(d.keys())  # print out keys in dictionary
+    print(d.items())  # print out values in dictionary
 
-   # print out dictionary
-   for k,v in d.values():
-     print(k, v)
+    # print out dictionary
+    for k in d.keys():
+        v = d[k]
+        print(k, v)
 
-   # remove value from dictionary if present
-   if d.pop('a'):
-     print("removed 'a' from dictionary")
+    # remove value from dictionary if present
+    if d.pop('a'):
+        print("removed 'a' from dictionary")
 
-   # fetch value of a, set to 1 if not present
-   a = d.setdefault('a', default=1)
+    # fetch value of a, set to 2 if not present
+    a = d.setdefault('a', 2)
 
-We will discuss user-defined classes later in the guide. For now, lets take a close look at the most important value in NKI, the tensor.
+We will discuss user-defined classes later in the guide. For now, let's take a close look at the most important value in NKI, the tensor.
 
 Tensor Values
 --------------
 
-The NKI tensor type is a representation of an on-chip tensor. That is, a value of type tensor is really a reference to some region of memory on the Trainium device at runtime. At compile-time, we do not yet know the precise location nor the precise contents of this tensor, and therefore, code evaluated at compile-time will not be able to query the precise location nor the contents. At compile-time we can only query meta-data about the tensor, such as its shape and element type. Each tensor value supports the following meta-data as (read-only) fields:
+The NkiTensor class represents an on-chip tensor. That is, a NkiTensor instance is really a reference to some region of memory on the Trainium device at runtime. At compile-time, we do not yet know the precise location nor the precise contents of this tensor, and therefore, code evaluated at compile-time will not be able to query the precise location nor the contents. At compile-time we can only query meta-data about the tensor, such as its shape and element type. NkiTensor exposes the following meta-data:
 
-* t.dtype - The element type of the tensor, e.g. "float16"
-* t.shape - The shape of the tensor, e.g. (128,64,64)
-* t.address - The (virtual) address of the tensor (discussed below)
-* t.offset - The access pattern offset (discussed below)
-* t.pattern - The access pattern (discussed below)
-* t.buffer - The memory buffer this tensor lives in (discussed below)
+* ``t.dtype`` - The element type of the tensor, e.g. "float16"
+* ``t.shape`` - The shape of the tensor, e.g. (128,64,64)
+* ``t.offset`` - The access pattern offset (discussed below)
+* ``t.buffer`` - The memory buffer this tensor lives in (discussed below)
+* ``t.get_pattern()`` - The access pattern (discussed below)
 
 The most commonly used fields are dtype and shape. We have already seen an example of using these fields to check that argument tensors are compatible in our simple example. Another common case is using a dimension of a shape to iterate over a tensor:
 
@@ -128,12 +157,16 @@ The most commonly used fields are dtype and shape. We have already seen an examp
    for i in range(t.shape[0]):
      my_function(t[i])
 
-Note, because the shape is part of the meta-data of the tensor, the expression t.shape[0] is a compile-time constant. Therefore, the bounds of the for-loop are known at compile time. The compiler will unroll this loop into a sequence of calls to my_function, one for each subtensor of t.
+Note, because the shape is part of the meta-data of the tensor, the expression ``t.shape[0]`` is a compile-time constant. Therefore, the bounds of the for-loop are known at compile time. The compiler will unroll this loop into a sequence of calls to my_function, one for each subtensor of t.
 
 Creating Tensors
 -----------------
 
 The easiest way to create tensors is using the nki.language.ndarray API. This function takes a shape, a dtype, and a memory type, and creates a reference to a memory region in the given memory type large enough to hold the tensor.
+
+.. note::
+
+   ``ndarray`` does **not** initialize memory. The contents of a newly allocated tensor are undefined until explicitly written to (e.g., via ``nisa.dma_copy`` or ``nisa.memset``).
 
 .. code-block:: python
 
@@ -143,98 +176,24 @@ The easiest way to create tensors is using the nki.language.ndarray API. This fu
    assert t.dtype == nl.float16
    assert t.buffer == nl.sbuf
 
-You can also create a tensor from an existing tensor using the reshape method. The reshape method will create a new reference to the same memory with a different shape.
+You can also create a tensor from an existing tensor using the ``reshape`` method. The ``reshape`` method will create a new reference to the same memory with a different shape. The reshaped tensor must have the same total number of elements as the original.
 
 .. code-block:: python
 
    # create an alternate view of t with shape 128x2x64
    u = t.reshape((128,2,64))
 
-   # create an alternate view of t with shape 128x32
-   v = t.reshape((128,32))
+   # create an alternate view of t with shape 128x32x4
+   v = t.reshape((128,32,4))
 
-When using reshape the new tensor must use the same or less memory than the original tensor. So, the tensor v, defined above, corresponds to one quarter of the original tensor t.
-
-Creating Tensors (the hard way)
---------------------------------
-
-The function nl.ndarray is an easy way to create tensors that covers the most common cases. For more precise control, you can also create tensors by first defining a memory region, and then creating a view of the memory region. There are several memory regions you can choose, but we will focus on the SBUF region, the most common case. To create a memory region, we start with an existing memory region and define which part of the existing region we want to use. The special region sbuf refers to the entire device SBUF memory, so we can start with that. Once we have a memory region, we can create a tensor by calling the view method.
-
-.. code-block:: python
-
-   # create a memory region in the SBUF of size 128x64 bytes
-   region = sbuf.ptr(size=(128, 64))
-
-   # create a tensor of size 128x32 with float16 elementes
-   t = region.view(nl.float16, (128, 32))
-
-Note, that the combination of ptr and view is similar to ndarray. In fact, this is what ndarray is, a view of a region that is just large enough to fit the desired tensor. In fact, you can pass a region directly to ndarray if you like, as long as it is big enough to hold the resulting tensor.
-
-.. code-block:: python
-
-   # equivalent to region.view above
-   t = nl.ndarray((128,32), nl.float16, buffer=region)
-
-So far, we haven't done anything that we couldn't do with ndarray. However, the ptr method has another argument, offset which lets us specify the (relative) offset of the region. Tensors built this way are known as "allocated tensors," because we have given the compiler some direction about how to allocate the tensors.
-
-.. code-block:: python
-
-   # create a tensor at offset 128 bytes from the beginning of the SBUF memory.
-   region = sbuf.ptr(size=(128,64), offset=(0,128))
-   t = region.view(nl.float16, (128,32))
-
-Note, the offset is a virtual offset. This will be the location of the tensor relative to the overall memory assigned to your kernel function by the compiler. This is useful if you want to control the relative location of two tensors. For example, to create two tensors that are right next to each other in the SBUF, you could use:
-
-.. code-block:: python
-
-   region1 = sbuf.ptr(size=(128,64), offset=(0,0))
-   region2 = sbuf.ptr(size=(128,64), offset=(0,64))
-
-   t1 = region1.view(nl.float16, (128,32))
-   t2 = region2.view(nl.float16, (128,32))
-
-There is actually another way to achieve the same result, but using multiple views of a single region:
-
-.. code-block:: python
-
-   region = sbuf.ptr(size=(128,128))
-
-   region1 = region.ptr(size=(128,64), offset=(0,0))
-   region2 = region.ptr(size=(128,64), offset=(0,64))
-
-   t1 = region1.view(nl.float16, (128,32))
-   t2 = region2.view(nl.float16, (128,32))
-
-In the above, we first create a region large enough to hold both tensors. Then we create two regions inside of the first region which each take up half of the space. Then, we create our two tensors in these regions. The main difference between the first and the second approach is that in the first approach, the two tensors have a fixed address relative to the rest of the memory of the kernel. In the second approach, the two tensors have a fixed address relative to each other, but not to the rest of the memory of the kernel. The region offset may be changed by the compiler, because it is not specified, but the offsets of region1 and region2, within region are fixed.
-
-As a final note on creating tensors, you may have noticed that the lower-level creation routines allow you to create two tensors in the same memory region with different shapes, as long as they both fit in the memory. For example:
-
-.. code-block:: python
-
-   region2 = region.ptr(size=(128,64))
-
-   # t1 and t2 use the same underlying memory
-   t1 = region.view(nl.float16, (128,32))
-   t2 = region.view(nl.float16, (128,2,16))
-
-In fact, the tensor reshape method is just a short-hand notation for view:
-
-.. code-block:: python
-
-   # this is just a short-hand
-   u = t.reshape(shape)
-
-   # for this
-   u = t.address.reshape(t.dtype, shape)
-
-This is a common theme with the NKI tensor creation APIs: there are several nice convenience functions available, but everything can be achieved with the more primitive ptr and view methods.
+In both cases, ``u`` and ``v`` refer to the same underlying memory as ``t``; no data is copied.
 
 Tensor Indexing
 ----------------
 
-In the previous section we noted that there are six read-only fields you can query on a tensor value. We discussed four of them, but not offset or pattern. These last two fields are related to tensor indexing. Before we talk about these fields, first lets look at the most common way of indexing tensors using integers and slices.
+Next, we will examine two meta-data fields related to tensor indexing: offset and pattern. But before we talk about these fields, let's look at the most common way of indexing tensors using integers and slices.
 
-Suppose you have a tensor t with shape 64x64x64 that is in the SBUF memory. The SBUF memory is a two dimensional memory, so the underlying storage for this 3-D tensor is a 2-D region of the SBUF. Recall, in the SBUF, the first dimension is called the partition dimension and the second dimension if called the free dimension. By convention, the first dimension of a tensor always corresponds to the partition dimension, and the remaining dimension are layed out in the free dimension. Note, this is a change from NKI Beta 1 where the partition dimension could be mapped to any dimension of the tensor. The first dimension is always the partition dimension. Therefore, in our example, we have 64 partitions, each with 64*64=4096 elements.
+Suppose you have a tensor t with shape 64x64x64 that is in the SBUF memory. The SBUF memory is a two-dimensional block of memory, so the underlying storage for this 3-D tensor is a 2-D region of the SBUF. Recall, in the SBUF, the first dimension is called the partition dimension and the second dimension is called the free dimension. By convention, the first dimension of a tensor always corresponds to the partition dimension, and the remaining dimensions are laid out in the free dimension. Therefore, in our example, we have 64 partitions, each with 64*64=4096 elements.
 
 We can refer to specific elements of the tensor using an index expression.
 
@@ -294,7 +253,7 @@ In addition to querying the shape, you can also query the hardware access patter
 
    # check hardware access pattern
    print(u.offset)
-   print(u.pattern)
+   print(u.get_pattern())
 
 For advanced use cases, the hardware access pattern can be specified directly.
 
@@ -312,36 +271,23 @@ NKI supports basic control flow constructs, including if-statements, for-loops o
 
 .. code-block:: python
 
-   def kernel(outputs, inputs):
-     for i in range(len(inputs)):
-       if i % 2 == 0:
-         nki.isa.nc_transpose(dst=outputs[i], data=inputs[i])
-       else:
-         nki.isa.reciprocal(dst=outputs[i], data=inputs[i])
+    inputs = [a, b, c]
+    outputs = [x, y, z]
 
-The loop and if-statement above will ultimately be evaluated by the NKI compiler. This means the the ISA instructions will be output to the final executable as a linear sequence. For example, suppose we call kernel with these arguments.
+    assert len(inputs) == len(outputs)
+    for i in range(len(inputs)):
+        if i % 2 == 0:
+            nisa.nc_transpose(dst=outputs[i], data=inputs[i])
+        else:
+            nisa.reciprocal(dst=outputs[i], data=inputs[i])
 
-.. code-block:: python
-
-   kernel([a,b,c], [x,y,z])
-
-where a,b,c and x,y,z are tensors. Then, this call is equivalent to the code:
+The loop and if-statement above will ultimately be evaluated away by NKI Compiler. This means that the ISA instructions will be included in the final executable as a linear sequence:
 
 .. code-block:: python
 
-   nki.isa.nc_transpose(dst=a, data=x)
-   nki.isa.reciprocal(dst=b, data=y)
-   nki.isa.nc_transpose(dst=c, data=z)
-
-We will see in the next section how to write loops that run on the Trainium hardware. First, let's look at some more common uses of control flow in NKI kernels. In addition to the standard range, NKI for-loops can also use:
-
-.. code-block:: python
-
-   for i in sequential_range(...): ...
-   for i in static_range(...): ...
-   for i in affine_range(...): ...
-
-These special range function serve as hints to the compiler. They do not change the meaning the loop: the result comptued by the different loops are all equivalent to each other, and to the basic range loop. However, these hints can improve performance in some cases. See the reference manual for more details on these loop hints.
+   nki.isa.nc_transpose(dst=x, data=a)
+   nki.isa.reciprocal(dst=y, data=b)
+   nki.isa.nc_transpose(dst=z, data=c)
 
 A for-loop can also iterate over a list or tuple, similar to Python. The two loops below both print the numbers 1-3 in sequence.
 
@@ -382,46 +328,47 @@ The for loop above will lower to a loop on the Trainium device. The loop will ex
 
 .. code-block:: python
 
-   count = nki.isa.register_alloc(count_tensor)
+   count = nki.isa.register_alloc(0)
+   nisa.register_load(count, count_tensor)
    for i in dynamic_range(count):
      process_tensor(t[i])
 
-The loop above uses a register value as the upper bound. This register is initialized with the register_alloc function, which can take a SBUF tensor as an argument. In this case register_alloc will load a value from the SBUf tensor count_tensor and store it in the register count. The for loop will then execute count times.
+The loop above uses a register value as the upper bound. This register is allocated with the ``register_alloc`` function, and then its value is populated from a tensor using ``register_load``. The for loop will then execute ``count`` times.
 
-There are four register APIs that can be used to create, and load and store values to and from registers.
+There are four register APIs that can be used to create, and load and store values to and from registers. Each register is 32-bit and supports multiple data types: ``u8``, ``u16``, ``u32``, ``i8``, ``i16``, ``i32``, and ``fp32`` (or a pair of registers for ``u64``/``i64``). Signed integers are supported, so negative values (e.g., ``count=-5``) are valid.
 
 .. code-block:: python
 
-   # allocate a new register with initial value
-   # either from constant integer, or a SBUF tensor
-   def register_alloc(x: int | tensor) -> register: ...
+   # allocate a new register with initial value (32-bit integer)
+   def register_alloc(x: int) -> VirtualRegister: ...
 
    # store a constant integer into a register
-   def register_move(dst: imm: int): ...
+   def register_move(dst: VirtualRegister, imm: int): ...
 
    # load a value from an SBUF tensor into a register
-   def register_load(dst: register, src: tensor): ...
+   # the source tensor must be a 1x1 SBUF tile
+   def register_load(dst: VirtualRegister, src: tensor): ...
 
    # store the value of a register into an SBUF tensor
-   def register_store(dst: tensor, src: register): ...
+   def register_store(dst: tensor, src: VirtualRegister): ...
 
 Using the APIs above, we can also create dynamic while loops. A dynamic while loop is specified using the standard while-loop with a condition that is a single register value. The NKI compiler will preserve while loops with register conditions, and not unroll them.
 
 .. code-block:: python
 
    # suppose cond is an SBUF tensor, perhaps declared as
-   cond = nl.ndarray((1, 1), buffer=nl.shared_hbm, dtype=np.int32)
+   cond = nl.ndarray((1, 1), buffer=nl.sbuf, dtype=nl.int32)
 
    # allocate a register with initial value 1
-   reg = register_alloc(1)
+   reg = nisa.register_alloc(1)
 
    # This while loop is dynamic because the condition is a register
    while reg:
-     # perform a calculation that updates cond
-     ...
-     nl.store(dst=cond[0], ...)
-     # update register used in while-loop condition
-     register_load(reg, cond)
+      # perform a calculation that updates cond
+      nisa.dma_copy(dst=cond, ...)
+
+      # update register used in while-loop condition
+      nisa.register_load(reg, cond)
 
 The code above uses a 1x1 SBUF tensor called cond to store the condition. We update this tensor in the body of the loop and then use register_load to update the register. When the register reg holds the value 0 the loop will terminate.
 
@@ -443,7 +390,7 @@ NKI has basic support for user-defined classes. In NKI all classes are similar t
    c = C(1)
    c.toggle()
 
-   # prints 1, True
+   # prints 1 True
    print(c.x, c.y)
 
 The @dataclass decorator is optional; classes with and without the @dataclass decorator will be compiled in the same way by the NKI compiler. The compiler will create the initializer functions __init__ and __post_init__, if they are not provided by the user. For the class above, the default initializers are:
@@ -454,7 +401,7 @@ The @dataclass decorator is optional; classes with and without the @dataclass de
    def __init__(self, x = None, y = False):
      self.x = x
      self.y = y
-     self.post_init()
+     self.__post_init__()
 
    # default if not provided by the user
    def __post_init__(self):
@@ -499,8 +446,8 @@ In addition to the basic data classes described, NKI also supports basic enumera
 
    def f(e : E):
      if e == E.x: ...
-     else if e == E.y: ...
-     else if e == E.z: ...
+     elif e == E.y: ...
+     elif e == E.z: ...
      
    f(E.x)
 

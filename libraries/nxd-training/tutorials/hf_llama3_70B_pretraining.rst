@@ -1,7 +1,7 @@
 .. _hf_llama3_70B_pretraining:
 
 HuggingFace Llama3.1/Llama3-70B Pretraining
-=================================
+=============================================
 
 In this example, we will compile and train a HuggingFace Llama3.1/Llama3-70B model
 on multiple trn1 or newly launched trn2 instances using ParallelCluster with the ``NxD Training (NxDT)`` library.
@@ -33,7 +33,7 @@ Install Dependencies
 Once you have launched ParallelCluster,
 please follow this guide on how to install the latest Neuron packages:
 `PyTorch Neuron Setup Guide
-<https://awsdocs-neuron.readthedocs-hosted.com/en/latest/setup/torch-neuronx.html#setup-torch-neuronx>`_.
+<https://awsdocs-neuron.readthedocs-hosted.com/en/latest/setup/pytorch/index.html#setup-torch-neuronx>`_.
 
 Next, we will need to install ``NxDT`` and its dependencies.
 Please see the following installation guide for installing ``NxDT``:

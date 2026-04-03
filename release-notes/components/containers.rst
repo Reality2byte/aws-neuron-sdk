@@ -1,7 +1,7 @@
 .. meta::
     :description: Complete release notes for the Neuron Containers component across all AWS Neuron SDK versions.
     :keywords: neuron containers, dlc, kubernetes, k8s, release notes, aws neuron sdk
-    :date-modified: 02/26/2026
+    :date-modified: 04/09/2026
 
 .. _containers_rn:
 
@@ -10,9 +10,37 @@ Component Release Notes for Neuron Containers
 
 The release notes for the Neuron Containers component. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
 
+.. _containers-2-29-0-rn:   
+
+Neuron Containers (Neuron 2.29.0 Release)
+--------------------------------------------------------------------------------------
+
+Date of Release: 04/09/2026
+
+Improvements
+~~~~~~~~~~~~~~~
+
+**DLC Support**
+
+* All Neuron packages and their dependencies have been upgraded to support AWS Neuron SDK version 2.29.0.
+
+
+Callouts
+~~~~~~~~~~~~~~~~
+
+.. important::
+   Announcing maintenance mode for NxDT and NxD Core Training APIs starting next release. Starting with Neuron 2.30.0, NxDT and NxD Core Training APIs are entering maintenance mode. Future releases will address critical security issues only and support will be gradually ended. The ``pytorch-training-neuronx`` DLC has been pinned to include ``neuronx_distributed_training-1.7.0``.
+
+   **How does this impact you?**
+
+   Existing NxDT/NxD Core users should stay on Neuron 2.28 and PyTorch 2.9 until ready to migrate to native PyTorch on Neuron (starting PyTorch 2.10). Customers are recommended to use native PyTorch with standard distributed primitives (DTensor, FSDP, DDP) and TorchTitan starting with Neuron 2.30.0 and PyTorch 2.10. A migration guide will be published in a coming release.
+
+   For more information, see :doc:`/frameworks/torch/pytorch-native-overview`.
+
+
 .. _containers-2-28-0-rn:   
 
-Neuron Containers [2.28.0] (Neuron 2.28.0 Release)
+Neuron Containers (Neuron 2.28.0 Release)
 --------------------------------------------------------------------------------------
 
 Date of Release: 02/26/2026
@@ -27,7 +55,7 @@ Improvements
 
 .. _containers-2-27-0-rn:
 
-Neuron Containers [2.27.0] (Neuron 2.27.0 Release)
+Neuron Containers (Neuron 2.27.0 Release)
 ---------------------------------------------------
 
 Date of Release: 12/19/2025
@@ -130,7 +158,7 @@ Known Issues
 
 .. _containers-2-26-0-rn:
 
-Neuron Containers [2.26.0] (Neuron 2.26.0 Release)
+Neuron Containers (Neuron 2.26.0 Release)
 ---------------------------------------------------
 
 Date of Release: 09/18/2025
@@ -161,7 +189,7 @@ Known Issues
 
 .. _containers-2-25-0-rn:
 
-Neuron Containers [2.25.0] (Neuron 2.25.0 Release)
+Neuron Containers (Neuron 2.25.0 Release)
 ---------------------------------------------------
 
 Date of Release: 07/31/2025
@@ -187,7 +215,7 @@ Known Issues
 
 .. _containers-2-24-0-rn:
 
-Neuron Containers [2.24.0] (Neuron 2.24.0 Release)
+Neuron Containers (Neuron 2.24.0 Release)
 ---------------------------------------------------
 
 Date of Release: 06/24/2025
@@ -208,7 +236,7 @@ Improvements
 
 .. _containers-2-23-0-rn:
 
-Neuron Containers [2.23.0] (Neuron 2.23.0 Release)
+Neuron Containers (Neuron 2.23.0 Release)
 ---------------------------------------------------
 
 Date of Release: 05/19/2025
@@ -227,7 +255,7 @@ Improvements
 
 .. _containers-2-22-0-rn:
 
-Neuron Containers [2.22.0] (Neuron 2.22.0 Release)
+Neuron Containers (Neuron 2.22.0 Release)
 ---------------------------------------------------
 
 Date of Release: 04/04/2025
@@ -258,7 +286,7 @@ Breaking Changes
 
 .. _containers-2-21-1-rn:
 
-Neuron Containers [2.21.1] (Neuron 2.21.1 Release)
+Neuron Containers (Neuron 2.21.1 Release)
 ---------------------------------------------------
 
 Date of Release: 01/14/2025
@@ -280,7 +308,7 @@ Bug Fixes
 
 .. _containers-2-21-0-rn:
 
-Neuron Containers [2.21.0] (Neuron 2.21.0 Release)
+Neuron Containers (Neuron 2.21.0 Release)
 ---------------------------------------------------
 
 Date of Release: 12/19/2024
@@ -307,7 +335,7 @@ Breaking Changes
 
 .. _containers-2-20-2-rn:
 
-Neuron Containers [2.20.2] (Neuron 2.20.2 Release)
+Neuron Containers (Neuron 2.20.2 Release)
 ---------------------------------------------------
 
 Date of Release: 11/20/2024
@@ -334,7 +362,7 @@ Bug Fixes
 
 .. _containers-2-20-1-rn:
 
-Neuron Containers [2.20.1] (Neuron 2.20.1 Release)
+Neuron Containers (Neuron 2.20.1 Release)
 ---------------------------------------------------
 
 Date of Release: 10/25/2024
@@ -351,7 +379,7 @@ Improvements
 
 .. _containers-2-20-0-rn:
 
-Neuron Containers [2.20.0] (Neuron 2.20.0 Release)
+Neuron Containers (Neuron 2.20.0 Release)
 ---------------------------------------------------
 
 Date of Release: 09/16/2024
@@ -369,7 +397,7 @@ Improvements
 
 .. _containers-2-19-0-rn:
 
-Neuron Containers [2.19.0] (Neuron 2.19.0 Release)
+Neuron Containers (Neuron 2.19.0 Release)
 ---------------------------------------------------
 
 Date of Release: 07/03/2024
@@ -398,7 +426,7 @@ Bug Fixes
 
 .. _containers-2-5-0-rn:
 
-Neuron Containers [2.5.0] (Neuron 2.5.0 Release)
+Neuron Containers (Neuron 2.5.0 Release)
 -------------------------------------------------
 
 Date of Release: 11/07/2022
@@ -419,7 +447,7 @@ Improvements
 
 .. _containers-2-4-0-rn:
 
-Neuron Containers [2.4.0] (Neuron 2.4.0 Release)
+Neuron Containers (Neuron 2.4.0 Release)
 -------------------------------------------------
 
 Date of Release: 10/27/2022
@@ -440,7 +468,7 @@ Improvements
 
 .. _containers-2-3-0-rn:
 
-Neuron Containers [2.3.0] (Neuron 2.3.0 Release)
+Neuron Containers (Neuron 2.3.0 Release)
 -------------------------------------------------
 
 Date of Release: 10/10/2022
@@ -482,7 +510,7 @@ Improvements
 
 .. _containers-2-16-0-rn:
 
-Neuron Containers [2.16.0] (Neuron 2.16.0 Release)
+Neuron Containers (Neuron 2.16.0 Release)
 ---------------------------------------------------
 
 Date of Release: 09/01/2023
@@ -507,7 +535,7 @@ Bug Fixes
 
 .. _containers-2-1-0-rn:
 
-Neuron Containers [2.1.0] (Neuron 2.1.0 Release)
+Neuron Containers (Neuron 2.1.0 Release)
 -------------------------------------------------
 
 Date of Release: 10/27/2022
@@ -524,7 +552,7 @@ Improvements
 
 .. _containers-2-0-0-rn:
 
-Neuron Containers [2.0.0] (Neuron 2.0.0 Release)
+Neuron Containers (Neuron 2.0.0 Release)
 -------------------------------------------------
 
 Date of Release: 10/10/2022

@@ -12,9 +12,10 @@ This topic covers Neuron Collective Communication and how it applies to developi
 Overview
 --------
 
+Modern neural networks with billions to trillions of parameters exceed single-machine computational capacity, making distributed machine learning essential for training and deployment. Collectives are a set of distributed computing primitives with simple semantics, originally developed in HPC.
+
 Collective communication coordinates data exchange among multiple processes in distributed systems. Unlike point-to-point communication, collective operations involve groups performing tasks like gradient aggregation, parameter sharing, and computation synchronization.
 
-Modern neural networks with billions to trillions of parameters exceed single-machine computational capacity, making distributed machine learning essential for training and deployment. Collectives are a set of distributed computing primitives with simple semantics, originally developed in HPC.
 
 Applies to
 ----------
@@ -72,6 +73,18 @@ In **AlltoAll**, each rank sends different data to and receives different data f
    :align: center
    :width: 80%
 
+Permute Operation
+~~~~~~~~~~~~~~~~~~
+
+In the **Permute** operation, each rank sends its data to a designated destination rank and receives data from a designated source rank, according to a set of source-target pairs. The source-target pairs must form a valid ring topology with direct physical connectivity between adjacent ranks. Only ranks included in the source-target pairs participate in the collective execution; other ranks remain inactive during the operation. Currently, only circular permute patterns are supported.
+
+.. image:: /neuron-runtime/img/collectives/permute.gif
+   :alt: All-to-All Operation
+   :align: center
+   :width: 80%
+
+
+
 Communication Scope
 --------------------
 
@@ -91,7 +104,7 @@ Inter-node Collectives
 
 Modern distributed training frameworks automatically optimize collective operations by combining intra-node and inter-node communication strategies. For example, in a Trn2 cluster, an all-reduce operation across 256 accelerators distributed across 4 nodes might first perform local reductions within each 64-accelerator node, then execute inter-node communication between the 4 nodes, and finally broadcast results back within each node.
 
-For more details, see :doc:`Inter-node Collective Communications with AWS Neuron </neuron-runtime/explore/internode-collective-comm>`.
+  For more details, see :doc:`Inter-node Collective Communications with AWS Neuron </neuron-runtime/explore/internode-collective-comm>`.
 
 System Connectivity
 -------------------
@@ -107,7 +120,7 @@ Latency-wise, Trn2.48xl instances are backed by the AWS `10p10u <https://www.abo
    :align: center
    :width: 80%  
 
-Each Trn2 server consists of 16 Trainium2 chips connected in a **2D Torus** — each chip is connected to 4 neighbors with a NeuronLink. For an UltraServer configuration, we extend this to a **3D Torus**, with each chip adding connections on the Z dimensions to 2 neighbors with a bidirectional **NeuronLink** between each pair.
+Each Trn2 server consists of 16 Trainium2 chips connected in a **2D Torus** — each chip is connected to 4 neighbors with a NeuronLink. For an :ref:`UltraServer configuration <trn2-ultraserver>`, we extend this to a **3D Torus**, with each chip adding connections on the Z dimensions to 2 neighbors with a bidirectional **NeuronLink** between each pair.
 
 .. image:: /neuron-runtime/img/collectives/trn2-ultraserver-topology.png
    :alt: Trn2 UltraServer Topology

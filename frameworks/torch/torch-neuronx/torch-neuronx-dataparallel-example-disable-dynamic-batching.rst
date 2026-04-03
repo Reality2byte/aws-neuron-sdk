@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: AWS Neuron SDK documentation for torch neuronx dataparallel example disable dynamic batching
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 In the following example, we use
 :func:`torch_neuronx.DataParallel.disable_dynamic_batching` to disable dynamic
 batching. We provide an example of a batch size that will not work when dynamic

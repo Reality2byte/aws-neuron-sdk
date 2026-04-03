@@ -1,10 +1,9 @@
 
 .. _pytorch-neuronx-ubuntu24-update:
- 
-Update to latest PyTorch NeuronX
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you already have a previous Neuron release installed, this section provide links that will assist you to update to latest Neuron release.
+.. Update PyTorch NeuronX to the latest release on Ubuntu 24.04
+
+If you already have a previous Neuron release installed, select the PyTorch version tab below to get the update commands for your environment.
 
 
 .. tab-set::
@@ -24,4 +23,3 @@ If you already have a previous Neuron release installed, this section provide li
         .. include:: /src/helperscripts/installationScripts/python_instructions.txt
             :start-line: 302
             :end-line: 303
-            

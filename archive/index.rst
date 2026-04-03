@@ -38,6 +38,18 @@ Archived feature docs
    * - :doc:`transformers-neuronx/index`
      - Neuron 2.25.0
      - Archived on: 9/15/2025
+   * - :doc:`MXNet Neuron Setup Guides <mxnet-neuron/index>`
+     - Neuron 2.27.0
+     - Archived on: 3/30/2026
+   * - :doc:`mxnet-neuron/index`
+     - Neuron 2.16.0
+     - Archived on: 3/11/2026
+   * - :doc:`tensorflow/index`
+     - Neuron 2.22.0
+     - Archived on: 3/11/2026
+   * - :doc:`torch-neuron/index`
+     - Neuron 2.22.0
+     - Archived on: 3/11/2026
 
 
 Archived tutorials
@@ -70,6 +82,9 @@ Archived tutorials
    * - :doc:`tutorials/gpt3_neuronx_nemo_megatron_pretraining`
      - Neuron 2.26.0
      - Archived on: 8/25/2025
+   * - :doc:`tutorials/multinode-training-model-profiling`
+     - Neuron 2.29.0
+     - Archived on: 3/30/2026
 
 .. toctree::
     :maxdepth: 1
@@ -82,11 +97,15 @@ Archived tutorials
     tutorials/finetuning_llama2_7b_ptl
     tutorials/training_llama2_tp_pp_ptl
     tutorials/training_codegen25_7b
+    tutorials/multinode-training-model-profiling
     tutorials/training-gpt-neox
     tensorboard/getting-started-tensorboard-neuron-plugin
     neuronperf/index
     helper-tools/index
     transformers-neuronx/index
+    mxnet-neuron/index
+    tensorflow/index
+    torch-neuron/index
 
 Accessing Archived Content
 --------------------------

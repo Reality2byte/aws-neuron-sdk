@@ -1,5 +1,12 @@
 .. _setup-trn1-multi-node-execution:
 
+
+.. meta::
+   :description: How to prepare trn1.32xlarge for multi-node execution - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, setup, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 How to prepare trn1.32xlarge for multi-node execution
 =====================================================
 

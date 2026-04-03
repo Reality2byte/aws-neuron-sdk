@@ -1,7 +1,7 @@
 .. meta::
     :description: Complete release notes for the NxD Core component across all AWS Neuron SDK versions.
     :keywords: nxd core, neuronx-distributed, release notes, aws neuron sdk
-    :date-modified: 09/18/2025
+    :date-modified: 04/09/2026
 
 .. _nxd-core_rn:
 

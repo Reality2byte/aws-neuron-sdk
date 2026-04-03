@@ -10,7 +10,7 @@ Data Types
 Introduction
 ------------
 
-:ref:`Inferentia <neurondevice_inferentia>` and :ref:`Trainium <neurondevice_trainium>` NeuronDevices include different NeuronCore versions, which support different data-types. This section describes what data-types are supported in each NeuronCore version, for details about NeuronCore versions see :ref:`neuron_hw_arch`.
+Inferentia and Trainium NeuronDevices include different NeuronCore versions, which support different data-types. This section describes what data-types are supported in each NeuronCore version.
 
 NeuronCore v1 Data Types
 ------------------------
@@ -190,7 +190,7 @@ The Neuron SDK supports automatic model conversion from FP32 to BF16 by default.
 
 See :ref:`Mixed Precision and Performance-accuracy Tuning for Training<neuronx-cc-training-mixed-precision>` for more details on supported data types and their properties.
 
-The Neuron compiler offers the :option:`--auto-cast` and :option:`--auto-cast-type` options to specify automatic casting of FP32 tensors to other data types to address performance and accuracy tradeoffs. See the :ref:`Neuron Compiler CLI Reference Guide<neuron-compiler-cli-reference-guide>` for a description of these options.
+The Neuron compiler offers the ``--auto-cast`` and ``--auto-cast-type`` options to specify automatic casting of FP32 tensors to other data types to address performance and accuracy tradeoffs. See the :ref:`Neuron Compiler CLI Reference Guide<neuron-compiler-cli-reference-guide>` for a description of these options.
 
 
 NeuronCore v2 Rounding Modes

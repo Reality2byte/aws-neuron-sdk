@@ -1,10 +1,9 @@
 
 .. _pytorch-neuronx-al2-dlami-update:
 
-Update to latest PyTorch NeuronX 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. Update PyTorch NeuronX on Amazon Linux 2 PyTorch DLAMI
 
-If you already have a previous Neuron release installed, this section provide links that will assist you to update to latest Neuron release.
+If you already have a previous Neuron release installed on a PyTorch DLAMI, select the PyTorch version tab below to get the update commands.
 
 
 .. tab-set::

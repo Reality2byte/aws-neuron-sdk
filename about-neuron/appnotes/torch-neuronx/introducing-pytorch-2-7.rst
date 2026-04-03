@@ -73,7 +73,7 @@ To migrate the training scripts from PyTorch NeuronX 2.5/2.6 to PyTorch NeuronX 
 * If using ``xmp.spawn``, the ``nprocs`` argument is limited to 1 or None since v2.1. Previously, passing a value > 1 would result in a warning. In torch-xla 2.6+, passing a value > 1 will result in an error with an actionable message to use ``NEURON_NUM_DEVICES`` to set the number of NeuronCores to use.
 
 See :ref:`v2.6 migration guide <migrate_to_pytorch_2.6>` for additional changes needed if you are migrating from PyTorch NeuronX 2.5.
-See :ref:`v2.5 migration guide <migrate_to_pytorch_2.x>` for additional changes needed if you are migrating from PyTorch NeuronX 2.1.
+See :ref:`v2.5 migration guide <migrate_to_pytorch_2_5>` for additional changes needed if you are migrating from PyTorch NeuronX 2.1.
 
 Migrating inference scripts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

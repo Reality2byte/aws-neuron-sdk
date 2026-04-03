@@ -3,6 +3,10 @@
 Inf2 Inference Performance
 ==========================
 
+.. important::
+
+   The benchmark scripts linked on this page are provided for historical reference only and are not tested with recent versions of the Neuron SDK. They have been moved to the `archive folder <https://github.com/aws-neuron/aws-neuron-sdk/tree/master/archive/src/benchmark/pytorch>`_.
+
 .. contents:: Table of contents
    :local:
    :depth: 1

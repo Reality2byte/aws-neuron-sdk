@@ -1,5 +1,12 @@
 .. _neuronx-mlp-training-tutorial:
 
+
+.. meta::
+   :description: Multi-Layer Perceptron Training Tutorial - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training, tutorials
+   :date-modified: 2026-03-13
+
+
 Multi-Layer Perceptron Training Tutorial
 ========================================
 
@@ -137,7 +144,7 @@ Run the command below to execute this script:
    :lines: 7
 
 For a full tutorial on training in PyTorch, please see
-https://pytorch.org/tutorials/beginner/introyt/trainingyt.html.
+`Training with PyTorch <https://pytorch.org/tutorials/beginner/introyt/trainingyt.html>`__.
 
 Thus far we have used PyTorch without Trainium. Next, we will show how
 to change this script to run on Trainium.

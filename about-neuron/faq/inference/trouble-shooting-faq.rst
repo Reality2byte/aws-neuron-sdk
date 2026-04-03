@@ -11,7 +11,7 @@ Troubleshooting for Inf1 - FAQ
 Performance is not what I expect it to be, what's the next step?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Please check our :ref:`performance-optimization` section on performance
+Please check our performance optimization section on performance
 tuning and other notes on how to use pipelining and batching to improve
 performance.
 

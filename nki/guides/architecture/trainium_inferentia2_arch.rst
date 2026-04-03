@@ -320,7 +320,7 @@ reference manual for any instruction-specific data type requirements.
 **Layout & Tile Size.** VectorE instructions expect the parallel axis of the input and output data to be mapped to the partition dimension. For
 example, the figure below shows reduction add of a NxM matrix along the M dimension. Since each of N rows in the matrix
 can be reduced in parallel, the N dimension of the matrix should be mapped to the SBUF partition dimension. Refer to the
-:doc:`nki.isa API manual <../api/nki.isa>` for
+:doc:`nki.isa API manual </nki/api/nki.isa>` for
 instruction-specific layout constraint of different VectorE instructions.
 
 
@@ -334,7 +334,7 @@ instruction-specific layout constraint of different VectorE instructions.
 
 In terms of tile size, the majority of VectorE instructions only have limitation on the input/output tile partition dimension
 size which must not exceed 128, while the free dimension size can be up to 64K elements for SBUF or 4K elements for PSUM.
-However, there are a few notable exceptions, such as :doc:`nki.isa.bn_stats <../api/generated/nki.isa.bn_stats>`
+However, there are a few notable exceptions, such as :doc:`nki.isa.bn_stats </nki/api/generated/nki.isa.bn_stats>`
 which further imposes free dimension size of input tile cannot exceed 512. Refer to the `nki.isa API manual <nki.language>`
 for instruction-specific tile size constraints.
 

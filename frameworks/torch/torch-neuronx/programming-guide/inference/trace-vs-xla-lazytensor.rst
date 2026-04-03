@@ -1,5 +1,12 @@
 .. _trace-vs-xla-lazytensor:
 
+
+.. meta::
+   :description: Comparison of Traced Inference versus XLA |LazyTensor| Inference (``torch-neuronx``) - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 Comparison of Traced Inference versus XLA |LazyTensor| Inference (``torch-neuronx``)
 =====================================================================================
 

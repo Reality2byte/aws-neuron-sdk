@@ -1,20 +1,51 @@
 .. meta::
-    :description: Learn about the System Trace Viewer in Neuron Explorer for analyzing system-level execution across instances and workers with runtime and hardware events.
+    :description: Learn about the System Profile in Neuron Explorer for analyzing system-level execution across instances and workers with runtime and hardware events.
     :date-modified: 01/30/2026
 
-System Trace Viewer
-===================
+System Profile
+================
 
-The Neuron system profiles show a system-level granularity of execution across instances and workers in your workload. This provides visibility into Neuron Runtime API calls and ML framework function calls (PyTorch or JAX) to help identify bottlenecks in distributed workloads. The Neuron Explorer UI provides system-level widgets for an extensible and customizable workflow.
+The Neuron System Profile show a system-level granularity of execution across instances and workers in your workload. This provides visibility into Neuron Runtime API calls and ML framework function calls (PyTorch or JAX) to help identify bottlenecks in distributed workloads. The Neuron Explorer UI provides system-level widgets for an extensible and customizable workflow.
 
 .. image:: /tools/neuron-explorer/images/neuron-explorer-system-viewer.png
 
-System Timeline
------------------
+System Trace Viewer
+---------------------
 
 The System Trace Viewer provides an interactive timeline interface with time range selection, configurable event grouping, system event details on hover, and linking of hardware events to Device Trace Viewer widgets.
 
+You can see events in the Neuron Runtime and correlate them with hardware execution events on the Neuron Devices.
+
 .. image:: /tools/neuron-explorer/images/system-timeline-widget.png
+
+You can also see the device memory (HBM) allocations for each Neuron device over time. Hovering over these memory usage events shows a breakdown by usage category.
+
+.. image:: /tools/neuron-explorer/images/system-timeline-widget-hbm-usage.png
+
+
+Adding Widgets
+---------------
+The System Profile supports both System and Device widgets, enabling multi-profile analysis, for example comparing annotated device events across different devices.
+
+To add a widget:
+
+1. Click the **Add Widget** button to open the Add Widget modal.
+2. Select a Device or System widget.
+3. Click a widget tile to load it with the selected profile. Each tile is tagged with its supported profile type (system, device, or both).
+
+To load multiple instances of the same widget type for different profiles, repeat the steps above and select a different profile each time.
+
+.. image:: /tools/neuron-explorer/images/system-timeline-add-widget.gif
+
+
+After adding a widget, you can switch to a different profile by using the profile dropdown at the top of the widget.
+
+.. image:: /tools/neuron-explorer/images/widget_switch_profiles.png
+
+.. note::
+
+   Adding duplicate widgets for the same profile is not currently supported.
+
 
 
 Settings
@@ -52,7 +83,7 @@ You can switch between the following grouping modes in the settings to focus you
 Event Details
 --------------
 
-Clicking on trace events in the timeline populates the Event Details widget with a list of properties for the system profile event.
+Clicking on trace events in the timeline populates the Event Details widget with a list of properties for the system trace event.
 
 .. image:: /tools/neuron-explorer/images/system-event-details.png
 
@@ -69,7 +100,7 @@ Open the Device Profile List Modal
 To see a list of all device profiles captured during your workload:
 
 1. **Click the "Device Profiles List" button** in the top right action bar of the System Trace Viewer to open a modal containing a list of device profiles
-2. **Select a device profile and click Submit** to open the Device Trace Viewer with the selected device profile
+2. **Select a Device Profile and click Submit** to open the Device Trace Viewer with the selected device profile
 
 .. image:: /tools/neuron-explorer/images/system-timeline-device-profiles-list-modal.png
 

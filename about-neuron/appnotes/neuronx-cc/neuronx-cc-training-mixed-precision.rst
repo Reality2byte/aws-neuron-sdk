@@ -60,7 +60,7 @@ This choice here is driven entirely by accuracy vs performance tradeoff. Casting
 
 The compiler uses BF16 casting **by default** for matrix multiplication operations. The speedup from casting operations gives a significant performance boost and the range of representable values in BF16 allows for more safety compared to FP16 when the possible numeric range of input values is unknown.
 
-The Neuron Compiler's  :option:`--auto-cast` and :option:`--auto-cast-type` CLI options are used to direct the compiler to perform alternate casting operations. See the detailed list of the options in :ref:`Neuron v2 Compiler CLI Reference Guide<neuron-compiler-cli-reference-guide>`. The default setting is ``--auto-cast=none``, which is applied if the ``--auto-cast`` flag is not provided.
+The Neuron Compiler's  ``--auto-cast`` and ``--auto-cast-type`` CLI options are used to direct the compiler to perform alternate casting operations. See the detailed list of the options in :ref:`Neuron v2 Compiler CLI Reference Guide<neuron-compiler-cli-reference-guide>`. The default setting is ``--auto-cast=none``, which is applied if the ``--auto-cast`` flag is not provided.
 
 
 The option combinations to consider in a typical flow are:

@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: AWS Neuron SDK documentation for torch neuronx dataparallel example dynamic batching
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 In the following example, we use the :func:`torch_neuronx.DataParallel` module
 to run inference using several different batch sizes without recompiling the
 Neuron model.

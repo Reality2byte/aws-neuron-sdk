@@ -1,5 +1,12 @@
 .. _torch-neuronx-autobucketing-devguide:
 
+
+.. meta::
+   :description: Autobucketing for Inference (torch-neuronx) - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 Autobucketing for Inference (torch-neuronx)
 =============================================
 

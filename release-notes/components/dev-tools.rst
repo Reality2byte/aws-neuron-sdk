@@ -1,7 +1,7 @@
 .. meta::
     :description: Complete release notes for the Neuron Developer Tools component across all AWS Neuron SDK versions.
     :keywords: neuron tools, developer tools, profiler, release notes, neuron explorer, aws neuron sdk
-    :date-modified: 02/26/2026
+    :date-modified: 04/09/2026
 
 .. _dev-tools_rn:
 
@@ -10,6 +10,38 @@ Component Release Notes for Neuron Developer Tools
 
 The release notes for the Neuron Developer Tools. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
 
+
+.. _dev-tools-2-29-0-rn:   
+
+Neuron Developer Tools & Neuron Explorer (Neuron 2.29.0 Release)
+--------------------------------------------------------------------------------------
+
+Date of Release: 04/09/2026
+
+Improvements
+~~~~~~~~~~~~~~~
+
+* The System Trace Viewer now supports the full suite of Device widgets, enabling multi-device profile analysis. Users can analyze hardware events across all linked Device Profiles within a single System Profile. See :doc:`Neuron Explorer system profiling </tools/neuron-explorer/overview-system-profiles>`.
+* Introduced Memory Viewer in Neuron Explorer, enabling you to inspect low-level memory allocation details and usage patterns. See :doc:`Neuron Explorer Memory Viewer </tools/neuron-explorer/overview-memory-viewer>`.
+* Neuron Explorer for Visual Studio Code is now available on the Visual Studio Code Extension Marketplace, enabling simpler installation and automatic updates. It is also available on Open VSX - :download:`Neuron Explorer Visual Studio Code Extension <https://open-vsx.org/extension/amazonwebservices/neuron-explorer>`.
+* Summary Viewer page in Neuron Explorer now includes system-level profile data, enabling you to view summary metrics for system and device profiles in a single view. See :doc:`Neuron Explorer Summary Viewer </tools/neuron-explorer/overview-summary-page>`.
+* System Timeline now supports Neuron device HBM usage, showing a breakdown of memory allocation by usage category (such as tensors, scratchpad), enabling you to debug out-of-memory issues.
+* Introduced Box Selection Summary in Neuron Explorer, enabling you to view aggregated device profile information for a selected bounding box region. See :ref:`box-selection-summary`.
+
+Breaking Changes
+~~~~~~~~~~~~~~~~
+
+* None reported for this release.
+
+Bug Fixes
+~~~~~~~~~
+
+* None reported for this release.
+
+Known Issues
+~~~~~~~~~~~~
+
+* None reported for this release.
 
 .. _dev-tools-2-28-0-rn:   
 
@@ -27,8 +59,8 @@ Improvements
 * Added help pop-up for the ``Device Trace Viewer`` in Neuron Explorer to see shortcuts and dependency color legend. See :doc:`Device Trace Viewer </tools/neuron-explorer/overview-device-profiles>`.
 * Introduced ``Tensor Viewer`` in Neuron Explorer, enabling you to quickly identify memory bottlenecks by viewing tensor names, shapes, sizes, and memory usage in a single interface. See :ref:`tensor-viewer-overview`.
 * Introduced ``Database Viewer`` in Neuron Explorer as an interactive interface for querying and exploring profiling data using SQL or natural language, allowing you to perform custom analysis without writing code. See :ref:`database-viewer-overview`.
-* Enhanced data integrity checks in ``nccom-test`` by using pseudo-random data patterns instead of fixed patterns, improving detection of data corruption during collective operations. See `Data Integrity`_ in the nccom-test documentation.
-* Added support for ``alltoallv`` collective operation in ``nccom-test``, enabling benchmarking of variable-sized all-to-all communication patterns. See `AlltoAllV Example`_ in the nccom-test documentation.
+* Enhanced data integrity checks in ``nccom-test`` by using pseudo-random data patterns instead of fixed patterns, improving detection of data corruption during collective operations. See *Data Integrity* in the nccom-test documentation.
+* Added support for ``alltoallv`` collective operation in ``nccom-test``, enabling benchmarking of variable-sized all-to-all communication patterns. See *AlltoAllV Example* in the nccom-test documentation.
 
 Breaking Changes
 ~~~~~~~~~~~~~~~~

@@ -1,18 +1,56 @@
 .. meta::
     :description: Complete release notes for the NxD Inference component across all AWS Neuron SDK versions.
-    :keywords: nxd inference, neuronx-distributed-inference, release notes, aws neuron sdk
-    :date-modified: 02/26/2026
+    :keywords: nxd inference, neuronx-distributed-inference, vllm, release notes, aws neuron sdk
+    :date-modified: 04/09/2026
 
 .. _nxd-inference_rn:
-
-.. _nxd-inference-2-28-0-rn:
 
 Component Release Notes for NxD Inference
 =========================================
 
 The release notes for the NxD Inference Neuron component. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
 
-NxD Inference [0.8.16251] + vLLM Neuron Plugin [0.4.1] (Neuron 2.28.0 Release)
+.. _nxd-inference-2-29-0-rn:
+
+NxD Inference [0.9.17334] + vLLM Neuron Plugin [0.5.0] (Neuron 2.29.0 Release)
+------------------------------------------------------------------------------
+
+Date of Release: 04/09/2026
+
+NxD Inference
+~~~~~~~~~~~~~
+
+Neuron SDK 2.29.0 includes the following updates for NxD Inference library 0.9.17334:
+
+Improvements
+^^^^^^^^^^^^
+
+* Qwen2 VL Model support improvements (Beta) - Implements vision data parallelism support and improves QPS throughput by 7% for image-heavy workloads. See :doc:`Tutorial: Qwen2 VL Inference </libraries/nxd-inference/tutorials/qwen2-vl-tutorial>`.
+* Qwen3 VL Model support improvements (Beta) - Implements text-model sequence parallelism and on-device vision patch embedding, parallel merger, and padding/slicing, achieving 2.2x QPS throughput for image-heavy workloads. See :doc:`Tutorial: Qwen3 VL Inference </libraries/nxd-inference/tutorials/qwen3-vl-tutorial>`.
+* Flux.1 Model support improvements (Beta) - Implements CFG parallelism for text-to-image use case, improving E2E latency by 19% and instance throughput by 23%. See :doc:`Tutorial: Flux.1 Inference Tutorial </libraries/nxd-inference/tutorials/flux-inference-tutorial>`.
+
+Breaking Changes
+^^^^^^^^^^^^^^^^
+
+* NxD Inference no longer supports NKI kernels on Trn1/Inf2 hardware, as NKI Beta3 kernels are not supported on Trn1/Inf2. NxD Inference models are now only supported on Trn2 and newer hardware. Customers who require NxD Inference kernel support on Trn1 or Inf2 instances should pin to release 2.28.
+* The BWMM shard-on-hidden kernel previously used during prefill in Mixture-of-Experts models has been removed. Models that depend on this kernel (including Llama 4, Mixtral, and DBRX configurations) should be pinned to release 2.28 for optimal performance.
+
+Bug Fixes
+^^^^^^^^^^^^
+
+* Fixed the issue on Qwen2-VL where the ``default_image_width`` and ``default_image_height`` values are overwritten during model loading process.
+
+Known Issues
+^^^^^^^^^^^^^
+
+* The :doc:`Top-K NKI kernel </nki/library/api/router-topk>` is enabled by default in this release. Release 2.29 has a known accuracy issue at smaller batch sizes (up to 4) when this kernel is disabled.
+
+.. note::
+  Qwen3-MoE 235B may observe degraded decode throughput compared to previous releases. Our team is actively investigating the root cause. In the meantime, we recommend customers use release 2.28 for workloads where Qwen3-MoE 235B decode performance is critical.
+
+.. _nxd-inference-2-28-0-rn:
+
+NxD Inference [0.8.16251] + vLLM Neuron Plugin [0.4.0] (Neuron 2.28.0 Release)
 ------------------------------------------------------------------------------
 
 Date of Release: 02/26/2026
@@ -33,7 +71,7 @@ Improvements
   Compatible models include:
     - `Qwen3-VL-8B-Thinking <https://huggingface.co/Qwen/Qwen3-VL-8B-Thinking>`__
 * Pixtral Model Support Improvements (Beta) - Adds new functionality support with batch size 32 and sequence length 10240 with vllm v1 on Trn2.
-* Flux.1 Model Support Improvements (Beta) - Adds new functionality support for in-paint, out-paint, canny and depth. Please refer to :doc:`Tutorial: Flux Inpainting </libraries/nxd-inference/tutorials/flux-inpainting-inference-tutorial>`
+* Flux.1 Model support improvements (Beta) - Implements CFG parallelism for text-to-image use case, improving E2E latency by 19% and instance throughput by 23%. See :doc:`Tutorial: Flux.1 Inference Tutorial </libraries/nxd-inference/tutorials/flux-inference-tutorial>`.
 
 
 Known Issues
@@ -50,7 +88,7 @@ Neuron SDK 2.28.0 includes the following updates for the vLLM Plugin 0.4.1 for N
 
 Improvements
 ^^^^^^^^^^^^
-* Multi-LoRA Serving Enhancements - NxD Inference supports streaming LoRA adapters via vLLM's `load_adapter` serving API, allowing adapters to be loaded into CPU memory dynamically at runtime. This provides more flexibility as users no longer need to specify all adapter checkpoint paths before execution. Additionally, users can now run the base model alone when multi-LoRA serving is enabled. See the :ref:`Llama 3.1 8B Multi-LoRA tutorial <trn2-llama3.1-8b-multi-lora-tutorial>` for more details.
+* Multi-LoRA Serving Enhancements - NxD Inference supports streaming LoRA adapters via vLLM's `load_adapter` serving API, allowing adapters to be loaded into CPU memory dynamically at runtime. This provides more flexibility as users no longer need to specify all adapter checkpoint paths before execution. Additionally, users can now run the base model alone when multi-LoRA serving is enabled. See the :doc:`Llama 3.1 8B Multi-LoRA tutorial </libraries/nxd-inference/tutorials/trn2-llama3.1-8b-multi-lora-tutorial>` for more details.
 * Eagle3 Speculative Decoding - NxD Inference supports Eagle3 speculative decoding on Llama 3.1 8B.
 
   Supported Eagle3 draft models include:
@@ -61,6 +99,9 @@ Improvements
 Known Issues
 ^^^^^^^^^^^^
 * This version of the vLLM Neuron Plugin is pinned to vLLM version v0.13.0 and requires PyTorch 2.9. If you must use PyTorch 2.7 or 2.8, you may fall back to the Neuron fork of vLLM that implements a Neuron integration using the vLLM V0 architecture. However, note that this fork is no longer maintained and not all features may be available. The fork can be found at https://github.com/aws-neuron/upstreaming-to-vllm/releases/tag/2.26.1.
+  
+* When using data parallelism (DP > 1) with large batch sizes (e.g., >=16) and long input sequences (e.g., 28K+ tokens), time-to-first-token (TTFT) may be significantly degraded due to uneven request distribution across engine replicas. This is caused by an interaction between the Neuron plugin's engine client and vLLM's internal DP coordinator. Customers experiencing this issue should use version 0.4.1 of the plugin, or reduce concurrency and input sequence length as a workaround.
+  
 * Known issues for vLLM Neuron plugin are tracked in [vLLM V1 user guide](https://awsdocs-neuron.readthedocs-hosted.com/en/latest/libraries/nxd-inference/developer_guides/vllm-user-guide-v1.html#known-issues).
 
 .. _nxd-inference-2-27-1-rn:

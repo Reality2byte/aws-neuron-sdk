@@ -1,25 +1,20 @@
-.. _pytorch-neuronx-install-prev-u20:
 
-Install Previous PyTorch NeuronX Releases for Ubuntu 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _pytorch-neuronx-install-prev-u22:
 
-.. toctree::
-   :maxdepth: 1
+.. Install previous PyTorch NeuronX releases for Ubuntu 22.04
 
-
-
-This section will assist you to install previous Neuron releases.
+Use the tabs below to install a specific previous Neuron SDK release of PyTorch NeuronX on Ubuntu 22.04. Select the Neuron version you need.
 
 .. tab-set::
+
+    .. tab-item:: Neuron 2.28.1
+
+        .. program-output:: python3 src/helperscripts/n2-helper.py --install-type=install --category=compiler_framework --framework=pytorch --framework-version=2.9.0 --neuron-version=2.28.1 --file=src/helperscripts/n2-manifest.json --os=ubuntu22 --instance=trn1 --ami=non-dlami
 
     .. tab-item:: Neuron 2.27.1
 
         .. program-output:: python3 src/helperscripts/n2-helper.py --install-type=install --category=compiler_framework --framework=pytorch --framework-version=2.9.0 --neuron-version=2.27.1 --file=src/helperscripts/n2-manifest.json --os=ubuntu22 --instance=trn1 --ami=non-dlami
-    
+
     .. tab-item:: Neuron 2.26.1
 
         .. program-output:: python3 src/helperscripts/n2-helper.py --install-type=install --category=compiler_framework --framework=pytorch --framework-version=2.8.0 --neuron-version=2.26.1 --file=src/helperscripts/n2-manifest.json --os=ubuntu22 --instance=trn1 --ami=non-dlami
-
-    .. tab-item:: Neuron 2.25.0
-
-        .. program-output:: python3 src/helperscripts/n2-helper.py --install-type=install --category=compiler_framework --framework=pytorch --framework-version=2.7.0 --neuron-version=2.25.0 --file=src/helperscripts/n2-manifest.json --os=ubuntu22 --instance=trn1 --ami=non-dlami

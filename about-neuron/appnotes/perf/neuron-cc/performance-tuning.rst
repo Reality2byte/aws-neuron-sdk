@@ -17,7 +17,7 @@ multi-threading and dynamic-batching) to improve inference performance.
 The following guides are considered to be prerequisites for this tutorial:
 
 -  :ref:`/src/examples/tensorflow/tensorflow_resnet50/resnet50.ipynb`
--  :ref:`tensorflow-serving-neurocore-group`
+-  TensorFlow Serving NeuronCore Group
 -  :ref:`neuron-batching`
 -  :ref:`neuroncore-pipeline`
 
@@ -140,7 +140,7 @@ the optimal settings for your application.
    match the size of the compiled model. The size of the model is the
    number of NeuronCores limit passed to compiler during compilation
    (``--neuroncore-pipeline-cores`` option). For more information see the
-   :ref:`tensorflow-serving-neurocore-group`.
+   TensorFlow Serving NeuronCore Group documentation.
 
 Other considerations
 --------------------

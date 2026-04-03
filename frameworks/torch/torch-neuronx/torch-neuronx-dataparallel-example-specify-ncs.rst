@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: AWS Neuron SDK documentation for torch neuronx dataparallel example specify ncs
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 The following example uses the ``device_ids`` argument to use the first three
 NeuronCores for DataParallel inference.
 

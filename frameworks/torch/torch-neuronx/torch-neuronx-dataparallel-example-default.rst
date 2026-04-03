@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: AWS Neuron SDK documentation for torch neuronx dataparallel example default
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 The default DataParallel use mode will replicate the model
 on all available NeuronCores in the current process. The inputs will be split
 on ``dim=0``.

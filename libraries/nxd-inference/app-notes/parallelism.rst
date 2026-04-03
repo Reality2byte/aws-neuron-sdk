@@ -1,4 +1,5 @@
 .. _nxdi-parallelism-user-guide:
+.. _nxdi-tensor-parallelism:
 
 Parallelism Techniques for LLM Inference
 ========================================

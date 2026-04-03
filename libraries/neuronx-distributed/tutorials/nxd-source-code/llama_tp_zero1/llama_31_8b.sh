@@ -1,4 +1,5 @@
 #!/bin/bash
+# IMPORTANT: Neuron will stop supporting XLA-based training support in a future release. For now, this code sample is provided strictly for reference.
 set -eExuo
 
 cd ~/neuronx-distributed/examples/training/llama/tp_zero1_llama_hf_pretrain

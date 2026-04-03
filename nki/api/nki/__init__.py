@@ -54,3 +54,36 @@ def jit(func=None, mode="auto", **kwargs):
     """
     ...
 
+
+def simulate(kernel):
+    """Create a CPU-simulated version of an NKI kernel.
+
+    .. warning::
+
+       This API is experimental and may change in future releases.
+
+    See :ref:`nki-simulate` for full documentation including target platform
+    selection, precise floating-point mode, debugging, and known limitations.
+
+    Example:
+    
+    .. code-block:: python
+
+        @nki.jit
+        def my_kernel(a, b): ...
+
+        # Explicit simulation
+        result = nki.simulate(my_kernel)(a_np, b_np)
+
+        # With LNC2
+        result = nki.simulate(my_kernel[2])(a_np, b_np)
+
+    Args:
+      kernel: NKI kernel function, typically decorated with ``@nki.jit``.
+        If a plain function is passed, it is automatically wrapped.
+
+    Returns:
+      A callable that, when invoked with NumPy arrays, executes the kernel
+      on CPU and returns NumPy array results.
+    """
+    ...

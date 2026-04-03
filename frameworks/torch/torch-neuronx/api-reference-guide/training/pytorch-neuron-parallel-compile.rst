@@ -1,5 +1,12 @@
 .. _pytorch-neuronx-parallel-compile-cli:
 
+
+.. meta::
+   :description: PyTorch NeuronX neuron_parallel_compile CLI - AWS Neuron SDK documentation
+   :keywords: API reference, AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training
+   :date-modified: 2026-03-13
+
+
 PyTorch NeuronX neuron_parallel_compile CLI
 =============================================
 

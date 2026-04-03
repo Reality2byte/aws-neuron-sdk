@@ -59,5 +59,4 @@ Known issues
 Previous release notes
 ----------------------
 
-* :ref:`neuron-2-25-0-jax`
-* :ref:`jax-neuronx-rn`
+* JAX Neuron release notes

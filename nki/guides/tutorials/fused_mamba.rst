@@ -135,7 +135,7 @@ alternative use case in :ref:`Trainium/Inferentia2 Architecture Guide <arch_sec_
 As a result, we have two options for executing Step 1.
 
 **Option 1: Map ``seq_len`` to free dimension.** Element-wise multiplication of ``delta_i`` and ``A_i`` on NeuronCore can
-be done through :doc:`nisa.tensor_scalar <../api/generated/nki.isa.tensor_scalar>`
+be done through :doc:`nisa.tensor_scalar </nki/api/generated/nki.isa.tensor_scalar>`
 on either VectorE or ScalarE, which automatically broadcast ``A_i`` along the free dimension to match the ``seq_len`` dimension
 in ``A_i``.
 
@@ -174,7 +174,7 @@ are needed.
 
 **Option 2: Map ``seq_len`` to partition dimension.** Alternatively, if we choose a transposed layout for ``delta_i`` in
 SBUF for computation, we will need a partition-dimension broadcast of ``A_i`` using a separate instruction on TensorE
-(``A_i.broadcast_to(...)``) and then a :doc:`nisa.tensor_tensor <../api/generated/nki.isa.tensor_tensor>`
+(``A_i.broadcast_to(...)``) and then a :doc:`nisa.tensor_tensor </nki/api/generated/nki.isa.tensor_tensor>`
 operation between ``delta_i`` and the broadcast ``A_i`` on VectorE. As a reminder, we need to tile the ``seq_len`` dimension
 to meet the tile size constraint ``nl.tile_size.pmax=128``. Figure below illustrates the computation done for Option 2.
 
@@ -235,7 +235,7 @@ Step 2 is evaluating exponential on ``deltaA_i`` from the previous step:
 
 In NeuronCore, evaluating an exponential function on a tensor is considered a scalar operation, which runs on ScalarE. This
 operation can be invoked through :doc:`nl.exp <../../api/generated/nki.language.exp>`
-or :doc:`nisa.activation <../api/generated/nki.isa.activation>`.
+or :doc:`nisa.activation </nki/api/generated/nki.isa.activation>`.
 However, ScalarE is able to perform a “pipelined multiply-add” on the input before evaluating a non-linear function (detail
 see :ref:`Trainium/Inferentia2 Architecture Guide <arch_sec_scalar_pipelined_fma>`).
 In other words, we can fold Step 1 (Option 1) ``nisa.tensor_scalar`` and Step 2 into a single ScalarE instruction at

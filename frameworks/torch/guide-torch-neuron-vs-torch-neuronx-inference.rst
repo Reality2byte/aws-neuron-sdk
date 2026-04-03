@@ -1,7 +1,21 @@
 .. _torch-neuron_vs_torch-neuronx:
 
+
+.. meta::
+   :description: Comparison of |torch-neuron| (|Inf1|) versus |torch-neuronx| (|Inf2| & |Trn1|) for Inference - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 Comparison of |torch-neuron| (|Inf1|) versus |torch-neuronx| (|Inf2| & |Trn1|) for Inference
 ============================================================================================
+
+.. warning::
+
+   ``torch-neuron`` (Inf1) has been archived and is no longer actively developed.
+   For new inference workloads, use :doc:`TorchNeuron Native </frameworks/torch/pytorch-native-overview>`
+   (recommended for Trn2/Trn3) or ``torch-neuronx`` (for Inf2/Trn1). The archived
+   torch-neuron documentation is available at :doc:`/archive/torch-neuron/index`.
 
 Neuron now supports multiple instance types for inference. The choice of
 instance should be motivated primarily by the performance needs of the
@@ -14,12 +28,10 @@ training*.
 
 .. note::
 
-    **Recommendation**: Continue using |torch-neuron| (|Inf1|) for existing
-    inference applications.
-
-    |torch-neuronx| (|Inf2| & |Trn1|) should be used for inference applications that
-    require very low latency, distributed inference, and large models that would
-    not otherwise work with |Inf1|. See: :ref:`benchmark`.
+    **Recommendation**: For new inference workloads, use
+    :doc:`TorchNeuron Native </frameworks/torch/pytorch-native-overview>` (Trn2/Trn3)
+    or |torch-neuronx| (|Inf2| & |Trn1|). |torch-neuron| (|Inf1|) is archived and
+    should only be used for existing applications that have not yet migrated.
 
 
 Framework Comparison
@@ -204,15 +216,15 @@ error occurs during compilation, please file a ticket in the
 .. |Inf1| replace:: :ref:`Inf1 <aws-inf1-arch>`
 .. |Trn1| replace:: :ref:`Trn1 <aws-trn1-arch>`
 .. |Inf2| replace:: :ref:`Inf2 <aws-inf2-arch>`
-.. |architectures| replace:: :ref:`architectures <neuroncores-arch>`
+.. |architectures| replace:: architectures
 .. |NeuronCore-v1| replace:: :ref:`NeuronCore-v1 <neuroncores-v1-arch>`
 .. |NeuronCore-v2| replace:: :ref:`NeuronCore-v2 <neuroncores-v2-arch>`
 .. |neuron-cc| replace:: :ref:`neuron-cc <neuron-compiler-cli-reference>`
 .. |neuronx-cc| replace:: :ref:`neuronx-cc <neuron-compiler-cli-reference-guide>`
 .. |torch-neuron| replace:: :ref:`torch-neuron <inference-torch-neuron>`
 .. |torch-neuronx| replace:: :ref:`torch-neuronx <inference-torch-neuronx>`
-.. |model-support-v1| replace:: :ref:`Architecture Fit NeuronCore-v1 <model-architecture-fit-neuroncore-v1>`
-.. |model-support-v2| replace:: :ref:`Architecture Fit NeuronCore-v2 <model-architecture-fit-neuroncore-v2>`
+.. |model-support-v1| replace:: Architecture Fit NeuronCore-v1
+.. |model-support-v2| replace:: Architecture Fit NeuronCore-v2
 
 .. _Neuron GitHub Samples: https://github.com/aws-neuron/aws-neuron-samples
 .. _torch-neuron Samples: https://github.com/aws-neuron/aws-neuron-samples/tree/master/torch-neuron

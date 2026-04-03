@@ -1,5 +1,12 @@
 .. _pytorch-neuronx-programming-guide:
 
+
+.. meta::
+   :description: Developer Guide for Training with PyTorch NeuronX - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training
+   :date-modified: 2026-03-13
+
+
 Developer Guide for Training with PyTorch NeuronX 
 ===================================================
 
@@ -9,7 +16,10 @@ Developer Guide for Training with PyTorch NeuronX
    :depth: 2
 
 
-Trainium is designed to speed up model training and reduce training cost. It is available on the Trn1 and Trn2 instances. On Trn1, each Trainium accelerator has two NeuronCores (default two Logical NeuronCores), which are the main neural network compute units. On Trn2, each Trainium accelerator has 8 NeuronCores (default 4 Logical NeuronCores). The examples in this guide applies to Trn1 and can be extened to run Trn2.
+Trainium is designed to speed up model training and reduce training cost. It is available on the Trn1 and Trn2 instances. On Trn1, each Trainium accelerator has two NeuronCores (default two Logical NeuronCores), which are the main neural network compute units. On Trn2, each Trainium accelerator has 8 physical NeuronCores, configured as 4 Logical NeuronCores by default (LNC=2). The only supported LNC values are 1 and 2. The examples in this guide apply to Trn1. They can be extended to run on Trn2.
+
+.. important::
+   Currently, Neuron does not support setting the number of Logical NeuronCores (LNC) to a value of 8.
 
 PyTorch NeuronX enables PyTorch users to train their models on Trainium's
 NeuronCores with little code change to their training code. It is based
@@ -106,11 +116,11 @@ instances):
            xm.mark_step()
 
 More on the need for mark_step is at `Understand the lazy mode in
-PyTorch Neuron <#understand-the-lazy-mode-in-pytorch-neuron>`__.
+PyTorch Neuron <#understand-the-lazy-mode-in-pytorch-neuronx>`__.
 
 For a full runnable example, please see the :ref:`Single-worker MLP training
 on Trainium tutorial
-<neuronx-mlp-training-tutorial:single-worker-mlp-training-on-trainium>`.
+<neuronx-mlp-training-tutorial>`.
 
 PyTorch NeuronX multi-worker data parallel training using torchrun
 --------------------------------------------------------------------
@@ -184,7 +194,7 @@ More information about torchrun can be found PyTorch documentation at
 https://pytorch.org/docs/stable/elastic/run.html#launcher-api .
 
 See the :ref:`Multi-worker data-parallel MLP training using torchrun
-tutorial <neuronx-mlp-training-tutorial:multi-worker-data-parallel-mlp-training-using-torchrun>`
+tutorial <neuronx-mlp-training-tutorial>`
 for a full example.
 
 
@@ -419,7 +429,7 @@ Minimize the number of compilation-and-executions
 
 For best performance, you should keep in mind the possible ways to
 initiate compilation-and-executions as described in `Understand the lazy
-mode in PyTorch/XLA <#understand-the-lazy-mode-in-pytorch-neuron>`__ and
+mode in PyTorch/XLA <#understand-the-lazy-mode-in-pytorch-neuronx>`__ and
 should try to minimize the number of compilation-and-executions.
 Ideally, only one compilation-and-execution is necessary per training
 iteration and is initiated automatically by
@@ -443,7 +453,7 @@ To achieve best accuracy during data parallel training, all workers need
 to have the same initial parameter states. This can be achieved by using
 the same seed across the workers. In the case of HuggingFace library,
 the set_seed function can be used.
-(https://github.com/pytorch/xla/issues/3216).
+(`pytorch/xla#3216 <https://github.com/pytorch/xla/issues/3216>`__).
 
 Use PyTorch/XLA's model save function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

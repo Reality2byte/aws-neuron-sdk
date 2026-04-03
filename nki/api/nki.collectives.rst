@@ -19,6 +19,7 @@ Collective operations for multi-rank communication.
    all_gather
    reduce_scatter
    all_to_all
+   all_to_all_v
    collective_permute
    collective_permute_implicit
    collective_permute_implicit_reduce
@@ -26,7 +27,7 @@ Collective operations for multi-rank communication.
    rank_id
 
 
-Helper Classes
+Constants
 --------------
 
 .. autosummary::

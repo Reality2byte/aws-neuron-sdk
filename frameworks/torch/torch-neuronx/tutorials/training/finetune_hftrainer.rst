@@ -1,7 +1,17 @@
 .. _torch-hf-bert-finetune:
 
+
+.. meta::
+   :description: PyTorch Neuron for Trainium Hugging Face BERT MRPC task finetuning using Hugging Face Trainer API - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training, tutorials
+   :date-modified: 2026-03-13
+
+
 PyTorch Neuron for Trainium Hugging Face BERT MRPC task finetuning using Hugging Face Trainer API
 =================================================================================================
+
+.. important::
+   Neuron will stop supporting XLA-based training support in a future release. For now, this tutorial is provided strictly for reference.
 
 .. note::
 

@@ -99,6 +99,13 @@ Visualization and Analysis
 
       Viewing tensor information including names, sizes, shapes, and memory usage details.
 
+   .. grid-item-card:: Memory Viewer
+      :link: overview-memory-viewer
+      :link-type: doc
+      :class-card: sd-border-1
+
+      Analyze memory allocation, usage patterns, and potential inefficiencies across SBUF partitions.
+
    .. grid-item-card:: AI Recommendation Viewer
       :link: overview-ai-recommendations
       :link-type: doc
@@ -122,19 +129,13 @@ Tutorials
 .. grid:: 1 2 2 2
    :gutter: 3
 
-   .. grid-item-card:: Multi-node Training
-      :link: /tools/tutorials/multinode-training-model-profiling
-      :link-type: doc
-      :class-card: sd-border-1
-
-      Profile multi-node training jobs with SLURM scheduling and visualize distributed workload performance.
-
    .. grid-item-card:: vLLM Performance
       :link: /tools/tutorials/performance-profiling-vllm
       :link-type: doc
       :class-card: sd-border-1
 
       Capture and analyze system-level and device-level profiles for vLLM inference workloads on Trainium.
+
 
 Additional Resources
 --------------------
@@ -149,22 +150,14 @@ Additional Resources
 
       Learn how to view Neuron Explorer profiles using the Perfetto UI for trace analysis.
 
-.. _download-neuron-explorer-vsix:
+.. _download-neuron-explorer-vscode:
 
-Download the Neuron Explorer Visual Studio Code Extension
----------------------------------------------------------
+Download Neuron Explorer for Visual Studio Code
+------------------------------------------------
 
-.. grid:: 1
-   :gutter: 3
+The Neuron Explorer VSCode extension is available on the Visual Studio Code Extension Marketplace.
 
-   .. grid-item-card:: 
-      :class-card: sd-border-2
-
-      **Get the Neuron Explorer VSCode Extension**
-      ^^^
-      :download:`Neuron Explorer Visual Studio Code Extension </tools/neuron-explorer/downloads/aws-neuron.neuron-explorer-2.28.0.vsix>`
-
-Once downloaded, open the command palette by pressing **CMD+Shift+P** (MacOS) or **Ctrl+Shift+P** (Windows), type ``> Extensions: Install from VSIX...`` and press **Enter**. When you are prompted to select a file, select ``aws-neuron.neuron-explorer-2.28.0.vsix`` and then the **Install** button (or press **Enter**) to install the extension.
+To install the extension, open the Extensions view in VSCode by pressing **Ctrl+Shift+X** (Windows/Linux) or **CMD+Shift+X** (MacOS), and search for ``AWS Neuron Explorer``. Select the extension published by **Amazon Web Services** in the sidebar, then click the blue **Install** button.
 
 .. _neuron-explorer-faq:
 
@@ -212,6 +205,7 @@ For detailed migration guidance, including CLI command mappings and feature comp
    Summary Viewer <overview-summary-page>
    Database Viewer <overview-database-viewer>
    Tensor Viewer <overview-tensor-viewer>
+   Memory Viewer <overview-memory-viewer>
    AI Recommendation Viewer <overview-ai-recommendations>
    View Profiles with Perfetto <view-perfetto>
    

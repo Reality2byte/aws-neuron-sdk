@@ -1,10 +1,17 @@
 
 .. _pytorch-neuronx-al2-update:
 
+
+.. meta::
+   :description: Update PyTorch NeuronX to the latest release on Amazon Linux 2
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, setup, torch-neuronx, update, Amazon Linux 2, AL2
+   :date-modified: 2026-03-30
+
+
 Update to latest PyTorch NeuronX 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you already have a previous Neuron release installed, this section provide links that will assist you to update to latest Neuron release.
+If you already have a previous Neuron release installed, select the PyTorch version tab below to get the update commands for your environment.
 
 
 .. tab-set::

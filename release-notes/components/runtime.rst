@@ -10,7 +10,100 @@ Component Release Notes for Neuron Runtime
 
 The release notes for the Neuron Runtime Neuron component, including Neuron collectives, the Runtime driver, and the Runtime library. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
 
-.. _runtime-2-30-0-rn:
+.. _runtime-2-29-0-rn:
+
+Neuron Runtime (Neuron 2.29.0 Release)
+------------------------------------------------------------------------
+
+Date of Release: 04/09/2026
+
+
+Neuron Runtime Library
+~~~~~~~~~~~~~~~~~~~~~~
+
+**Version:** 2.31.24.0
+
+New Features
+^^^^^^^^^^^^
+* Added new |nrt_cc_create_stream|_ API for programmatic host-driven collective stream creation, replacing the previous environment variable approach.
+* Added |nrt_get_attached_efa_bdf|_ API that returns the BDF string of the EFA device attached to a specified Neuron device index, enabling optimal network interface selection.
+* Added |lnc_idx|_ parameter to async tensor APIs, allowing users to select the specific DMA engine for data transfers.
+* New environment variables:
+
+  * ``NEURON_RT_ONE_THREAD_PER_CORE``: Pins each network proxy thread to a dedicated CPU core, providing up to 2x improvement in p50/p99 collective communication latency.
+  * ``NEURON_RT_RANKS_PER_NETWORK_PROXY``: Controls how many ranks share the same network proxy thread, enabling proxy thread consolidation for improved latency in large-scale distributed workloads.
+
+.. |nrt_cc_create_stream| replace:: ``nrt_cc_create_stream``
+.. _nrt_cc_create_stream: https://github.com/aws-neuron/aws-neuron-sdk/blob/master/src/libnrt/include/nrt/nrt.h
+.. |nrt_get_attached_efa_bdf| replace:: ``nrt_get_attached_efa_bdf``
+.. _nrt_get_attached_efa_bdf: https://github.com/aws-neuron/aws-neuron-sdk/blob/master/src/libnrt/include/nrt/nrt.h
+.. |lnc_idx| replace:: ``lnc_idx``
+.. _lnc_idx: https://github.com/aws-neuron/aws-neuron-sdk/blob/master/src/libnrt/include/nrt/nrt_async.h
+
+Improvements
+^^^^^^^^^^^^
+* Added EFA collectives support for Trn3(previously only available on Trn2), enabling cross-instance data transfers.
+* Added profiling support for the :doc:`standalone collectives </neuron-runtime/api/nrt-async-api-overview>`, allowing :doc:`standalone collectives </neuron-runtime/api/nrt-async-api-overview>` traces to appear in the profiler timeline.
+* Added context caching for :doc:`standalone collectives </neuron-runtime/api/nrt-async-api-overview>` operations (all-gather, reduce-scatter, all-reduce) that are run outside of a compiled model/kernel, significantly improving schedule performance by up to 90% for repeated calls.
+* Removed unnecessary memset operations during :doc:`standalone collectives </neuron-runtime/api/nrt-async-api-overview>` request processing flow, eliminating tens of milliseconds of overhead.
+* Removed limit of 512 queue set instances per NEFF which lead to ``NRT_RESOURCE`` errors when loading NEFF with too many queue set instnaces. The Neuron Runtime now supports an unbounded number of queue set instance enabling it to load NEFFs that are further optimized for code size reduction.
+* Added Physical Neuron Core ID and Global Rank ID fields to debug tensor read payload for better multi-core/multi-rank debugging.
+* Added async sequence IDs (nrta_seq_t) to system trace events for correlation between async operations and hardware execution events.
+
+Breaking changes
+^^^^^^^^^^^^^^^^
+* Error tracker removed from async API in favor of a simpler status pointer pass-in model. Applications now pass a status pointer directly. See :ref:`this section <nrta-error-handling>` for an example.
+* |nrta_get_completion_handle|_ API removed.
+* Due to the breaking changes, we have performed a version bump from 2.x to 3.0 for the :doc:`NRT Async APIs </neuron-runtime/api/nrt-async-api-overview>` (APIs prefixed with ``nrta``). Applications using the async API will need to be recompiled against the new version.
+
+.. |nrta_get_completion_handle| replace:: ``nrta_get_completion_handle``
+.. _nrta_get_completion_handle: https://github.com/aws-neuron/aws-neuron-sdk/blob/master/src/libnrt/include/nrt/nrt_async.h
+
+Bug Fixes
+^^^^^^^^^
+* Fixed profile data loss on SIGTERM shutdown (e.g., vLLM worker processes); the signal handler now covers both SIGTERM and SIGINT.
+* Increased :doc:`Collectives XU </neuron-runtime/api/nrt-async-api-overview>` communication wait timeout (increased from 100ms to 30s) to prevent false timeout failures when ranks have timing drift.
+* Fixed a double-free crash during ``nrt_close`` when NEFF execution fails and model unload is not called.
+* Fixed DMA ring allocation in :doc:`Collectives XU </neuron-runtime/api/nrt-async-api-overview>` context caching that caused hangs and invalid cache hits.
+* Fixed :doc:`Collectives XU </neuron-runtime/api/nrt-async-api-overview>` to properly support in-place operations where send and receive buffers are identical.
+* Fixed device memory leak during repeated NEFF load/unload cycles.
+* Fixed crash when ``proxy_queue`` is destroyed before ``start()`` due to ``ncclSetAffinity`` failure.
+* Fixed system trace event correlation by passing correct execution ID to wait events.
+* Fixed NEFF output during inspect profiling to use UUID for distinguishing NEFFs with same hash.
+* Fixed BranchPrefetchHint addressing mode bug where backwards-relative branch hints computed incorrect target addresses on trn2 and later.
+* Fixed dynamically loaded kernel code carveout size on trn2 (16KB → 32KB) to support migrated operations.
+
+Neuron Driver
+~~~~~~~~~~~~~
+
+**Version:** 2.27.4.0
+
+New Features
+^^^^^^^^^^^^
+* Added support for new :ref:`TRN3 Gen2 Ultraserver <aws-trn3-arch>` configurations: US3 (2-node), US4 (4-node), US16 (4-node), and US18 (4-node).
+
+Improvements
+^^^^^^^^^^^^
+* Added top-level DMA reset support during TPB reset on trn3 and later platforms, improving reset reliability.
+
+Neuron Collectives
+~~~~~~~~~~~~~~~~~~~
+
+**Version:** 2.31.24.0
+
+Improvements
+^^^^^^^^^^^^
+* Restructured EFA device processing to per-stream granularity, simplifying resource management for concurrent streams improving stability.
+* Improved bootstrap error messages with actionable troubleshooting guidance when ranks fail to receive root parameters.
+
+Bug Fixes
+^^^^^^^^^
+* Fixed incorrect interface selection in multi-ultraserver collectives where EFA was used instead of Ultraserver interfaces, by adding explicit cross-rack-to-rack flag detection.
+* Fixed crash and undefined behavior when channels fail to initialize due to EFA Device plugin errors, now returning clear error messages instead of accessing uninitialized data.
+
+----
+
+.. _runtime-2-28-0-rn:
 
 Neuron Runtime (Neuron 2.28.0 Release)
 ------------------------------------------------------------------------
@@ -37,13 +130,13 @@ Bug Fixes
 
 * Fixed proxy thread signaling condition in topsp barrier
 * Fixed segfaults in NEFF load cleanup and error paths
-* Fixed incompatible network/POD interface selection for inter-node mesh
+* Fixed incompatible network/ultraserver interface selection for inter-node mesh
 * Fixed RDH buffer reservation and AllGather bugs
 * Fixed corrupted memory logs in multi-threaded model loads
 * Improved error handling to return a clear error instead of asserting during ``nrt_init``
 
 Compatibility Support Table
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The Neuron runtime was tested for the following EC2 instances and configurations:
 
 =========================== ============= ============== ================= ===============
@@ -102,7 +195,7 @@ We would like to thank Shaul Ben Hai from SentinelOne Security Research for repo
 * Fixed race condition in sysfs access during driver initialization
 
 Compatibility Support Table
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The Neuron driver was tested for the following EC2 instances and configurations:
 
 =========================== ============= ============== ================= ===============

@@ -1,0 +1,9 @@
+Setup Guide for Inf1
+====================
+
+.. toctree::
+    :maxdepth: 1
+
+    Fresh install </archive/mxnet-neuron/setup/mxnet-install>
+    Update to latest release </archive/mxnet-neuron/setup/mxnet-update>
+    Install previous releases </archive/mxnet-neuron/setup/mxnet-install-prev>

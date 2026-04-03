@@ -3,6 +3,7 @@
     :date-modified: 12/02/2025
 
 .. _neuronx-distributed-training-index:
+.. _neuronx-distributed-index:
 
 
 NxD Core for Training

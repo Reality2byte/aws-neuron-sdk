@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: Additional Examples (``torch-neuronx``) - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 Additional Examples (``torch-neuronx``)
 =======================================
 
@@ -9,4 +16,5 @@ Additional Examples (``torch-neuronx``)
     Transformers Neuron GitHub samples <https://github.com/aws-neuron/aws-neuron-samples/tree/master/torch-neuronx/transformers-neuronx>
 
 
-.. include:: /frameworks/torch/torch-neuronx/additional-examples-inference-torch-neuronx.txt
+* `AWS Neuron Samples GitHub Repository <https://github.com/aws-neuron/aws-neuron-samples/tree/master/torch-neuronx/>`_
+* `Transformers Neuron GitHub samples <https://github.com/aws-neuron/aws-neuron-samples/tree/master/torch-neuronx/transformers-neuronx>`_

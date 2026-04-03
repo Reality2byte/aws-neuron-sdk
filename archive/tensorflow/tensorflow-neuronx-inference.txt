@@ -1,0 +1,27 @@
+.. card:: Setup  (``tensorflow-neuronx``)
+            :class-body: sphinx-design-class-title-small
+
+            See :doc:`TensorFlow NeuronX setup </archive/tensorflow/index>`.
+            
+            
+.. dropdown::  Tutorials (``tensorflow-neuronx``)
+    :class-title: sphinx-design-class-title-med
+    :animate: fade-in
+
+    .. include:: /archive/tensorflow/tensorflow-neuronx/tutorials/tutorials-tensorflow-neuronx.txt
+
+
+.. dropdown::  API Reference Guide (``tensorflow-neuronx``)
+    :class-title: sphinx-design-class-title-med
+    :class-body: sphinx-design-class-body-small
+    :animate: fade-in
+
+    .. include:: /archive/tensorflow/tensorflow-neuronx/api-reference-guide.txt
+
+
+.. dropdown::  Misc (``tensorflow-neuronx``)
+    :class-title: sphinx-design-class-title-med
+    :class-body: sphinx-design-class-body-small
+    :animate: fade-in
+                
+    .. include:: /archive/tensorflow/tensorflow-neuronx/misc-tensorflow-neuronx.txt

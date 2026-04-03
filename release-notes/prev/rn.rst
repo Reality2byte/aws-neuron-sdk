@@ -7,14 +7,15 @@ Previous release notes (Neuron 2.x)
    :maxdepth: 1
    :hidden:
 
+   Neuron 2.28.1 </release-notes/prev/2.28.1>
+   Neuron 2.28.0 </release-notes/prev/2.28.0> 
    Neuron 2.27.1 </release-notes/prev/2.27.1> 
    Neuron 2.27.0 </release-notes/prev/2.27.0/index>
    Neuron 2.26.1 </release-notes/prev/2.26.1>
    Neuron 2.26.0 </release-notes/prev/2.26.0/index>
    Neuron 2.25.0 </release-notes/prev/2.25.0/index>
-   Component release notes </release-notes/components/index>
 
-* **The latest Neuron release is 2.28.0, released on 2/26/2026.** Read the :doc:`2.28.0 release notes </release-notes/2.28.0>` or :doc:`the individual Neuron component release notes </release-notes/components/index>` for more details.
+* **The latest Neuron release is 2.29.0, released on 04/09/2026.** Read the :doc:`2.29.0 release notes </release-notes/2.29.0>` or :doc:`the individual Neuron component release notes </release-notes/components/index>` for more details.
   
 .. contents:: Table of contents
    :local:
@@ -32,12 +33,20 @@ Previous release notes (Neuron 2.x)
                 ^^^
                 Release notes by component for prior Neuron SDK versions.
 
+
+Neuron 2.28.0 (02/26/2026)
+--------------------------
+
+See :ref:`neuron-2-28-0-whatsnew` for the full Neuron 2.28.0 release notes or :doc:`the individual Neuron component release notes </release-notes/components/index>`.
+
+* Neuron 2.28.0 was released as a patch for 2.28.0 on 3/13/2026. See the :doc:`2.28.1 (patch) release notes <2.28.1>` for details.
+
 Neuron 2.27.0 (12/19/2025)
 --------------------------
 
 See :ref:`neuron-2-27-0-whatsnew` for the full Neuron 2.27.0 release notes or :doc:`the individual Neuron component release notes </release-notes/components/index>`.
 
-* Neuron 2.27.1 was released as a patch for 2.27.0 on 1/26/2026. See the :doc:`2.27.0 release notes </release-notes/prev/2.27.1>` for details.
+* Neuron 2.27.1 was released as a patch for 2.27.0 on 1/26/2026. See the :doc:`2.27.1 (patch) release notes <2.27.1>` for details.
 
 Neuron 2.26.1 (10/29/2025)
 --------------------------
@@ -48,7 +57,6 @@ Neuron 2.26.0 (09/18/2025)
 --------------------------
 
 See :ref:`neuron-2-26-0-whatsnew` for the full Neuron 2.26.0 release notes or :doc:`the individual Neuron component release notes </release-notes/components/index>`.
-
 
 Neuron 2.25.0 (07/31/2025)
 --------------------------
@@ -504,7 +512,7 @@ JAX 0.4 within the :ref:`Multi Framework DLAMI <neuron-dlami-overview>`. It also
 TensorFlow 2.10 on Ubuntu 22 is now available.
 
 **Deep Learning Containers (DLCs):** This release introduces new DLCs
-for :doc:`JAX 0.4 </setup/jax-neuronx>` training and PyTorch 2.5.1 inference and training. All DLCs
+for :doc:`JAX 0.4 </setup/jax/index>` training and PyTorch 2.5.1 inference and training. All DLCs
 have been updated to Ubuntu 22, and the pytorch-inference-neuronx DLC
 now supports both NxD Inference and TNx libraries.
 
@@ -1042,7 +1050,7 @@ Inf1 only packages
    * - Apache MXNet
      - Inf1
      - * ``mx_neuron`` (.whl)
-     - * :ref:`mxnet-neuron-rn`
+     - * :doc:`MXNet Neuron Release Notes </release-notes/archive/mxnet-neuron>`
 
        * :ref:`neuron-cc-ops-mxnet`
 
@@ -1368,7 +1376,7 @@ Inf1 only packages
    * - Apache MXNet
      - Inf1
      - * ``mx_neuron`` (.whl)
-     - * :ref:`mxnet-neuron-rn`
+     - * :doc:`MXNet Neuron Release Notes </release-notes/archive/mxnet-neuron>`
 
        * :ref:`neuron-cc-ops-mxnet`
 
@@ -2425,7 +2433,7 @@ Neuron 2.5.0 is a major release which introduces new features and resolves issue
 
        * :ref:`R-CNN <torch-neuron-r-cnn-app-note>` support on Inf1
 
-       * Support for new :doc:`API for core placement </frameworks/torch/torch-neuron/api-core-placement>`
+       * Support for new :doc:`API for core placement </archive/torch-neuron/api-core-placement>`
       
        * Support for :ref:`improved logging <pytorch-neuron-rn>` 
         

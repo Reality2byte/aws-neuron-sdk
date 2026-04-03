@@ -43,8 +43,8 @@ R-CNN Limitations and Considerations on Inferentia (NeuronCore-v1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 R-CNN models may have limitations and considerations on Inferentia
-(NeuronCore-v1). See the :ref:`Model Architecture Fit Guidelines
-<rcnn_limitations_inf1>` for more information. These limitations are not
+(NeuronCore-v1). See the Model Architecture Fit Guidelines
+for more information. These limitations are not
 applicable to NeuronCore-v2.
 
 Requirements
@@ -55,7 +55,7 @@ R-CNN models can be run on any Inf1 instance size.
 
 Verify that this Jupyter notebook is running the Python kernel
 environment that was set up according to the `PyTorch Installation
-Guide <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/frameworks/torch/torch-neuron/setup/pytorch-install.html>`__.
+Guide <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/archive/torch-neuron/setup/pytorch-install.html>`__.
 Select the kernel from the “Kernel -> Change Kernel” option at
 the top of the Jupyter notebook page.
 

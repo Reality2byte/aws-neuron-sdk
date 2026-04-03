@@ -4,6 +4,8 @@
    :date-modified: 01/22/2026
 
 .. _neuron-dlami-overview:
+.. _setup-ubuntu22-multi-framework-dlami:
+.. _setup-ubuntu24-multi-framework-dlami:
 
 Neuron DLAMI User Guide
 =======================
@@ -44,21 +46,10 @@ Neuron Multi-Framework DLAMIs provide the most comprehensive environment, suppor
   
   ``ImportError: /lib64/libm.so.6: version `GLIBC_2.35' not found``
 
-  Since the latest vLLM version depends on 
-  PyTorch 2.9 we have also removed that environment from the DLAMI.
+  Since the latest vLLM version depends on PyTorch 2.9, we have also removed that environment from the DLAMI.
   
-  For a workaround, use the latest Ubuntu based AMIs instead.
+  For a workaround, use the latest Ubuntu-based AMIs instead.
 
-.. note::
-  AL2023 DLAMIs released with version 2.27.1 no longer support ``PyTorch 2.9+`` due to an incompatibility issue with the default GLIB.c installed on AL2023.
-  PyTorch requires GLIB.c 2.35+ and upgrading the version within AL2023 can break other system dependencies. This is the error message:
-  
-  ``ImportError: /lib64/libm.so.6: version `GLIBC_2.35' not found``
-
-  Since the latest vLLM version depends on 
-  PyTorch 2.9 we have also removed that environment from the DLAMI.
-  
-  For a workaround, use the latest Ubuntu based AMIs instead.
 
 Multi Framework DLAMIs supported
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -76,10 +67,6 @@ Multi Framework DLAMIs supported
     * - Ubuntu 24.04
       - Inf2, Trn1, Trn1n, Trn2, Trn3
       - Deep Learning AMI Neuron (Ubuntu 24.04)
-
-    * - Ubuntu 22.04
-      - Inf2, Trn1, Trn1n, Trn2, Trn3
-      - Deep Learning AMI Neuron (Ubuntu 22.04)
 
 .. _neuron-dlami-multifw-venvs:
 
@@ -105,26 +92,17 @@ Virtual Environments pre-installed
     * - PyTorch 2.9 NxD Inference, Torch NeuronX (Ubuntu 24.04)
       - /opt/aws_neuronx_venv_pytorch_2_9_nxd_inference
 
-    * - JAX 0.7 NeuronX (Ubuntu 22.04 / Ubuntu 24.04 / Amazon Linux 2023)
+    * - JAX 0.7 NeuronX (Ubuntu 24.04)
       - /opt/aws_neuronx_venv_jax_0_7
 
-    * - vLLM 0.13.0 NxD Inference, Torch NeuronX (Ubuntu 24.04)
-      - /opt/aws_neuronx_venv_pytorch_inference_vllm
-
-    * - PyTorch 2.8 Torch NeuronX, NxD Core (Ubuntu 22.04)
-      - /opt/aws_neuronx_venv_pytorch_2_8
-
-    * - PyTorch 2.8 NxD Training, Torch NeuronX (Ubuntu 22.04)
-      - /opt/aws_neuronx_venv_pytorch_2_8_nxd_training
-
-    * - PyTorch 2.8 NxD Inference, Torch NeuronX (Ubuntu 22.04)
-      - /opt/aws_neuronx_venv_pytorch_2_8_nxd_inference
+    * - vLLM 0.16.0 NxD Inference, Torch NeuronX (Ubuntu 24.04)
+      - /opt/aws_neuronx_venv_pytorch_inference_vllm_0_16
 
 
-We have included a setup script that installs required dependencies for the package within the PyTorch 2.8 and 2.9 NxD Training virtual environment. To run this script,
+We have included a setup script that installs required dependencies for the package within the PyTorch 2.9 NxD Training virtual environment. To run this script,
 activate the virtual environment and run ``setup_nxdt.sh`` and this will run :ref:`the setup steps here <nxdt_installation_guide>`.
 
-You can easily get started with the multi-framework DLAMI through AWS console by following this :ref:`setup guide <setup-ubuntu22-multi-framework-dlami>`. If you are looking to 
+You can easily get started with the multi-framework DLAMI through AWS console by following this :doc:`setup guide </setup/multiframework-dlami>`. If you are looking to 
 use the Neuron DLAMI in your cloud automation flows, Neuron also supports :ref:`SSM parameters <ssm-parameter-neuron-dlami>` to easily retrieve the latest DLAMI id.
 
 ----
@@ -163,10 +141,10 @@ Single Framework DLAMIs supported
       - Inf2, Trn1, Trn1n, Trn2, Trn3
       - Deep Learning AMI Neuron JAX 0.7 (Ubuntu 24.04)
 
-    * - vLLM 0.13.0
+    * - vLLM 0.16.0
       - Ubuntu 24.04
       - Inf2, Trn1, Trn1n, Trn2, Trn3
-      - Deep Learning AMI Neuron PyTorch Inference vLLM (Ubuntu 24.04)
+      - Deep Learning AMI Neuron PyTorch Inference vLLM 0.16 (Ubuntu 24.04)
 
 
 Virtual Environments pre-installed
@@ -198,9 +176,9 @@ Virtual Environments pre-installed
       - JAX NeuronX 0.7
       - /opt/aws_neuronx_venv_jax_0_7
 
-    * - Deep Learning AMI Neuron PyTorch Inference vLLM (Ubuntu 24.04) 
-      - vLLM NeuronX 0.13.0
-      - /opt/aws_neuronx_venv_pytorch_inference_vllm
+    * - Deep Learning AMI Neuron PyTorch Inference vLLM 0.16 (Ubuntu 24.04) 
+      - vLLM NeuronX 0.16.0
+      - /opt/aws_neuronx_venv_pytorch_inference_vllm_0_16
 
 
 Get started with the single framework DLAMI through AWS console by following one of the corresponding setup guides. If you want to
@@ -274,7 +252,18 @@ You can find the DLAMI that supports latest Neuron SDK by using the SSM get-para
     --output text
 
 
-The SSM parameter prefix for each DLAMI can be seen below
+The SSM parameter prefix for each currently supported DLAMI can be seen below. To discover SSM parameters for older or end-of-life DLAMIs, you can filter by framework, version, or operating system using the path structure ``/aws/service/neuron/dlami/<framework>-<framework-version>/<os>``:
+
+.. code-block::
+
+      # List all Neuron DLAMI SSM parameters
+      aws ssm get-parameters-by-path --region us-east-1 --path /aws/service/neuron --recursive
+
+      # Filter by framework (e.g., all PyTorch 2.8 DLAMIs)
+      aws ssm get-parameters-by-path --region us-east-1 --path /aws/service/neuron/dlami/pytorch-2.8 --recursive
+
+      # Filter by framework and OS
+      aws ssm get-parameters-by-path --region us-east-1 --path /aws/service/neuron/dlami/pytorch-2.8/ubuntu-22.04 --recursive
 
 
 SSM Parameter Prefix
@@ -291,9 +280,6 @@ SSM Parameter Prefix
     * - Deep Learning AMI Neuron (Ubuntu 24.04)
       - /aws/service/neuron/dlami/multi-framework/ubuntu-24.04
 
-    * - Deep Learning AMI Neuron (Ubuntu 22.04)
-      - /aws/service/neuron/dlami/multi-framework/ubuntu-22.04
-
     * - Deep Learning AMI Neuron PyTorch 2.9 (Ubuntu 24.04)
       - /aws/service/neuron/dlami/pytorch-2.9/ubuntu-24.04
 
@@ -303,14 +289,8 @@ SSM Parameter Prefix
     * - Deep Learning AMI Neuron JAX 0.7 (Ubuntu 24.04)
       - /aws/service/neuron/dlami/jax-0.7/ubuntu-24.04
 
-    * - Deep Learning AMI Neuron PyTorch Inference vLLM (Ubuntu 24.04)
-      - /aws/service/neuron/dlami/pytorch-inference-vllm-0.13/ubuntu-24.04
-
-    * - Deep Learning AMI Neuron PyTorch 2.8 (Ubuntu 22.04)
-      - /aws/service/neuron/dlami/pytorch-2.8/ubuntu-22.04
-
-    * - Deep Learning AMI Neuron TensorFlow 2.10 (Ubuntu 22.04)
-      - /aws/service/neuron/dlami/tensorflow-2.10/ubuntu-22.04
+    * - Deep Learning AMI Neuron PyTorch Inference vLLM 0.16 (Ubuntu 24.04)
+      - /aws/service/neuron/dlami/pytorch-inference-vllm-0.16/ubuntu-24.04
 
     * - Deep Learning Base Neuron AMI (Amazon Linux 2023)
       - /aws/service/neuron/dlami/base/amazon-linux-2023
@@ -322,13 +302,13 @@ SSM Parameter Prefix
       - /aws/service/neuron/dlami/base/ubuntu-22.04
 
 
-For example to find the latest DLAMI id for Multi-Framework DLAMI (Ubuntu 22.04) you can use the following:
+For example to find the latest DLAMI id for Multi-Framework DLAMI (Ubuntu 24.04) you can use the following:
 
 .. code-block::
 
     aws ssm get-parameter \
     --region us-east-1 \
-    --name /aws/service/neuron/dlami/multi-framework/ubuntu-22.04/latest/image_id \
+    --name /aws/service/neuron/dlami/multi-framework/ubuntu-24.04/latest/image_id \
     --query "Parameter.Value" \
     --output text
 

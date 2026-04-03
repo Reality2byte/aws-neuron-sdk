@@ -46,6 +46,27 @@ Advanced NKI Programming
 
       Learn about the NKI Compiler.
 
+   .. grid-item-card:: NKI Dynamic Loops
+      :link: nki-dynamic-loops
+      :link-type: ref
+      :class-body: sphinx-design-class-title-small
+
+      Use dynamic loops with runtime-determined trip counts via hardware loop instructions.
+
+   .. grid-item-card:: Descriptor Generation Engine (DGE)
+      :link: dge-documentation
+      :link-type: ref
+      :class-body: sphinx-design-class-title-small
+
+      Control how DMA descriptors are generated: pre-computed, software (GpSimd), or hardware DGE.
+
+   .. grid-item-card:: DMA Bandwidth Guide
+      :link: nki-dma-bandwidth-guide
+      :link-type: ref
+      :class-body: sphinx-design-class-title-small
+
+      Guidelines for maximizing DMA bandwidth with large contiguous payloads.
+
    .. grid-item-card:: NKI Access Patterns
       :link: nki-aps
       :link-type: ref
@@ -67,13 +88,8 @@ Additional NKI Information
 .. grid:: 2
    :margin: 4 1 0 0
 
-   .. grid-item-card:: NKI Beta Versions
-      :link: nki-beta-versions
-      :link-type: doc
-      :class-body: sphinx-design-class-title-small
-   
-   .. grid-item-card:: NKI Beta Migration Guide
-      :link: nki-migration-guide
+   .. grid-item-card:: NKI 0.3.0 Update Guide
+      :link: nki-0-3-0-update-guide
       :link-type: doc
       :class-body: sphinx-design-class-title-small
 
@@ -84,8 +100,10 @@ Additional NKI Information
     Profile a NKI Kernel <use-neuron-profile>
     Performance Optimizations <nki_perf_guide>
     MXFP8/4 Matrix Multiplication <mxfp-matmul>
-    Migrating Kernels to NKI Beta 2 <nki-migration-guide>
+    NKI 0.3.0 Update Guide <nki-0-3-0-update-guide>
     NKI Access Patterns <nki-aps>
+    NKI Dynamic Loops <nki-dynamic-loops>
+    Descriptor Generation Engine (DGE) <nki-dge>
+    DMA Bandwidth Guide <nki-dma-bandwidth-guide>
     Block Dimension Migration Guide <nki_block_dimension_migration_guide>
     nki-compiler
-    nki-beta-versions

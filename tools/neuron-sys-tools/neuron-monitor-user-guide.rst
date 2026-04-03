@@ -25,8 +25,8 @@ When running, **neuron-monitor** will:
 -  Take the newly collected data and consolidate it into a large report
 -  Serialize that report to JSON and stream it to stdout from where it
    can be consumed by other tools - such as the sample
-   `neuron-monitor-cloudwatch.py <#neuron-monitor-cloudwatchpy>`__ and
-   `neuron-monitor-prometheus.py <#neuron-monitor-prometheuspy>`__
+   :ref:`neuron-monitor-cloudwatch.py <neuron-monitor-cloudwatchpy>` and
+   :ref:`neuron-monitor-prometheus.py <neuron-monitor-prometheuspy>`
    scripts.
 -  Wait until at least one **metric group** needs to be collected and
    repeat this flow
@@ -50,11 +50,11 @@ Using neuron-monitor
 
     neuron-monitor accepts the following optional parameters:
 
-    - :option:`--verbose` (int) default=0: Can be 0 to 4, and controls the amount of
+    - ``--verbose`` (int) default=0: Can be 0 to 4, and controls the amount of
       debugging and verbose information sent to stderr; **0: no output**,
       **4: maximum verbosity**
 
-    - :option:`-c, --config-file` (string): Allows specifying a valid path to a
+    - ``-c, --config-file`` (string): Allows specifying a valid path to a
       neuron-monitor JSON configuration file
 
 
@@ -621,8 +621,7 @@ memory_used
             - ``"0"`` - ``"64"`` (for trn2-48xlarge) - NeuronCores for which the memory was allocated
             - ``"constants"`` - amount of device memory used for constants during training (or weights during inference)
             - ``"model_code"`` - amount of device memory used for models' executable code
-            - ``"model_shared_scratchpad"`` - amount of device memory used for the scratchpad shared by the models - a memory region reserved for the models'
-            internal variables and auxiliary buffers
+            - ``"model_shared_scratchpad"`` - amount of device memory used for the scratchpad shared by the models - a memory region reserved for the models' internal variables and auxiliary buffers
             - ``"runtime_memory"`` - amount of device memory used by the Neuron Runtime
             - ``"tensors"`` - amount of device memory used for tensors
 

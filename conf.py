@@ -111,15 +111,15 @@ html_sidebars = {
 templates_path = [
     "_templates",
     "nki/_templates/",
-    "_content-templates/",
+    "_content-types/",
     "libraries/nxd-inference/_templates",
 ]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', '_backup-rn', '_content-types','**.ipynb_checkpoints','.venv','_utilities', 'nki/_templates']
-html_extra_path = ['static', 'tools/ap-visualizer']
+exclude_patterns = ['_build', '_backup-rn', '_backup-setup', '_content-types','**.ipynb_checkpoints','.venv','_utilities', 'nki/_templates']
+html_extra_path = ['static']
 
 # remove bash/python/ipython/jupyter prompts and continuations
 copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
@@ -188,11 +188,11 @@ extlinks = {
         "",
     ),
     "compile-pt": (
-        "https://github.com/aws-neuron/" + projectblob + "/src/benchmark/pytorch/%s_compile.py",
+        "https://github.com/aws-neuron/" + projectblob + "/archive/src/benchmark/pytorch/%s_compile.py",
         "",
     ),
     "benchmark-pt": (
-        "https://github.com/aws-neuron/" + projectblob + "/src/benchmark/pytorch/%s_benchmark.py",
+        "https://github.com/aws-neuron/" + projectblob + "/archive/src/benchmark/pytorch/%s_benchmark.py",
         "",
     ),
     "llama-sample": (
@@ -212,7 +212,7 @@ intersphinx_mapping = {
 
 # -- Options for Theme  -------------------------------------------------
 
-top_banner_message = "<b>Neuron 2.28.0 is released!</b> Check the <a class='reference internal' style='color:white;' href='https://awsdocs-neuron.readthedocs-hosted.com/en/latest/about-neuron/whats-new.html'>What's New</a> and <a class='reference internal' style='color:white;' href='https://awsdocs-neuron.readthedocs-hosted.com/en/latest/release-notes/index.html'>Release Notes</a> for more details."
+top_banner_message = "<b>Neuron 2.29.0 is released!</b> Check the <a class='reference internal' style='color:white;' href='https://awsdocs-neuron.readthedocs-hosted.com/en/latest/about-neuron/whats-new.html'>What's New</a> and <a class='reference internal' style='color:white;' href='https://awsdocs-neuron.readthedocs-hosted.com/en/latest/release-notes/index.html'>Release Notes</a> for more details."
 
 html_theme = "sphinx_book_theme"
 html_theme_options = {
@@ -351,23 +351,3 @@ linkcheck_exclude_documents = [
 ]
 nitpicky = False
 
-import shutil
-
-def setup(app):
-    def move_ap_visualizer(app, exception):
-        if exception is None:
-            root = app.outdir
-            files = ['ap-visualizer.html', 'script.js', 'webgl-grid.js']
-            for f in files:
-                src = os.path.join(root, f)
-                if os.path.exists(src):
-                    dst_dir = os.path.join(root, 'tools', 'ap-visualizer')
-                    os.makedirs(dst_dir, exist_ok=True)
-                    shutil.move(src, os.path.join(dst_dir, f))
-            src_dir = os.path.join(root, 'src')
-            if os.path.exists(src_dir):
-                dst_dir = os.path.join(root, 'tools', 'ap-visualizer', 'src')
-                if os.path.exists(dst_dir):
-                    shutil.rmtree(dst_dir)
-                shutil.move(src_dir, dst_dir)
-    app.connect('build-finished', move_ap_visualizer)

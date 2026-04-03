@@ -3,6 +3,9 @@
 Training Llama-3.1-70B and Llama-3-70B with Tensor Parallelism and Pipeline Parallelism 
 ========================================================================================
 
+.. important::
+   Neuron will stop supporting XLA-based training support in a future release. For now, this tutorial is provided strictly for reference.
+
 In this section, we showcase to pretrain Llama 3.1 and Llama3 70B models by using the tensor parallel, pipeline parallel, sequence parallel, activation
 checkpoint as well as constant mask optimization in the ``neuronx-distributed`` package.
 

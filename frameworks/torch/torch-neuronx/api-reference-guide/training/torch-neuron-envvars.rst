@@ -1,5 +1,12 @@
 .. _pytorch-neuronx-envvars:
 
+
+.. meta::
+   :description: PyTorch NeuronX Environment Variables - AWS Neuron SDK documentation
+   :keywords: API reference, AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training
+   :date-modified: 2026-03-13
+
+
 PyTorch NeuronX Environment Variables
 ======================================
 
@@ -12,7 +19,7 @@ PyTorch Neuron are (beta ones are noted):
 
 ``NEURON_CC_FLAGS``
 
--  Compiler options. Full compiler options are described in the :ref:`mixed-precision-casting-options`.
+-  Compiler options. Full compiler options are described in the :ref:`neuronx-cc-training-mixed-precision`.
    Additional options for the Neuron
    Persistent Cache can be found in the :ref:`Neuron Persistent Cache <neuron-caching>` guide.
 

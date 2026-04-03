@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: Developer Guide  (``torch-neuronx``) - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training
+   :date-modified: 2026-03-13
+
+
 Developer Guide  (``torch-neuronx``)
 ====================================
 
@@ -16,4 +23,6 @@ Developer Guide  (``torch-neuronx``)
     :animate: fade-in
     :open:
 
-    .. include:: /frameworks/torch/torch-neuronx/programming-guide/training/index.txt
+    * :ref:`pytorch-neuronx-programming-guide`
+    * :ref:`pytorch-neuronx-debug`
+    * :ref:`torch-neuronx-dev-guide`

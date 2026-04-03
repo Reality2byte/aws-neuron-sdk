@@ -8,6 +8,8 @@
 Component Release Notes for NeuronX Graph Compiler
 ==================================================
 
+**Latest version (in 2.29.0)**: 2.24.5133.0
+
 The release notes for the NeuronX Graph Compiler (neuronx-cc) Neuron component. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
 
 .. note::

@@ -1,4 +1,5 @@
 #!/bin/bash
+# IMPORTANT: Neuron will stop supporting XLA-based training support in a future release. For now, this code sample is provided strictly for reference.
 set -eExuo
 
 aws s3 cp --no-progress s3://neuron-s3/training_checkpoints/pytorch/dp_bert_large_hf_pretrain/ckpt_28125.pt ~/aws-neuron-samples/torch-neuronx/training/dp_bert_hf_pretrain/output/ckpt_28125.pt --no-sign-request

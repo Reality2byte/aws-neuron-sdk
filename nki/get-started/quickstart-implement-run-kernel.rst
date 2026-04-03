@@ -1,6 +1,6 @@
 .. meta::
     :description: Learn how to implement and run your first NKI kernel on AWS Neuron accelerators
-    :date-modified: 11/18/2025
+    :date-modified: 03/30/2026
 
 .. _quickstart-run-nki-kernel:
 
@@ -60,18 +60,19 @@ Add the ``nki_tensor_add_kernel`` function definition above. Make sure you annot
 Step 3: Check input size and shapes
 ------------------------------------
 
-In this step, you add a couple of assertions to check that ``a_input`` and ``b_input`` are the same size and that these will fit within the on-chip tile size.
+In this step, you add a couple of assertions to check that ``a_input`` and ``b_input`` are the same size/datatype and that these will fit within the on-chip tile size.
 
 Add the following assertions to your ``nki_tensor_add_kernel`` function in ``add_kernel.py``.
 
 .. code-block:: python
 
-    # Check both input tensor shapes are the same for element-wise operation.
-    assert a_input.shape == b_input.shape
+        # check both input tensor shapes/dtypes are the same for element-wise operation.
+        assert a_input.shape == b_input.shape
+        assert a_input.dtype == b_input.dtype
 
-    # Check the first dimension's size to ensure it does not exceed on-chip
-    # memory tile size, since this simple kernel does not tile inputs.
-    assert a_input.shape[0] <= nl.tile_size.pmax
+        # Check the first dimension's size to ensure it does not exceed on-chip
+        # memory tile size, since this simple kernel does not tile inputs.
+        assert a_input.shape[0] <= nl.tile_size.pmax
 
 The first assertion checks that ``a_input`` and ``b_input`` have the same shape. The second assertion checks that the inputs will fit in within the tile size of the on-chip memory. If an input is larger than the on-chip tile size, you must tile the input. To keep this example simple we will avoid discussing tiling further in this quick start.
 
@@ -85,14 +86,14 @@ The ``nki_tensor_add_kernel`` function will receive inputs from the HBM memory a
 .. code-block:: python
 
     # Allocate space for the input tensors in SBUF and copy the inputs from HBM
-    # to SBUF with DMA copy. Note: 'sbuf' is a keyword in NKI.
-    a_tile = sbuf.view(dtype=a_input.dtype, shape=a_input.shape)
+    # to SBUF with DMA copy.
+    a_tile = nl.ndarray(shape=a_input.shape, dtype=a_input.dtype, buffer=nl.sbuf)
     nisa.dma_copy(dst=a_tile, src=a_input)
 
-    b_tile = sbuf.view(dtype=b_input.dtype, shape=b_input.shape)
+    b_tile = nl.ndarray(shape=b_input.shape, dtype=b_input.dtype, buffer=nl.sbuf)
     nisa.dma_copy(dst=b_tile, src=b_input)
 
-The ``sbuf.view`` function allows you to allocate tensors in SBUF. The ``sbuf`` keyword is available in any NKI kernel. Here you allocate ``a_tile`` and ``b_tile`` and use the ``nisa.dma_copy`` :doc:`instruction </nki/api/generated/nki.isa.dma_copy>` to copy tensors between HBM and SBUF memories. You first supply the destination for the copy, ``a_tile`` and ``b_tile``. Then you provide the source for the copy, ``a_input`` and ``b_input``, as seen in this example.
+The ``nl.ndarray`` function allows you to allocate tensors in SBUF. Here you allocate ``a_tile`` and ``b_tile`` and use the ``nisa.dma_copy`` :doc:`instruction </nki/api/generated/nki.isa.dma_copy>` to copy tensors between HBM and SBUF memories. You first supply the destination for the copy, ``a_tile`` and ``b_tile``. Then you provide the source for the copy, ``a_input`` and ``b_input``, as seen in this example.
 
 Step 5: Add the two tensors
 ----------------------------
@@ -104,10 +105,10 @@ In this step, you add code to allocate a destination tensor in SBUF and put the 
     # Allocate space for the result and use tensor_tensor to perform
     # element-wise addition. Note: the first argument of 'tensor_tensor'
     # is the destination tensor.
-    c_tile = sbuf.view(dtype=a_input.dtype, shape=a_input.shape)
+    c_tile = nl.ndarray(shape=a_input.shape, dtype=a_input.dtype, buffer=nl.sbuf)
     nisa.tensor_tensor(dst=c_tile, data1=a_tile, data2=b_tile, op=nl.add)
 
-As in step 4, you allocate a space for the ``c_tile`` in SBUF, using ``sbuf.view``. Since the shape of the output will be the same shape as the inputs, you can use the ``a_input`` data type and shape for the allocation. You use the ``nisa.tensor_tensor`` :doc:`instruction </nki/api/generated/nki.isa.tensor_tensor>` to perform element-wise calculation on two tensors. The first argument of ``tensor_tensor`` is the destination tensor, ``c_tile``, and the sources, ``a_tile`` and ``b_tile``, follow it. You must also provide an op which tells ``tensor_tensor`` which operation to perform on the inputs. In this case, you use ``op=nl.add`` to specify addition.
+As in step 4, you allocate a space for the ``c_tile`` in SBUF, using ``nl.ndarray``. Since the shape of the output will be the same shape as the inputs, you can use the ``a_input`` data type and shape for the allocation. You use the ``nisa.tensor_tensor`` :doc:`instruction </nki/api/generated/nki.isa.tensor_tensor>` to perform element-wise calculation on two tensors. The first argument of ``tensor_tensor`` is the destination tensor, ``c_tile``, and the sources, ``a_tile`` and ``b_tile``, follow it. You must also provide an op which tells ``tensor_tensor`` which operation to perform on the inputs. In this case, you use ``op=nl.add`` to specify addition.
 
 Step 6: Copy the result to HBM
 -------------------------------
@@ -116,12 +117,11 @@ In this step, you will allocate space for the output tensor in HBM and copy the 
 
 .. code-block:: python
 
-    # Create a tensor in HBM and copy the result into HBM. Note: Simlar to
-    # 'sbuf', 'hbm' is a keyword in NKI.
-    c_output = hbm.view(dtype=a_input.dtype, shape=a_input.shape)
+    # Create a tensor in HBM and copy the result into HBM.
+    c_output = nl.ndarray(dtype=a_input.dtype, shape=a_input.shape, buffer=nl.shared_hbm)
     nisa.dma_copy(dst=c_output, src=c_tile)
 
-You use the hbm keyword to create tensors in HBM, similar to how you allocated space in SBUF with the sbuf keyword. You then copy the result in ``c_tile`` into ``c_output``. Remember that ``c_output`` is the destination and ``c_tile`` is the source for the ``dma_copy`` instruction. The copy is needed because outputs, like inputs, need to be in HBM.
+You use ``nl.ndarray`` with ``buffer=nl.shared_hbm`` to create tensors in HBM, similar to how you allocated space in SBUF with ``buffer=nl.sbuf``. You then copy the result in ``c_tile`` into ``c_output``. Remember that ``c_output`` is the destination and ``c_tile`` is the source for the ``dma_copy`` instruction. The copy is needed because outputs, like inputs, need to be in HBM.
 
 Step 7: Return the output
 --------------------------
@@ -147,34 +147,35 @@ You should now have an ``add_kernel.py`` file that looks as follows.
         NKI kernel to compute element-wise addition of two input tensors.
         """
 
-        # Check both input tensor shapes are the same for element-wise operation.
+        # check both input tensor shapes/dtypes are the same for element-wise operation.
         assert a_input.shape == b_input.shape
+        assert a_input.dtype == b_input.dtype
 
         # Check the first dimension's size to ensure it does not exceed on-chip
         # memory tile size, since this simple kernel does not tile inputs.
         assert a_input.shape[0] <= nl.tile_size.pmax
 
         # Allocate space for the input tensors in SBUF and copy the inputs from HBM
-        # to SBUF with DMA copy. Note: 'sbuf' is a keyword in NKI.
-        a_tile = sbuf.view(dtype=a_input.dtype, shape=a_input.shape)
+        # to SBUF with DMA copy.
+        a_tile = nl.ndarray(shape=a_input.shape, dtype=a_input.dtype, buffer=nl.sbuf)
         nisa.dma_copy(dst=a_tile, src=a_input)
 
-        b_tile = sbuf.view(dtype=b_input.dtype, shape=b_input.shape)
+        b_tile = nl.ndarray(shape=b_input.shape, dtype=b_input.dtype, buffer=nl.sbuf)
         nisa.dma_copy(dst=b_tile, src=b_input)
 
         # Allocate space for the result and use tensor_tensor to perform
         # element-wise addition. Note: the first argument of 'tensor_tensor'
         # is the destination tensor.
-        c_tile = sbuf.view(dtype=a_input.dtype, shape=a_input.shape)
+        c_tile = nl.ndarray(shape=a_input.shape, dtype=a_input.dtype, buffer=nl.sbuf)
         nisa.tensor_tensor(dst=c_tile, data1=a_tile, data2=b_tile, op=nl.add)
 
-        # Create a tensor in HBM and copy the result into HBM. Note: Simlar to
-        # 'sbuf', 'hbm' is a keyword in NKI.
-        c_output = hbm.view(dtype=a_input.dtype, shape=a_input.shape)
+        # Create a tensor in HBM and copy the result into HBM.
+        c_output = nl.ndarray(dtype=a_input.dtype, shape=a_input.shape, buffer=nl.shared_hbm)
         nisa.dma_copy(dst=c_output, src=c_tile)
 
         # Return kernel output as function output.
         return c_output
+
 
 Step 8: Create a PyTorch or JAX test program
 ---------------------------------------------
@@ -237,9 +238,9 @@ You can confirm the success of the kernel by running the driver you created in s
 
 .. code-block:: bash
 
-    NEURON_PLATFORM_TARGET_OVERRIDE=trn2 python test_program.py
+    NEURON_PLATFORM_TARGET_OVERRIDE=trn3 python test_program.py
 
-The ``NEURON_PLATFORM_TARGET_OVERRIDE`` environment variable sets the target architecture for compilation. In this example it is set to ``trn2`` which creates a binary suitable for running on Trn2 machines. For Trn1 and Inf2, specify ``trn1``; and for Trn3 specify ``trn3``.
+The ``NEURON_PLATFORM_TARGET_OVERRIDE`` environment variable sets the target architecture for compilation. In this example it is set to ``trn3`` which creates a binary suitable for running on Trn3 machines. For Trn1 and Inf2, specify ``trn1``; and for Trn2 specify ``trn2``.
 
 Whether you used PyTorch or JAX for the driver, you should see the following result.
 
@@ -258,51 +259,42 @@ You will also see some additional output depending on whether you used PyTorch o
 
       .. code-block:: text
 
-          driver.py:6: DeprecationWarning: Use torch_xla.device instead
-            device = xm.xla_device()
-          2025-11-07 07:29:41.834546: W neuron/pjrt-api/neuronpjrt.cc:1972] Use PJRT C-API 0.73 as client did not specify a PJRT C-API version
-          2025-Nov-07 07:29:46.0669 78638:78679 [1] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):213 CCOM WARN NET/OFI Failed to initialize sendrecv protocol
-          2025-Nov-07 07:29:46.0679 78638:78679 [1] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
-          2025-Nov-07 07:29:46.0689 78638:78679 [1] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
-          2025-Nov-07 07:29:46.0699 78638:78679 [1] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
-          The KLR format is located at: final_klir_filepath='/tmp/nki_tensor_add_kernelapbsy67c.klir'
-          =========== warnings from kernel tracing add_kernel.nki_tensor_add_kernel ===========
-          /home/ubuntu/pytorch-klir/lib/python3.10/site-packages/nki/isa/neuron_isa.py:527:86:keyword-only arguments are not supported in NKI
-          /home/ubuntu/pytorch-klir/lib/python3.10/site-packages/nki/isa/neuron_isa.py:527:86:keyword-only arguments are not supported in NKI
-          /home/ubuntu/pytorch-klir/lib/python3.10/site-packages/nki/language/math_ops.py:59:29:keyword-only arguments are not supported in NKI
-          /home/ubuntu/pytorch-klir/lib/python3.10/site-packages/nki/language/math_ops.py:59:29:keyword-only arguments are not supported in NKI
-          /home/ubuntu/pytorch-klir/lib/python3.10/site-packages/nki/isa/neuron_isa.py:1748:65:keyword-only arguments are not supported in NKI
-          /home/ubuntu/pytorch-klir/lib/python3.10/site-packages/nki/isa/neuron_isa.py:1748:65:keyword-only arguments are not supported in NKI
-          2025-11-07 07:29:46.000731:  78638  INFO ||NEURON_CC_WRAPPER||: Call compiler with cmd: neuronx-cc compile --framework=XLA /tmp/ubuntu/neuroncc_compile_workdir/31e1821a-b569-4bdd-b46d-7baef6bb345f/model.MODULE_6747419296008355553+e30acd3a.hlo_module.pb --output /tmp/ubuntu/neuroncc_compile_workdir/31e1821a-b569-4bdd-b46d-7baef6bb345f/model.MODULE_6747419296008355553+e30acd3a.neff --target=trn1 --verbose=35
-          .Completed run_backend_driver.
-
-          Compiler status PASS
-          tensor([[2., 2., 2.],
-                  [2., 2., 2.],
-                  [2., 2., 2.],
-                  [2., 2., 2.]], device='xla:0', dtype=torch.float16)
-          nrtucode: internal error: 54 object(s) leaked, improper teardown
+            /home/ubuntu/beta3/test_torch.py:6: DeprecationWarning: Use torch_xla.device instead
+                device = xm.xla_device()
+            2026-03-30 22:53:53.548591: W neuron/pjrt-api/neuronpjrt.cc:1781] Use PJRT C-API 0.79 as client did not specify a PJRT C-API version
+            2026-Mar-30 22:54:00.0013 349295:349354 [2] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):263 CCOM WARN NET/OFI Unable to find a protocol that worked.  Failing initialization.
+            2026-Mar-30 22:54:00.0016 349295:349354 [2] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+            2026-Mar-30 22:54:00.0019 349295:349354 [2] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+            2026-Mar-30 22:54:00.0021 349295:349354 [2] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+            2026-Mar-30 22:54:00.0025 349295:349349 [1] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            2026-Mar-30 22:54:00.0025 349295:349354 [2] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            2026-Mar-30 22:54:00.0025 349295:349359 [3] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            2026-Mar-30 22:54:00.0025 349295:349344 [0] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            .
+            Compiler status PASS
+            2026-03-30 22:54:03.000603:  349295  [INFO]: Compilation Successfully Completed for model.MODULE_142812826281072284+70e3f644.hlo_module.pb
+            tensor([[2., 2., 2.],
+                    [2., 2., 2.],
+                    [2., 2., 2.],
+                    [2., 2., 2.]], device='xla:0', dtype=torch.float16)
 
    .. tab:: JAX
 
       .. code-block:: text
 
-          Compiler status PASS
-          The KLR format is located at: final_klir_filepath='/tmp/nki_tensor_add_kernelq3uk7mz0.klir'
-          =========== warnings from kernel tracing add_kernel.nki_tensor_add_kernel ===========
-          /home/ubuntu/jax-klir/lib/python3.10/site-packages/nki/isa/neuron_isa.py:527:86:keyword-only arguments are not supported in NKI
-          /home/ubuntu/jax-klir/lib/python3.10/site-packages/nki/isa/neuron_isa.py:527:86:keyword-only arguments are not supported in NKI
-          /home/ubuntu/jax-klir/lib/python3.10/site-packages/nki/language/math_ops.py:59:29:keyword-only arguments are not supported in NKI
-          /home/ubuntu/jax-klir/lib/python3.10/site-packages/nki/language/math_ops.py:59:29:keyword-only arguments are not supported in NKI
-          /home/ubuntu/jax-klir/lib/python3.10/site-packages/nki/isa/neuron_isa.py:1748:65:keyword-only arguments are not supported in NKI
-          /home/ubuntu/jax-klir/lib/python3.10/site-packages/nki/isa/neuron_isa.py:1748:65:keyword-only arguments are not supported in NKI
-          .Completed run_backend_driver.
-
-          Compiler status PASS
-          [[2. 2. 2.]
-           [2. 2. 2.]
-           [2. 2. 2.]
-           [2. 2. 2.]]
+            WARNING:2026-03-30 22:56:39,405:jax._src.xla_bridge:825: Platform 'neuron' is experimental and not all JAX functionality may be correctly supported!
+            2026-Mar-30 22:56:45.0857 349545:349597 [3] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):263 CCOM WARN NET/OFI Unable to find a protocol that worked.  Failing initialization.
+            2026-Mar-30 22:56:45.0860 349545:349597 [3] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+            2026-Mar-30 22:56:45.0862 349545:349597 [3] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+            2026-Mar-30 22:56:45.0865 349545:349597 [3] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+            2026-Mar-30 22:56:45.0869 349545:349597 [3] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            2026-Mar-30 22:56:45.0869 349545:349582 [0] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            2026-Mar-30 22:56:45.0869 349545:349587 [1] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            2026-Mar-30 22:56:45.0869 349545:349592 [2] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            [[2. 2. 2.]
+             [2. 2. 2.]
+             [2. 2. 2.]
+             [2. 2. 2.]]
 
 Congratulations! You have now your first NKI kernel written and running. If you encountered any issues, see the Common issues section below.
 
@@ -331,4 +323,4 @@ Further reading
 ----------------
 
 * :doc:`NKI API Reference Manual </nki/api/index>`
-* :doc:`NKI Developer Guides </nki/guides/how-to-guides/index>`
+* :doc:`NKI Developer Guides </nki/guides/index>`

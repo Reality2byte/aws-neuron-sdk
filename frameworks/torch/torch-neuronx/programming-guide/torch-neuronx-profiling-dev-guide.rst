@@ -1,5 +1,12 @@
 .. _torch-neuronx-dev-guide:
 
+
+.. meta::
+   :description: Developer Guide for Profiling with PyTorch NeuronX - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, profiling, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 Developer Guide for Profiling with PyTorch NeuronX 
 ===================================================
 

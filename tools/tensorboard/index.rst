@@ -1,3 +1,5 @@
+.. _tensorboard-neuron:
+
 TensorBoard
 ===========
 
@@ -23,7 +25,7 @@ TensorBoard for Trn1
       Comprehensive guide for using the TensorBoard Neuron plugin on Trn1 instances, including installation, configuration, and advanced visualization features.
 
    .. grid-item-card:: Profiling PyTorch NeuronX (``torch-neuronx``) with TensorBoard
-      :link: /tools/tutorials/torch_neuronx_profiling_with_tensorboard
+      :link: /tools/tutorials/torch-neuronx-profiling-with-tb
       :link-type: doc
       :class-header: sd-bg-primary sd-text-white
 

@@ -13,8 +13,8 @@ NeuronPerf API
    :local:
    :depth: 2
 
-
-Due to a bug in Sphinx, some of the type annotations may be incomplete. You can :download:`download the source code here </src/neuronperf.tar.gz>`. In the future, the source will be hosted in a more browsable way.
+.. note::
+    Due to a bug in Sphinx, some of the type annotations may be incomplete. 
 
 .. py:function:: compile(compile_fn, model, inputs, batch_sizes: Union[int, List[int]] = None, pipeline_sizes: Union[int, List[int]] = None, performance_levels: Union[str, List[int]] = None, models_dir: str = "models", filename: str = None, compiler_args: dict = None, verbosity: int = 1, *args, **kwargs) -> str:
 

@@ -289,7 +289,7 @@ NxD Inference supports models based on the Qwen2-VL-7B-Instruct (Dense) model ar
 Neuron Classes
 ^^^^^^^^^^^^^^
 
-- Neuron config class: NeuronConfig
+- Neuron config class: Qwen2VLNeuronConfig
 - Inference config class: Qwen2VLInferenceConfig
 - Causal LM model class: NeuronQwen2VLForCausalLM
 

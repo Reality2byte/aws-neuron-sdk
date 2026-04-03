@@ -33,8 +33,8 @@ This page provide links that will assist you to quickly start with :ref:`tensorf
 
    .. tab-item:: tensorflow-neuronx (``Trn1, Inf2``)
 
-        .. include:: tab-inference-tensorflow-neuronx.txt
+        .. include:: /includes/setup/tab-inference-tensorflow-neuronx.txt
 
    .. tab-item:: tensorflow-neuron (``Inf1``)
 
-        .. include:: tab-inference-tensorflow-neuron.rst
+        .. include:: /includes/setup/tab-inference-tensorflow-neuron.rst

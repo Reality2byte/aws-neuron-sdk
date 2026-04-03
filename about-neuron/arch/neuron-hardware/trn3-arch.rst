@@ -82,3 +82,55 @@ The following table shows the performance metrics for Tranium3 based instances.
      - 12,800
      - 28,800
   
+============================================
+Trn3 UltraServer Connectivity and Networking
+============================================
+
+Trn3 UltraServers use a PCIe switch-based interconnect architecture for all chip-to-chip communication, both within and across servers. This replaces the point-to-point NeuronLink topology used in previous generations (Trn1, Trn2) with a switched fabric that enables flexible, all-to-all connectivity across the entire UltraServer domain.
+
+Intra-server connectivity
+-------------------------
+
+Each server (sled) contains 4 Trainium3 chips connected through an intra-server PCIe switch. Each chip provides four PCIe Gen6 x8 links to this switch, delivering a total of 256 GB/s of bidirectional bandwidth between chips within the same server. This local switch enables low-latency communication for operations like tensor parallelism and data-parallel gradient synchronization within a server.
+
+Inter-server connectivity
+-------------------------
+
+All servers within a rack are connected through inter-server PCIe switches. Each Trainium3 chip provides five PCIe Gen6 x8 links to the inter-server switch, delivering 320 GB/s of bidirectional bandwidth per chip for cross-server communication. This enables collective operations such as all-reduce and all-gather to span all servers in a rack without requiring host CPU involvement.
+
+Inter-rack connectivity
+-----------------------
+
+For multi-rack configurations, Trainium3 chips in corresponding positions across racks are connected via dedicated direct PCIe links. Each chip provides two PCIe Gen6 x8 links for inter-rack communication, delivering 128 GB/s of bidirectional bandwidth per chip between racks. This direct-link design avoids additional switch hops for cross-rack traffic.
+
+Bandwidth summary
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 30 40
+
+   * - Connectivity level
+     - Bandwidth per chip
+     - Link configuration
+   * - Intra-server (within sled)
+     - 256 GB/s
+     - 4 × PCIe Gen6 x8 via intra-server switch
+   * - Inter-server (within rack)
+     - 320 GB/s
+     - 5 × PCIe Gen6 x8 via inter-server switch
+   * - Inter-rack
+     - 128 GB/s
+     - 2 × PCIe Gen6 x8 direct links
+
+Routing and address-based switching
+------------------------------------
+
+Unlike Trn1 and Trn2, where NeuronLink connections are point-to-point and require no intermediate routing, Trn3's PCIe switch fabric uses address-based routing to direct transactions to the correct destination chip. Each Trainium3 chip in the system is identified by a tuple of (rack, server, chip), and this identity is encoded in the upper bits of the PCIe address used for outbound transactions. The PCIe switches use BAR (Base Address Register) address matching to determine the correct output port for each transaction.
+
+This routing is transparent to ML workloads. The Neuron Runtime and compiler handle all address encoding and switch configuration automatically. From the developer's perspective, collective operations and direct memory access between chips work the same way as on previous Trainium generations.
+
+Semaphore-based synchronization
+-------------------------------
+
+Trn3 uses hardware semaphores to synchronize data transfers across the switched fabric. When a chip writes data to a remote chip's HBM, a follow-up semaphore write signals completion to the receiving chip. The system guarantees that data and its associated semaphore always traverse the same physical path through the switch fabric, ensuring correct ordering without additional software synchronization overhead.

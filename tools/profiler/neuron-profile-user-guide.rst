@@ -98,7 +98,7 @@ It is also possible to run a distributed job while only capturing a profile for 
 
 
 Providing per-worker inputs
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, ``neuron-profile capture`` uses all-zero inputs or a single set of inputs specified via positional arguments. For multi-worker jobs where each worker needs different inputs, use the ``--multi-input`` (``-m``) option to specify a file that maps inputs to each worker.
 
@@ -528,60 +528,90 @@ CLI reference
 
 .. rubric:: neuron-profile capture
 
-.. program:: neuron-profile
+.. rubric:: neuron-profile capture
 
-.. option:: neuron-profile capture [parameters] [inputs...]
+.. code-block:: text
 
-    Takes a given compiled NEFF, executes it, and collects the profile results.
-    When no inputs are provided, all-zero inputs are used, which may result in inf or NaNs.
-    It is recommended to use ``--ignore-exec-errors``
+    neuron-profile capture [parameters] [inputs...]
 
-    - :option:`-n,--neff` (string): the compiled NEFF to profile
+Takes a given compiled NEFF, executes it, and collects the profile results.
+When no inputs are provided, all-zero inputs are used, which may result in inf or NaNs.
+It is recommended to use ``--ignore-exec-errors``.
 
-    - :option:`-s,--session-file` (string): the file to store profile session information in
+**Parameters**
 
-    - :option:`--ignore-exec-errors`: ignore errors during execution
+``-n, --neff`` (string)
+    The compiled NEFF to profile.
 
-    - :option:`inputs` (positional args): list of inputs in the form of <NAME> <FILE_PATH> separated by space. Eg IN1 x.npy IN2 y.npy
+``-s, --session-file`` (string)
+    The file to store profile session information in.
 
+``--ignore-exec-errors``
+    Ignore errors during execution.
 
-    The following ``neuron-profile capture`` arguments are only relevant for multi-worker jobs
+``inputs`` (positional args)
+    List of inputs in the form of ``<NAME> <FILE_PATH>`` separated by space. For example: ``IN1 x.npy IN2 y.npy``.
 
-    - :option:`-m,--multi-input` (string): path to a file that describes the input list for each requested worker. Each line in the file should correspond to one worker and follow the same format as the ``inputs`` positional argument (i.e. ``<NAME> <FILE_PATH>`` pairs separated by spaces). Cannot be used together with the ``inputs`` positional argument. If ``inputs`` is used instead, all workers will use the same inputs.
+The following ``neuron-profile capture`` arguments are only relevant for multi-worker jobs:
 
-    - :option:`--collectives-profile-id` (string): worker id which will be profiled. Passing ``all`` profiles all workers. (default: ``all``)
+``-m, --multi-input`` (string)
+    Path to a file that describes the input list for each requested worker. Each line in the file should correspond to one worker and follow the same format as the ``inputs`` positional argument (i.e. ``<NAME> <FILE_PATH>`` pairs separated by spaces). Cannot be used together with the ``inputs`` positional argument. If ``inputs`` is used instead, all workers will use the same inputs.
 
-    - :option:`-r,--collectives-workers-per-node` (int): the number of workers on the current node. The global worker id (rank) of worker n on current node is ``collectives-worker-start-id+n``
+``--collectives-profile-id`` (string)
+    Worker id which will be profiled. Passing ``all`` profiles all workers. (default: ``all``)
 
-    - :option:`--collectives-worker-count` (int): total number of Neuron workers across all nodes for this collectives run.
+``-r, --collectives-workers-per-node`` (int)
+    The number of workers on the current node. The global worker id (rank) of worker n on current node is ``collectives-worker-start-id+n``.
 
-    - :option:`--collectives-worker-start-id` (int): The rank offset for the first worker on the current node. For example, if node 0 has workers 0,1 and node 1 has workers 2,3 then ``collectives-worker-start-id`` for node 0 and 1 will be 0 and 2, respectively. (default: ``0``)
+``--collectives-worker-count`` (int)
+    Total number of Neuron workers across all nodes for this collectives run.
 
-.. option:: neuron-profile view [parameters]
+``--collectives-worker-start-id`` (int)
+    The rank offset for the first worker on the current node. For example, if node 0 has workers 0,1 and node 1 has workers 2,3 then ``collectives-worker-start-id`` for node 0 and 1 will be 0 and 2, respectively. (default: ``0``)
 
-    - :option:`-n,--neff-path` (string): the compiled NEFF file location
+.. rubric:: neuron-profile view
 
-    - :option:`-s,--session-file` (string): the profile results NTFF file location
+.. code-block:: text
 
-    - :option:`-d,--session-dir` (string): directory containing profile files for multi-worker runs
+    neuron-profile view [parameters]
 
-    - :option:`--output-format` (string): how the processed profile should be presented. The default ``db`` write processed data to the database. ``summary-text`` and ``summary-json`` print the summary data as a table or json, respectively, without writing to the datebase. The ``perfetto`` option writes processed data to Perfetto's native protobuf based tracing format, and can be visualized in the Perfetto UI. The ``JSON`` option writes processed data to human-readable JSON. (default: ``db``)
+**Parameters**
 
-    - :option:`--output-file` (string): file path to write results to, if applicable for the given output format
+``-n, --neff-path`` (string)
+    The compiled NEFF file location.
 
-    - :option:`--db-endpoint` (string): the endpoint of InfluxDB (default: ``http://localhost:8086``)
+``-s, --session-file`` (string)
+    The profile results NTFF file location.
 
-    - :option:`--db-org` (string): the org name of InfluxDB
+``-d, --session-dir`` (string)
+    Directory containing profile files for multi-worker runs.
 
-    - :option:`--db-bucket` (string): name of the InfluxDB bucket where ingested profile data is stored. Also used in the URL for viewing the profile (Optional)
+``--output-format`` (string)
+    How the processed profile should be presented. The default ``db`` writes processed data to the database. ``summary-text`` and ``summary-json`` print the summary data as a table or json, respectively, without writing to the database. The ``perfetto`` option writes processed data to Perfetto's native protobuf based tracing format, and can be visualized in the Perfetto UI. The ``JSON`` option writes processed data to human-readable JSON. (default: ``db``)
 
-    - :option:`--port` (int): the port number of the http server (default: ``3001``)
+``--output-file`` (string)
+    File path to write results to, if applicable for the given output format.
 
-    - :option:`--force`: force overwrite an existing profile in the database
+``--db-endpoint`` (string)
+    The endpoint of InfluxDB. (default: ``http://localhost:8086``)
 
-    - :option:`--terminology`: print a helpful table of terminology used by the profiler
+``--db-org`` (string)
+    The org name of InfluxDB.
 
-    - :option:`--enable-memory-tracker`: Enable Memory Tracker to view scratchpad usage over time with a breakdown of usage per tensor. This requires having set ``XLA_IR_DEBUG=1`` and ``XLA_HLO_DEBUG=1`` before NEFF compilation and passing ``--enable-dge-notifs`` when capturing the profile.
+``--db-bucket`` (string)
+    Name of the InfluxDB bucket where ingested profile data is stored. Also used in the URL for viewing the profile. (Optional)
+
+``--port`` (int)
+    The port number of the http server. (default: ``3001``)
+
+``--force``
+    Force overwrite an existing profile in the database.
+
+``--terminology``
+    Print a helpful table of terminology used by the profiler.
+
+``--enable-memory-tracker``
+    Enable Memory Tracker to view scratchpad usage over time with a breakdown of usage per tensor. This requires having set ``XLA_IR_DEBUG=1`` and ``XLA_HLO_DEBUG=1`` before NEFF compilation and passing ``--enable-dge-notifs`` when capturing the profile.
 
 
 FAQ

@@ -1,7 +1,17 @@
 .. _hf-bert-pretraining-tutorial:
 
+
+.. meta::
+   :description: Hugging Face BERT Pretraining Tutorial (Data-Parallel) - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training, tutorials
+   :date-modified: 2026-03-13
+
+
 Hugging Face BERT Pretraining Tutorial (Data-Parallel)
 ======================================================
+
+.. important::
+   Neuron will stop supporting XLA-based training support in a future release. For now, this tutorial is provided strictly for reference.
 
 This tutorial explains how to run Hugging Face BERT-Large model
 pretraining on Trainium using PyTorch Neuron and data-parallel mode.
@@ -87,7 +97,7 @@ Number of workers
 ~~~~~~~~~~~~~~~~~
 
 You will be using torchrun (`PyTorch's Elastic Launch <https://pytorch.org/docs/stable/elastic/run.html>`__) to run some of the commands in this tutorial. When running the training script, you can configure the number of
-NeuronCores to use for training by using torchrun's :option:`--nproc_per_node` option. In this tutorial, we use 32 NeuronCores on trn1.32xlarge.
+NeuronCores to use for training by using torchrun's ``--nproc_per_node`` option. In this tutorial, we use 32 NeuronCores on trn1.32xlarge.
 
 .. note::
 
@@ -140,7 +150,7 @@ The pretokenized dataset is expected to be at ``~/examples_datasets/bert_pretrai
 
 .. note::
 
-    The command after ``neuron_parallel_compile`` should match the actual run command, except for the option :option:`--steps_this_run` which shortens the trial run just enough to allow the tool to build all the graphs needed for the actual run.
+    The command after ``neuron_parallel_compile`` should match the actual run command, except for the option ``--steps_this_run`` which shortens the trial run just enough to allow the tool to build all the graphs needed for the actual run.
 
 
 If you interrupt
@@ -150,15 +160,15 @@ execution, avoiding any recompilation time.
 
 Changes made to the BERT model configuration (layers, hidden
 size, attention heads in the get_model function), batch size (using
-:option:`--batch_size` option), optimizer or number of workers may trigger
+``--batch_size`` option), optimizer or number of workers may trigger
 graph recompilation. It is best to rerun the pre-compilation step above if these changes are made.
 
 You can adjust the following hyperparameters without changing the model
 and causing recompilation:
 
--  Number of global steps to run (:option:`--steps_this_run` option)
--  Learning rate (:option:`--lr` option)
--  Gradient accumulation steps > 1 (:option:`--grad_accum_usteps` option). If
+-  Number of global steps to run (``--steps_this_run`` option)
+-  Learning rate (``--lr`` option)
+-  Gradient accumulation steps > 1 (``--grad_accum_usteps`` option). If
    1 then there's no gradient accumulation and the graphs change causing
    recompilation.
 
@@ -254,8 +264,8 @@ the following:
    of the checkpoint (ckpt_2000.pt, ckpt_4000.pt, etc.). Currently, the
    training script saves a checkpoint after every dataset shard.
    The frequency of saving checkpoint can be reduced by increasing the number of
-   dataset shards per checkpoint, using option :option:`--shards_per_ckpt`.
-   Furthermore, the number of checkpoints kept at a given time is limited by :option:`--num_ckpts_to_keep` option (currently default to 1).
+   dataset shards per checkpoint, using option ``--shards_per_ckpt``.
+   Furthermore, the number of checkpoints kept at a given time is limited by ``--num_ckpts_to_keep`` option (currently default to 1).
 
 -  TensorBoard log files (each training run will store its logs in a
    subdirectory with prefix ``neuron_tblogs_``).
@@ -272,7 +282,7 @@ Monitoring Training Job Progress using neuron-top
 
 With the training job still running, launch a second SSH connection into
 the trn1 instance, and use the ``neuron-top`` command to examine the
-aggregate NeuronCore utilization. If you have not modified the :option:`--nproc_per_node` option
+aggregate NeuronCore utilization. If you have not modified the ``--nproc_per_node`` option
 in the run command, you should observe that
 all 32 NeuronCores are participating in the training job, with
 utilization fluctuating around 80%.
@@ -361,7 +371,7 @@ The script ``run_dp_bert_large_hf_pretrain_bf16_s128.sh`` is provided in the sam
 
 Phase 1 BERT-Large pretraining with AdamW and PyTorch Autocast (Automatic Mixed Precision or AMP)
 -------------------------------------------------------------------------------------------------
-Besides the :ref:`bf16_sr_phase1` , you can also use [PyTorch Autocast for XLA (Automatic Mixed Precision or AMP)](https://github.com/pytorch/xla/blob/master/docs/source/perf/amp.md), which automatically converts operations to either a lower precision (like Bfloat16) or Float32. This generally provides better performance over full Float32 due to higher compute density and lower memory footprint (:ref:`trn1_training_perf`).
+Besides the :ref:`bf16_sr_phase1` , you can also use [PyTorch Autocast for XLA (Automatic Mixed Precision or AMP)](https://github.com/pytorch/xla/blob/master/docs/source/perf/amp.md), which automatically converts operations to either a lower precision (like Bfloat16) or Float32. This generally provides better performance over full Float32 due to higher compute density and lower memory footprint.
 With the BERT-Large pretraining scripts you can use AMP by specifying the ``--enable_pt_autocast`` option without enabling stochatic rounding (``NEURON_RT_STOCHASTIC_ROUNDING_EN is not set``).
 
 .. literalinclude:: tutorial_source_code/bert_training/bert_amp_training_code.sh
@@ -642,7 +652,7 @@ BERT-large two worker pretraining hangs or run out of host memory during checkpo
 On trn1.2xlarge, where there's limited host memory and CPU resources,
 the BERT-large two worker pretraining may hang or run out of host memory during
 checkpointing. This problem can be worked around by not saving optimizer and
-LR scheduler states in the checkpoint. This is enabled by :option:`--minimal_ckpt` option
+LR scheduler states in the checkpoint. This is enabled by ``--minimal_ckpt`` option
 of the pretraining script.
 
 BERT precompilation using neuron_parallel_compile hangs when using torchrun

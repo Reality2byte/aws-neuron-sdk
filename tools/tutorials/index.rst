@@ -8,20 +8,12 @@ Tutorials
     :maxdepth: 1
 
     performance-profiling-vllm
-    multinode-training-model-profiling
     torch-neuronx-profiling-with-tb
     tutorial-tensorboard-scalars-mnist
     tutorial-neuron-monitor-mnist
 
 .. grid:: 1 2 2 2
    :gutter: 3
-
-   .. grid-item-card:: Profiling Multi-Node Training Jobs
-      :link: /tools/tutorials/multinode-training-model-profiling
-      :link-type: doc
-      :class-card: sd-border-1
-
-      Learn how to analyze performance during multi-node training on AWS Trainium instances with SLURM job scheduling.
 
    .. grid-item-card:: Profiling a vLLM Inference Workload
       :link: /tools/tutorials/performance-profiling-vllm

@@ -3,6 +3,10 @@
 Inference Samples/Tutorials (Inf2/Trn1/Trn2)
 ============================================
 
+.. important::
+
+   Some samples linked on this page have been archived and are provided for historical reference only. They are not tested with recent versions of the Neuron SDK. For the latest inference tutorials, refer to :ref:`NxD Inference Tutorials <nxdi-tutorials-index>`.
+
 .. contents:: Table of contents
    :local:
    :depth: 1
@@ -28,7 +32,7 @@ Encoders
      - torch-neuronx
      - * :ref:`BERT TorchServe tutorial <pytorch-tutorials-torchserve-neuronx>`
        * HuggingFace pretrained BERT tutorial :ref:`[html] </src/examples/pytorch/torch-neuronx/bert-base-cased-finetuned-mrpc-inference-on-trn1-tutorial.ipynb>` :pytorch-neuron-src:`[notebook] <torch-neuronx/bert-base-cased-finetuned-mrpc-inference-on-trn1-tutorial.ipynb>`
-       * `LibTorch C++ Tutorial for HuggingFace Pretrained BERT <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/frameworks/torch/torch-neuron/tutorials/tutorial-libtorch.html#pytorch-tutorials-libtorch>`_
+       * `LibTorch C++ Tutorial for HuggingFace Pretrained BERT <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/archive/torch-neuron/tutorials/tutorial-libtorch.html#pytorch-tutorials-libtorch>`_
        * `Compiling and Deploying HuggingFace Pretrained BERT on Inf2 on Amazon SageMaker <https://github.com/aws-neuron/aws-neuron-sagemaker-samples/blob/master/inference/inf2-bert-on-sagemaker/inf2_bert_sagemaker.ipynb>`_
 
 
@@ -39,11 +43,11 @@ Encoders
 
    * - bert-base-uncased
      - torch-neuronx
-     - * `HuggingFace Pretrained BERT Inference on Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_bert_inference_on_trn1.ipynb>`_
+     - * `HuggingFace Pretrained BERT Inference on Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_bert_inference_on_trn1.ipynb>`_
 
    * - distilbert-base-uncased
      - torch-neuronx
-     - * `HuggingFace Pretrained DistilBERT Inference on Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_distilbert_Inference_on_trn1.ipynb>`_
+     - * `HuggingFace Pretrained DistilBERT Inference on Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_distilbert_Inference_on_trn1.ipynb>`_
 
 
    * - roberta-base
@@ -53,7 +57,7 @@ Encoders
 
    * - roberta-large
      - torch-neuronx
-     - * `HuggingFace Pretrained RoBERTa Inference on Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_roberta_inference_on_frn1.ipynb>`_
+     - * `HuggingFace Pretrained RoBERTa Inference on Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_roberta_inference_on_frn1.ipynb>`_
 
 
 
@@ -74,7 +78,7 @@ Decoders
 
    * - gpt2
      - torch-neuronx
-     - * `HuggingFace Pretrained GPT2 Feature Extraction on Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_gpt2_feature_extraction_on_trn1.ipynb>`_
+     - * `HuggingFace Pretrained GPT2 Feature Extraction on Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_gpt2_feature_extraction_on_trn1.ipynb>`_
   
    * - meta-llama/Llama-3.3-70B
      - neuronx-distributed-inference
@@ -209,7 +213,7 @@ Vision Transformers
 
    * - clip-vit-base-patch32
      - torch-neuronx
-     - * `HuggingFace Pretrained CLIP Base Inference on Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_clip_base_inference_on_inf2.ipynb>`_
+     - * `HuggingFace Pretrained CLIP Base Inference on Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_clip_base_inference_on_inf2.ipynb>`_
 
 
    * - clip-vit-large-patch14
@@ -269,25 +273,25 @@ Stable Diffusion
 
    * - stable-diffusion-v1-5
      - torch-neuronx
-     - * `HuggingFace Stable Diffusion 1.5 (512x512) Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_sd15_512_inference.ipynb>`_
+     - * `HuggingFace Stable Diffusion 1.5 (512x512) Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_sd15_512_inference.ipynb>`_
 
    * - stable-diffusion-2-1-base
      - torch-neuronx
-     - * `HuggingFace Stable Diffusion 2.1 (512x512) Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_sd2_512_inference.ipynb>`_
+     - * `HuggingFace Stable Diffusion 2.1 (512x512) Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_sd2_512_inference.ipynb>`_
 
    * - stable-diffusion-2-1
      - torch-neuronx
-     - * `HuggingFace Stable Diffusion 2.1 (768x768) Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_sd2_768_inference.ipynb>`_
+     - * `HuggingFace Stable Diffusion 2.1 (768x768) Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_sd2_768_inference.ipynb>`_
        * `Deploy & Run Stable Diffusion on SageMaker and Inferentia2 <https://github.com/aws-neuron/aws-neuron-sagemaker-samples/blob/master/inference/stable-diffusion/StableDiffusion2_1.ipynb>`_
 
    * - stable-diffusion-xl-base-1.0
      - torch-neuronx
-     - * `HuggingFace Stable Diffusion XL 1.0 (1024x1024) Inference on Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_sdxl_base_1024_inference.ipynb>`_
-       * `HuggingFace Stable Diffusion XL 1.0 Base and Refiner (1024x1024) Inference on Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_sdxl_base_and_refiner_1024_inference.ipynb>`_
+     - * `HuggingFace Stable Diffusion XL 1.0 (1024x1024) Inference on Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_sdxl_base_1024_inference.ipynb>`_
+       * `HuggingFace Stable Diffusion XL 1.0 Base and Refiner (1024x1024) Inference on Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_sdxl_base_and_refiner_1024_inference.ipynb>`_
 
    * - stable-diffusion-2-inpainting
      - torch-neuronx
-     - * `stable-diffusion-2-inpainting model Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/tree/master/torch-neuronx/inference/hf_pretrained_sd2_inpainting_936_624_inference.ipynb>`_
+     - * `stable-diffusion-2-inpainting model Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/tree/master/archive/torch-neuronx/inference/hf_pretrained_sd2_inpainting_936_624_inference.ipynb>`_
 
 
 .. _diffusion_transformers_samples_inference_inf2_trn1:
@@ -307,7 +311,7 @@ Diffusion Transformers
 
    * - pixart-alpha
      - torch-neuronx
-     - * `HuggingFace PixArt Alpha (256x256, 512x512 square resolution) Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_pixart_alpha_inference_on_inf2.ipynb>`_
+     - * `HuggingFace PixArt Alpha (256x256, 512x512 square resolution) Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_pixart_alpha_inference_on_inf2.ipynb>`_
 
    * - pixart-sigma
      - torch-neuronx
@@ -333,7 +337,7 @@ Audio
    * - wav2vec2-conformer
      - torch-neuronx
      - * `Run HuggingFace Pretrained Wav2Vec2-Conformer with Rotary Position Embeddings Inference on Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_wav2vec2_conformer_rope_inference_on_inf2.ipynb>`_
-       * `Run HuggingFace Pretrained Wav2Vec2-Conformer with Relative Position Embeddings Inference on Inf2 & Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_wav2vec2_conformer_relpos_inference_on_inf2.ipynb>`_
+       * `Run HuggingFace Pretrained Wav2Vec2-Conformer with Relative Position Embeddings Inference on Inf2 & Trn1 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_wav2vec2_conformer_relpos_inference_on_inf2.ipynb>`_
 
 
 
@@ -361,12 +365,12 @@ Multi Modal
 
    * - language-perceiver
      - torch-neuronx
-     - * `HF Pretrained Perceiver Language Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_perceiver_language_inference.ipynb>`_
+     - * `HF Pretrained Perceiver Language Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_perceiver_language_inference.ipynb>`_
 
 
    * - vision-perceiver-conv
      - torch-neuronx
-     - * `HF Pretrained Perceiver Image Classification Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_perceiver_vision_inference.ipynb>`_
+     - * `HF Pretrained Perceiver Image Classification Inference on Trn1 / Inf2 <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_perceiver_vision_inference.ipynb>`_
 
 
 

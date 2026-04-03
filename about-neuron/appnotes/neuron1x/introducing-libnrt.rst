@@ -177,8 +177,8 @@ Neuron tools
 * ``neuron-monitor`` - ``neuron-monitor`` was updated to support Neuron Runtime 2.x (``libnrt.so``)
 
   * See :ref:`neuron-monitor-ug` for an updated user guide of ``neuron-monitor``.
-  * See :ref:`neuron-monitor-upg` for a list of changes between *Neuron Monitor 2.x* and *Neuron Monitor 1.0*
-  * See :ref:`neuron-monitor-bwc` for instructions for using *Neuron Monitor 2.x* with *Neuron Runtime 1.x* (``neuron-rtd``) .
+  * See neuron-monitor upgrade notes for a list of changes between *Neuron Monitor 2.x* and *Neuron Monitor 1.0*
+  * See neuron-monitor backward compatibility notes for instructions for using *Neuron Monitor 2.x* with *Neuron Runtime 1.x* (``neuron-rtd``) .
 
 
 
@@ -286,14 +286,14 @@ For a successful migration from previous releases of your application to *Neuron
 
 
 #. Neuron Tools
-    * If you are using Neuron Monitor, see :ref:`neuron-monitor-upg` for details.
+    * If you are using Neuron Monitor, see the neuron-monitor upgrade notes for details.
     * If you are using ``neuron-cli`` remove any call to ``neuron-cli``. For more information, see :ref:`maintenance_neuron-cli`.
 
 
 
 #. Containers
     If your application is running within a container, and it previously executed ``neuron-rtd`` within the container, you need
-    to re-build your container, so it will not include or install ``aws-neuron-runtime``. See :ref:`neuron-containers` and :ref:`containers-migration-to-runtime2` for details.
+    to re-build your container, so it will not include or install ``aws-neuron-runtime``. See :ref:`neuron-containers` for details.
 
 
 

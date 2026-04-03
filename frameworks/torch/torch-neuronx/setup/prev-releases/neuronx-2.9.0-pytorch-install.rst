@@ -1,5 +1,12 @@
 .. _install-neuronx-2.9.0-pytorch:
 
+
+.. meta::
+   :description: Install PyTorch NeuronX (Neuron 2.9.0) - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, setup, torch-neuronx, Neuron 2.9.0, previous release
+   :date-modified: 2026-03-30
+
+
 Install PyTorch NeuronX (Neuron 2.9.0)
 ======================================
 

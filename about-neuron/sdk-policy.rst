@@ -1,4 +1,5 @@
 .. _sdk-maintenance-policy:
+.. _neuron-maintenance-policy:
 
 Neuron Software Maintenance policy
 ==================================
@@ -158,7 +159,7 @@ The following table outlines the details for each phase for Neuron software:
 | Release Candidate (RC)        | Once AWS identifies a release to be a stable product, it may be marked as a Release Candidate (RC).                  | This phase applies only to Neuron SDK            |
 |                               | This phase is usually short and during it AWS will provide for Neuron Software on an as-needed basis.                | and Neuron components                            |
 +-------------------------------+----------------------------------------------------------------------------------------------------------------------+--------------------------------------------------+
-| General Availability (Stable) | During this phase, AWS releases :ref:`regular <neuron-regular-updates>`updates for the Neuron Software based         |                                                  |
+| General Availability (Stable) | During this phase, AWS releases :ref:`regular <neuron-regular-updates>` updates for the Neuron Software based         |                                                  |
 |                               | on a predefined release cadence of the Neuron SDK or provides :ref:`maintenance updates <neuron-maintenance-updates>`|                                                  |
 |                               | for Neuron Software on an as-needed basis.                                                                           |                                                  |
 |                               | See :ref:`Neuron Software Classification <sdk-classification>` for more information                                  |                                                  |
@@ -181,7 +182,7 @@ The following table outlines the details for each phase for Neuron software:
 |                               | Customers can still use these resources at their own discretion, but it is highly recommended to upgrade             |                                                  |
 |                               | to the latest available versions                                                                                     |                                                  |
 |                               |                                                                                                                      |                                                  |
-|                               | End of Support Announcement: AWS will make a public :ref:`announcement <neuron-communication>` at least one month    |                                                  |                                     
+|                               | End of Support Announcement: AWS will make a public :ref:`announcement <neuron-communication>` at least one month    |                                                  |
 |                               | before a Neuron Software enters End of Support.                                                                      |                                                  |
 +-------------------------------+----------------------------------------------------------------------------------------------------------------------+--------------------------------------------------+
 

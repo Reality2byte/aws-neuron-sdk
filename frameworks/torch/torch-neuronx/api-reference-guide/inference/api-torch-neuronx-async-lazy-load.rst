@@ -1,5 +1,12 @@
 .. _torch_neuronx_lazy_async_load_api:
 
+
+.. meta::
+   :description: PyTorch NeuronX Lazy and Asynchronous Loading API - AWS Neuron SDK documentation
+   :keywords: API reference, AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 PyTorch NeuronX Lazy and Asynchronous Loading API
 ===================================================
 
@@ -120,6 +127,6 @@ To do so, simply call each API independently before saving the model with ``torc
 
 This will both delay loading the model onto the Neuron core, and make the load asynchronous.
 
-For another example usage, please refer to the `Github sample <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/inference/hf_pretrained_sd2_512_inference.ipynb>`_ we provide for running inference on HuggingFace Stable Diffusion 2.1,
+For another example usage, please refer to the `Github sample <https://github.com/aws-neuron/aws-neuron-samples/blob/master/archive/torch-neuronx/inference/hf_pretrained_sd2_512_inference.ipynb>`_ we provide for running inference on HuggingFace Stable Diffusion 2.1,
 where we use both ``lazy_load`` and ``async_load`` to speed up the total load time of the four Neuron models that make 
 up that pipeline.

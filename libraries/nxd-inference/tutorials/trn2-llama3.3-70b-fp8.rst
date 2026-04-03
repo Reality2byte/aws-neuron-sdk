@@ -25,7 +25,7 @@ see the `AWS Neuron Deep Learning Containers repository <https://github.com/aws-
 
 
 Step 1: Quantize the Llama3.3 70B b16 checkpoint to fp8 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 We first quantize the `original Llama3.3 70B model <https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct>`_ checkpoint using `modules from Neuronx Distributed <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/libraries/nxd-inference/developer_guides/custom-quantization.html#quantize-using-nxd>`_.
 In the below script, ``modules_to_not_convert`` contains the layers that are not being quantized to fp8. In this instance, we quantize only the mlp layers except the first and the last layer. If you have a similar FP8 checkpoint, you can skip this step and use that.
 Use the below code snippet to create a script for quantization and execute the script. This will create a fp8 checkpoint in the `output_path`.

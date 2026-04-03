@@ -1,5 +1,12 @@
 .. _pytorch-neuronx-install-cxx11:
 
+
+.. meta::
+   :description: Build torch-xla from source with C++11 ABI support for PyTorch NeuronX
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, setup, torch-neuronx, CXX11, C++11 ABI, build from source
+   :date-modified: 2026-03-30
+
+
 Install with support for C++11 ABI
 ==================================
 
@@ -132,7 +139,7 @@ FAQ
 ^^^
 
 When should I use a C++11 torch-neuronx wheel?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Distributions compiled with the new C++11 ABI should only be used in the
 following cases:

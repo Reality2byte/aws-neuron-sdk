@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: Misc (Training - torch-neuronx) - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training
+   :date-modified: 2026-03-13
+
+
 Misc (Training - torch-neuronx)
 ===============================
 
@@ -12,4 +19,7 @@ Misc (Training - torch-neuronx)
     /release-notes/components/pytorch
 
 
-.. include:: /frameworks/torch/torch-neuronx/misc-training.txt 
+* :ref:`pytorch-neuron-supported-operators`
+* :ref:`setup-trn1-multi-node-execution`
+* :ref:`pytorch-neuron-traning-troubleshooting`
+* :ref:`pytorch_rn`

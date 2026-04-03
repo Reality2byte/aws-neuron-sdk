@@ -1,4 +1,6 @@
 .. _pytorch-neuron-rn:
+.. _torch_neuron_core_placement_api:
+.. _pytorch-manual-partitioning-jn-tutorial:
 
 PyTorch Neuron (``torch-neuron``) release notes
 ===============================================
@@ -428,12 +430,12 @@ Summary
 ~~~~~~~
 
 - Added support for dictionary outputs using ``strict=False`` flag. See
-  :ref:`/frameworks/torch/torch-neuron/troubleshooting-guide.rst`.
+  :ref:`/archive/torch-neuron/troubleshooting-guide.rst`.
 - Updated ``aten::batch_norm`` to correctly implement the ``affine`` flag.
 - Added support for ``aten::erf`` and ``prim::DictConstruct``. See
   :ref:`neuron-cc-ops-pytorch`.
 - Added dynamic batch support. See
-  :ref:`/frameworks/torch/torch-neuron/api-compilation-python-api.rst`.
+  :ref:`/archive/torch-neuron/api-compilation-python-api.rst`.
 
 
 .. _neuron-torch-1410:

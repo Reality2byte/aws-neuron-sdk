@@ -1,7 +1,7 @@
 .. meta::
     :description: Complete release notes for the Neuron PyTorch framework component across all AWS Neuron SDK versions.
     :keywords: pytorch, torch-neuronx, torch-neuron, transformers-neuronx, release notes, aws neuron sdk
-    :date-modified: 02/26/2026
+    :date-modified: 04/09/2026
 
 .. _pytorch_rn:
 
@@ -10,9 +10,45 @@ Component Release Notes for Neuron PyTorch Framework
 
 The release notes for the Neuron PyTorch framework component. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
 
+.. _pytorch-2-29-0-rn:   
+
+PyTorch Framework [2.9.0.2.13.*] (Neuron 2.29.0 Release)
+--------------------------------------------------------
+
+**Date of Release**: 04/09/2026
+
+torch-neuronx
+~~~~~~~~~~~~~
+
+Updates
+^^^^^^^^
+* **PyTorch 2.7 and 2.8 are now End of Life**: Starting Neuron 2.29, PyTorch 2.7 and PyTorch 2.8 are now End of Life. If you require PyTorch 2.7 or PyTorch 2.8 support, use Neuron SDK 2.28.
+
+
+Breaking Changes
+^^^^^^^^^^^^^^^^
+* **PyTorch/XLA replaced by TorchNeuron in PyTorch 2.10**: Starting with PyTorch 2.10 support (planned for a future Neuron release), AWS Neuron will use PyTorch support via TorchNeuron instead of PyTorch/XLA. PyTorch 2.9 is the last version using PyTorch/XLA. Users will need to update their scripts when upgrading to PyTorch 2.10 or later. See :ref:`native-pytorch-trainium` for complete details.
+
+
+Bug Fixes
+^^^^^^^^^
+* No new bug fixes in this release.
+
+
+Known Issues
+^^^^^^^^^^^^
+* **Segmentation faults with certain vision models**: Vision models including ``yolos``, ``wav2vec2``, and ``convbert`` crash with segmentation faults during model tracing.
+
+  **How to check if affected**: If your model tracing fails with a segmentation fault, you are likely affected by this issue.
+
+  **Workaround**: Downgrade to torch-neuronx 2.8, which does not exhibit this issue.
+
+  See `GitHub issue #1265 <https://github.com/aws-neuron/aws-neuron-sdk/issues/1265>`_ for updates.
+
+
 .. _pytorch-2-28-0-rn:   
 
-PyTorch Framework [2.28.0] (Neuron 2.28.0 Release)
+PyTorch Framework (Neuron 2.28.0 Release)
 --------------------------------------------------------
 
 **Date of Release**: 02/26/2026
@@ -28,7 +64,7 @@ Improvements
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
-* **PyTorch/XLA replaced by TorchNeuron in PyTorch 2.10**: Starting with PyTorch 2.10 support (planned for a future Neuron release), AWS Neuron will use native PyTorch support via TorchNeuron instead of PyTorch/XLA. PyTorch 2.9 is the last version using PyTorch/XLA. Users will need to update their scripts when upgrading to PyTorch 2.10 or later. See :ref:`native-pytorch-trainium` for complete details.
+* **PyTorch/XLA replaced by TorchNeuron in PyTorch 2.10**: Starting with PyTorch 2.10 support (planned for a future Neuron release), AWS Neuron will use PyTorch support via TorchNeuron instead of PyTorch/XLA. PyTorch 2.9 is the last version using PyTorch/XLA. Users will need to update their scripts when upgrading to PyTorch 2.10 or later. See :ref:`native-pytorch-trainium` for complete details.
 
 Bug Fixes
 ^^^^^^^^^
@@ -50,7 +86,7 @@ Known Issues
 
   **Workaround**: Upgrade to torch-xla version 2.8.1 from public PyPI repositories, which resolve this performance issue.
 
-  See :doc:`/setup/torch-neuronx` for detailed installation instructions.
+  See :doc:`/setup/pytorch/index` for detailed installation instructions.
 
 * **PyTorch NeuronX 2.7 does not support Python 3.12**: torch-neuronx 2.7 supports Python 3.10 and 3.11 only. Python 3.12 is not supported in torch-neuronx 2.7.
 
@@ -63,7 +99,7 @@ Known Issues
 
 .. _pytorch-2-27-0-rn:
 
-PyTorch Framework [2.27.0] (Neuron 2.27.0 Release)
+PyTorch Framework (Neuron 2.27.0 Release)
 --------------------------------------------------------
 
 **Date of Release**: 12/19/2025
@@ -84,7 +120,7 @@ Breaking Changes
 ^^^^^^^^^^^^^^^^
 
 * PyTorch 2.6 has reached end-of-support since release 2.27.
-* Transitioning to PyTorch Native Support: In the next Neuron release that will support PyTorch 2.10, AWS Neuron will transition from PyTorch/XLA to native PyTorch support via TorchNeuron. PyTorch 2.9 will be the last version based on PyTorch/XLA.
+* Transitioning to PyTorch Native Support: In the next Neuron release that will support PyTorch 2.10, AWS Neuron will transition from PyTorch/XLA to PyTorch support via TorchNeuron. PyTorch 2.9 will be the last version based on PyTorch/XLA.
 
 Bug Fixes
 ^^^^^^^^^
@@ -102,7 +138,7 @@ Known Issues
 
 .. _pytorch-2-26-1-rn:
 
-PyTorch Framework [2.26.1] (Neuron 2.26.1 Release)
+PyTorch Framework (Neuron 2.26.1 Release)
 --------------------------------------------------------
 
 Date of Release: 10/29/2025
@@ -120,7 +156,7 @@ Bug Fixes
 
 .. _pytorch-2-26-0-rn:
 
-PyTorch Framework [2.26.0] (Neuron 2.26.0 Release)
+PyTorch Framework (Neuron 2.26.0 Release)
 --------------------------------------------------------
 
 Date of Release: 09/18/2025
@@ -196,7 +232,7 @@ Known Issues
 
 .. _pytorch-2-25-0-rn:
 
-PyTorch Framework [2.25.0] (Neuron 2.25.0 Release)
+PyTorch Framework (Neuron 2.25.0 Release)
 --------------------------------------------------------
 
 Date of Release: 07/31/2025
@@ -227,7 +263,7 @@ Known Issues
 
 .. _pytorch-2-21-1-rn:
 
-PyTorch Framework [2.21.1] (Neuron 2.21.1 Release)
+PyTorch Framework (Neuron 2.21.1 Release)
 --------------------------------------------------------
 
 Date of Release: 01/14/2025
@@ -245,7 +281,7 @@ Improvements
 
 .. _pytorch-2-21-0-rn:
 
-PyTorch Framework [2.21.0] (Neuron 2.21.0 Release)
+PyTorch Framework (Neuron 2.21.0 Release)
 --------------------------------------------------------
 
 Date of Release: 12/20/2024
@@ -281,7 +317,7 @@ Known Issues
 
 .. _pytorch-2-20-0-rn:
 
-PyTorch Framework [2.20.0] (Neuron 2.20.0 Release)
+PyTorch Framework (Neuron 2.20.0 Release)
 --------------------------------------------------------
 
 Date of Release: 09/16/2024
@@ -337,7 +373,7 @@ Bug Fixes
 
 .. _pytorch-2-19-0-rn:
 
-PyTorch Framework [2.19.0] (Neuron 2.19.0 Release)
+PyTorch Framework (Neuron 2.19.0 Release)
 --------------------------------------------------------
 
 Date of Release: 07/03/2024
@@ -394,7 +430,7 @@ Known Issues
 
 .. _pytorch-2-18-0-rn:
 
-PyTorch Framework [2.18.0] (Neuron 2.18.0 Release)
+PyTorch Framework (Neuron 2.18.0 Release)
 --------------------------------------------------------
 
 Date of Release: 04/10/2024
@@ -420,7 +456,7 @@ Known Issues
 
 .. _pytorch-2-17-0-rn:
 
-PyTorch Framework [2.17.0] (Neuron 2.17.0 Release)
+PyTorch Framework (Neuron 2.17.0 Release)
 --------------------------------------------------------
 
 Date of Release: 04/01/2024
@@ -459,7 +495,7 @@ Known Issues
 
 .. _pytorch-2-16-0-rn:
 
-PyTorch Framework [2.16.0] (Neuron 2.16.0 Release)
+PyTorch Framework (Neuron 2.16.0 Release)
 --------------------------------------------------------
 
 Date of Release: 12/21/2023
@@ -508,7 +544,7 @@ Known Issues
 
 .. _pytorch-2-15-0-rn:
 
-PyTorch Framework [2.15.0] (Neuron 2.15.0 Release)
+PyTorch Framework (Neuron 2.15.0 Release)
 --------------------------------------------------------
 
 Date of Release: 10/26/2023
@@ -545,7 +581,7 @@ Bug Fixes
 
 .. _pytorch-2-14-0-rn:
 
-PyTorch Framework [2.14.0] (Neuron 2.14.0 Release)
+PyTorch Framework (Neuron 2.14.0 Release)
 --------------------------------------------------------
 
 Date of Release: 09/15/2023
@@ -575,7 +611,7 @@ Known Issues
 
 .. _pytorch-2-13-0-rn:
 
-PyTorch Framework [2.13.0] (Neuron 2.13.0 Release)
+PyTorch Framework (Neuron 2.13.0 Release)
 --------------------------------------------------------
 
 Date of Release: 08/28/2023
@@ -626,7 +662,7 @@ Known Issues
 
 .. _pytorch-2-12-0-rn:
 
-PyTorch Framework [2.12.0] (Neuron 2.12.0 Release)
+PyTorch Framework (Neuron 2.12.0 Release)
 --------------------------------------------------------
 
 Date of Release: 07/21/2023
@@ -672,7 +708,7 @@ Known Issues
 
 .. _pytorch-2-11-0-rn:
 
-PyTorch Framework [2.11.0] (Neuron 2.11.0 Release)
+PyTorch Framework (Neuron 2.11.0 Release)
 --------------------------------------------------------
 
 Date of Release: 06/14/2023
@@ -712,7 +748,7 @@ Bug Fixes
 
 .. _pytorch-2-10-0-rn:
 
-PyTorch Framework [2.10.0] (Neuron 2.10.0 Release)
+PyTorch Framework (Neuron 2.10.0 Release)
 --------------------------------------------------------
 
 Date of Release: 05/01/2023

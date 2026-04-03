@@ -1,5 +1,6 @@
 #this requirement file is for Python 3.10
 
+enchant
 Sphinx==5.3
 sphinx-book-theme==1.0.0
 sphinx_design==0.3.0
@@ -25,6 +26,7 @@ traitlets
 nbformat
 numpy<2.0
 ml_dtypes>=0.5.0
+pandas
 sphinxcontrib-googleanalytics
 ipython
 sphinxcontrib.datatemplates

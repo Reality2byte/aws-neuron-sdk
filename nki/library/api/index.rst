@@ -1,6 +1,6 @@
 .. meta::
     :description: Reference for the pre-built NKI Library kernels included with the AWS Neuron SDK.
-    :date-modified: 02/13/2026
+    :date-modified: 04/09/2026
 
 .. _nkl_api_ref_home:
 
@@ -94,6 +94,15 @@ Cumulative Sum Kernels
    * - :doc:`Cumsum </nki/library/api/cumsum>`
      - Computes cumulative sum along the last dimension with optimized tiling.
 
+Core Subkernels
+~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :widths: 40 60
+
+   * - :doc:`Find Nonzero Indices </nki/library/api/find-nonzero-indices>`
+     - Finds indices of nonzero elements along the T dimension using GpSimd ``nonzero_with_count`` ISA.
+
 Experimental Kernels
 ---------------------
 
@@ -109,14 +118,56 @@ Attention Kernels
    * - :doc:`Attention Block TKG </nki/library/api/attention-block-tkg>`
      - Fused attention block for Token Generation that keeps all intermediate tensors in SBUF to minimize HBM traffic.
 
+Transformer Kernels
+~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :widths: 40 60
+
+   * - :doc:`Transformer TKG </nki/library/api/transformer-tkg>`
+     - Multi-layer transformer forward pass megakernel for token generation.
+
 Convolution Kernels
 ~~~~~~~~~~~~~~~~~~~~
 
 .. list-table::
    :widths: 40 60
 
+   * - :doc:`Conv1D </nki/library/api/conv1d>`
+     - 1D convolution using tensor engine with replication strategy.
    * - :doc:`Depthwise Conv1D </nki/library/api/depthwise-conv1d>`
      - Implements depthwise 1D convolution using implicit GEMM algorithm.
+
+Collective Communication Kernels
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :widths: 40 60
+
+   * - :doc:`Fine-Grained All-Gather </nki/library/api/fg-allgather>`
+     - Ring-based all-gather for TRN2 with double-buffered collective permute.
+   * - :doc:`FGCC (All-Gather + Matmul) </nki/library/api/fgcc>`
+     - Fused all-gather and matrix multiplication for TRN2.
+   * - :doc:`SBUF-to-SBUF All-Gather </nki/library/api/sb2sb-allgather>`
+     - SBUF-to-SBUF all-gather with variants for small and large tensors.
+
+MoE Subkernels
+~~~~~~~~~~~~~~~
+
+.. list-table::
+   :widths: 40 60
+
+   * - :doc:`Top-K Reduce </nki/library/api/topk-reduce>`
+     - MoE Top-K reduction across sparse all-to-all collective output.
+
+Dynamic Shape Kernels
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :widths: 40 60
+
+   * - :doc:`Dynamic Elementwise Add </nki/library/api/dynamic-elementwise-add>`
+     - Elementwise addition with runtime-variable M-dimension tiling.
 
 Loss Kernels
 ~~~~~~~~~~~~~
@@ -144,9 +195,14 @@ MoE Backward Kernels
     Attention CTE <attention-cte>
     Attention TKG <attention-tkg>
     Blockwise MM Backward <blockwise-mm-backward>
+    Conv1D <conv1d>
     Cross Entropy <cross-entropy>
     Cumsum <cumsum>
     Depthwise Conv1D <depthwise-conv1d>
+    Dynamic Elementwise Add <dynamic-elementwise-add>
+    FGCC <fgcc>
+    Find Nonzero Indices <find-nonzero-indices>
+    Fine-Grained All-Gather <fg-allgather>
     MLP <mlp>
     MoE CTE <moe-cte>
     MoE TKG <moe-tkg>
@@ -156,3 +212,6 @@ MoE Backward Kernels
     RMSNorm-Quant <rmsnorm-quant>
     RoPE <rope>
     Router Top-K <router-topk>
+    SBUF-to-SBUF All-Gather <sb2sb-allgather>
+    Top-K Reduce <topk-reduce>
+    Transformer TKG <transformer-tkg>

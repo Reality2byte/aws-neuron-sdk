@@ -1,5 +1,12 @@
 .. _pytorch-neuronx-install:
 
+
+.. meta::
+   :description: Install PyTorch NeuronX on AWS Trainium and Inferentia instances
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, setup, torch-neuronx, install, DLAMI, pip
+   :date-modified: 2026-03-30
+
+
 Install PyTorch NeuronX 
 ========================
 
@@ -10,6 +17,8 @@ Install PyTorch NeuronX
 
 Develop on AWS ML accelerator instance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Select the PyTorch version and AMI type tabs below to get the installation commands for your environment.
 
 .. tab-set::
 

@@ -211,4 +211,4 @@ Previous releases
 -----------------
 
 * :doc:`Neuron 2.25.0 </release-notes/prev/2.25.0/index>`
-* :doc:`Earlier releases </release-notes/prev/rn.html>`
+* :doc:`Earlier releases </release-notes/prev/rn>`

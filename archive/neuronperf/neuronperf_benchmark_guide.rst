@@ -228,7 +228,7 @@ Pipeline Mode
 By default, NeuronPerf will assume you intend to use DataParallel, with two exceptions:
 
 * You compiled your model using NeuronPerf for pipeline mode
-* You constructed a :ref:`neuronperf_model_index` that uses pipeline mode
+* You constructed a model index that uses pipeline mode
 
 You can also manually tell NeuronPerf that your model was compiled for pipeline mode. It is similar to how other arguments are passed.
 

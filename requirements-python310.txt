@@ -1,5 +1,6 @@
 #this requirement file is for Python 3.10
 
+enchant
 Sphinx==5
 sphinx-book-theme==1.0.0
 sphinx_design==0.3.0

@@ -20,7 +20,7 @@ Neuron Quick Links
                 * :ref:`pytorch-neuronx-main`
                 * :ref:`jax-neuron-main`
                 * :ref:`tensorflow-neuron-main`
-                * :ref:`mxnet-neuron-main`
+                * :doc:`MXNet Neuron (archived) </archive/mxnet-neuron/index>`
 
         .. grid-item-card:: ML libraries
 
@@ -38,7 +38,6 @@ Neuron Quick Links
                 * :ref:`Neuron Custom C++ Operators (beta) <neuron_c++customops>`
                 * :ref:`monitoring_tools`
                 * :ref:`profiling-tools`
-                * :ref:`other-tools`
                 * :ref:`setup-guide-index`
                 * :ref:`neuron-dlami-overview`
                 * :ref:`neuron_containers`
@@ -48,14 +47,11 @@ Neuron Quick Links
 
                 * :ref:`neuron-architecture-index`
                 * :ref:`neuron-features-index`
-                * :ref:`neuron-deep-dives-home`
                 * :ref:`neuron-appnotes-index`
                 * :ref:`neuron_faq`
                 * :ref:`general-troubleshooting`
 
         .. grid-item-card:: About AWS Neuron
 
-                * :ref:`latest-release`
-                * :ref:`neuron_roadmap`
-                * :ref:`neuron_support` 
+                * :ref:`neuron_release_notes`
 

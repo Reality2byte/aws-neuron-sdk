@@ -1,6 +1,6 @@
 .. meta::
     :description: API reference for kernel utility modules in the NKI Library.
-    :date-modified: 02/13/2026
+    :date-modified: 04/09/2026
 
 .. _nkl_kernel_utils_home:
 

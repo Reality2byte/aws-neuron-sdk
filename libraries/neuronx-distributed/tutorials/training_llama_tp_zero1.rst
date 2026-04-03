@@ -1,9 +1,12 @@
-.. _llama2_7b_tp_zero1_tutorial:
+.. _llama3_tp_zero1_tutorial:
 
-Training Llama3.1-8B, Llama3-8B and Llama2-7B with Tensor Parallelism and ZeRO-1 Optimizer
-========================================================================================================
+Training Llama3.1-8B and Llama3-8B with Tensor Parallelism and ZeRO-1 Optimizer
+=================================================================================
 
-In this section, we showcase how to pre-train Llama3.1-8B, Llama3 8B and Llama2 7B model on four Trn1.32xlarge instances 
+.. important::
+   Neuron will stop supporting XLA-based training support in a future release. For now, this tutorial is provided strictly for reference.
+
+In this section, we showcase how to pre-train Llama3.1-8B and Llama3 8B models on four Trn1.32xlarge instances 
 using the Neuron Distributed library. We will use AWS ParallelCluster to orchestrate the training jobs. 
 To train the LLama model in this example, we will apply the following optimizations using the 
 Neuron Distributed library:
@@ -57,13 +60,6 @@ If you want to pre-train Llama3 8B, you would need to run the following steps -
    :language: shell
    :lines: 5-6
 
-
-If you want to pre-train Llama2 7B, run the following steps -
-
-.. literalinclude:: nxd-source-code/llama_tp_zero1/llama_2_7b.sh
-   :language: shell
-   :lines: 5-6
-
 3. Installing the additional requirements
 
 .. literalinclude:: nxd-source-code/llama_tp_zero1/llama_tp_zero1_setup.sh
@@ -84,9 +80,7 @@ Run the following from ``~/examples/tp_zero1_llama_hf_pretrain`` directory:
 
    login(token='your_own_hugging_face_token')
 
-   tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B')  
-   # For llama2 uncomment line below
-   # tokenizer = AutoTokenizer.from_pretrained('meta-llama/Llama-2-7b-hf') 
+   tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B') 
 
    tokenizer.save_pretrained(".")
 
@@ -110,7 +104,7 @@ This could be because of a stale cache. Try deleting the cache using:
    :lines: 8
 
 
-At this point, you are all set to start training. The below tutorial uses ``Llama3 8B`` as an example. To run Llama2 7B, simply change the script from ``tp_zero1_llama3_8B_hf_pretrain.sh`` to ``tp_zero1_llama2_7B_hf_pretrain.sh``
+At this point, you are all set to start training. The below tutorial uses ``Llama3 8B`` as an example.
 
 Running training
 ^^^^^^^^^^^^^^^^
@@ -160,9 +154,8 @@ We coalesced parallel matrix multiply to improve throughput:
 * We coalesced ``query``, ``key`` and ``value`` into one matrix multiply
 * We coalesced ``gate_proj`` and ``up_proj`` into one matrix multiply
 
-Please check ``modeling_llama_nxd.py`` and ``tp_dp_gpt_neox_20b_hf_pretrain.py`` for details.
-`Note:` Because we coalesced the layers above, the `pretrained checkpoint provided here <https://huggingface.co/meta-llama/Llama-2-7b>`__ 
-cannot be loaded out of the box for fine-tuning, and would require preprocessing. The Q,K,V layers 
+Please check ``modeling_llama_nxd.py`` for details.
+`Note:` Because we coalesced the layers above, pretrained checkpoints cannot be loaded out of the box for fine-tuning, and would require preprocessing. The Q,K,V layers 
 and the gate_proj and up_proj layers need to be coalesced in the checkpoint before loading.
 
 **Logging**
@@ -268,4 +261,3 @@ This can be done as follows:
       optimizer.save_sharded_state_dict(flags.output_dir, num_workers_per_step=32)
 
 By default, `num_workers_per_step` is set to 8.
-

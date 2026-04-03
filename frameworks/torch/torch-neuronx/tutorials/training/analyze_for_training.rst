@@ -1,5 +1,12 @@
 .. _torch-analyze-for-training-tutorial:
 
+
+.. meta::
+   :description: Analyze for Training Tutorial - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training, tutorials
+   :date-modified: 2026-03-13
+
+
 Analyze for Training Tutorial
 ==============================
 

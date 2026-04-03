@@ -30,42 +30,6 @@ Key capabilities of JAX NeuronX include:
 
    JAX NeuronX is currently in beta. Some JAX functionality may not be fully supported. We welcome your feedback and contributions.
 
-.. grid:: 1 
-   :gutter: 3
-
-   .. grid-item-card:: JAX NeuronX Component Release Notes
-      :link: /release-notes/components/jax
-      :link-type: doc
-
-      Review the JAX NeuronX release notes for all versions of the Neuron SDK.
-
-.. grid:: 1 
-   :gutter: 3
-
-   .. grid-item-card:: Setup Guide
-      :link: jax-neuron-setup
-      :link-type: ref
-
-      Install and configure JAX NeuronX for Trn1, Trn2, and Inf2 instances
-
-   .. grid-item-card:: API Reference Guide
-      :link: jax-neuronx-api-reference-guide
-      :link-type: ref
-
-      Comprehensive API reference for JAX NeuronX features and environment variables
-
-   .. grid-item-card:: Known Issues
-      :link: /frameworks/jax/setup/jax-neuronx-known-issues
-      :link-type: doc
-
-      Review known issues and limitations in the current JAX NeuronX release
-
-   .. grid-item-card:: Neuron Kernel Interface (NKI)
-      :link: /nki/index
-      :link-type: doc
-
-      Learn about NKI for custom kernel development with JAX
-
 .. toctree::
    :maxdepth: 1
    :hidden:
@@ -74,3 +38,56 @@ Key capabilities of JAX NeuronX include:
    /frameworks/jax/setup/jax-neuronx-known-issues
    /frameworks/jax/api-reference-guide/index
    Release Notes </release-notes/components/jax>
+
+Get Started
+------------
+
+.. grid:: 2
+    :gutter: 2
+
+    .. grid-item-card:: Setup Guide
+        :link: jax-neuron-setup
+        :link-type: ref
+        :class-header: sd-bg-primary sd-text-white
+
+        Install and configure JAX NeuronX for Trn1, Trn2, and Inf2 instances.
+
+    .. grid-item-card:: Neuron Kernel Interface (NKI)
+        :link: /nki/index
+        :link-type: doc
+        :class-header: sd-bg-primary sd-text-white
+
+        Learn about NKI for custom kernel development with JAX.
+
+Reference
+----------
+
+.. grid:: 2
+    :gutter: 2
+
+    .. grid-item-card:: API Reference Guide
+        :link: jax-neuronx-api-reference-guide
+        :link-type: ref
+        :class-header: sd-bg-primary sd-text-white
+
+        Comprehensive API reference for JAX NeuronX features and environment variables.
+
+    .. grid-item-card:: Known Issues
+        :link: /frameworks/jax/setup/jax-neuronx-known-issues
+        :link-type: doc
+        :class-header: sd-bg-primary sd-text-white
+
+        Review known issues and limitations in the current JAX NeuronX release.
+
+Release Notes
+--------------
+
+.. grid:: 2
+    :gutter: 2
+
+    .. grid-item-card:: JAX NeuronX Component Release Notes
+        :link: /release-notes/components/jax
+        :link-type: doc
+        :class-header: sd-bg-primary sd-text-white
+
+        Review the JAX NeuronX release notes for all versions of the Neuron SDK.

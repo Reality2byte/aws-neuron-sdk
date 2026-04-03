@@ -297,7 +297,7 @@ the cache backend). For more detailed information, see the
 
 
 int8 weight storage support
-------------------------
+---------------------------
 
 Transformers Neuron supports int8 weight storage for the ``GPT2`` model class.
 int8 weight storage can be used to reduce memory bandwidth usage to improve
@@ -547,7 +547,7 @@ To set the compilation worker count, use the ``compilation_worker_count`` argume
 
 
 Grouped-query attention (GQA) support [Beta]
-----------------------------
+---------------------------------------------
 
 Transformers Neuron supports grouped-query attention (GQA) models for
 ``Llama`` and ``Mistral`` model classes.
@@ -593,7 +593,7 @@ perform inference with the ``Mistral`` model:
 Repeated Ngram Filtering
 ------------------------
 
-Repeated Ngram Filtering reduces redundant ngram phrases within the generated text. It uses the same API as :ref:`HuggingFace API for NoRepeatedNGram <https://huggingface.co/docs/transformers/v4.38.2/en/internal/generation_utils#transformers.NoRepeatNGramLogitsProcessor>`. Set the parameter no_repeat_ngram_size to the size of ngram phrases to be filtered and pass it to the sampling function as in the example ``model.sample(inputs_ids, no_repeat_ngram_size=3)``
+Repeated Ngram Filtering reduces redundant ngram phrases within the generated text. It uses the same API as `HuggingFace API for NoRepeatedNGram <https://huggingface.co/docs/transformers/v4.38.2/en/internal/generation_utils#transformers.NoRepeatNGramLogitsProcessor>`__. Set the parameter no_repeat_ngram_size to the size of ngram phrases to be filtered and pass it to the sampling function as in the example ``model.sample(inputs_ids, no_repeat_ngram_size=3)``
 
 
 On-device sampling support [Beta]
@@ -607,7 +607,7 @@ In the following example, we demonstrate how to use on-device generation for a `
 
 
 Top-K on-device sampling support [Beta]
---------------------------------------
+---------------------------------------
 Transformers Neuron supports Top-K Sampling on-device for all models except Mixtral models.
 In the following example, we demonstrate how to use on-device Top-K for the ``Llama`` model via
 the ``GenerationConfig`` and ``NeuronConfig`` configs.
@@ -1215,7 +1215,7 @@ Node 2 command line (same as Node 1 but set ``NEURON_RANK_ID`` as 1):
 
     NEURON_RT_ROOT_COMM_ID=10.1.201.64:63423 NEURON_RANK_ID=1 NEURON_LOCAL_TP=32 python3 multi_node_dev_example.py
 
-You can also refer to  `Tutorial <https://github.com/aws-neuron/aws-neuron-samples/tree/master/torch-neuronx/transformers-neuronx/inference/llama-3.1-405b-multinode-16k-sampling.ipynb>`_ to run lama 3.1 405b multinode 16k tutorial with multi-node tensor parallel.
+You can also refer to  `Tutorial <https://github.com/aws-neuron/aws-neuron-samples/tree/master/torch-neuronx/transformers-neuronx/inference/llama-3.1-405b-multinode-16k-sampling.ipynb>`__ to run lama 3.1 405b multinode 16k tutorial with multi-node tensor parallel.
 
 **Multi-Node Pipeline Parallel**
 
@@ -1251,7 +1251,7 @@ Long Sequence length support up to 128k
 ---------------------------------------
 **Flash Attention**
 
-With the integration of FlashAttention kernel, developers can use longer sequence lengths for LLAMA models. The Flash Attention kernel is automatically used when the input sequence length is greater than 8k without any additional configuration. Refer to `Tutorial <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/transformers-neuronx/inference/llama-3-8b-32k-sampling.ipynb>`_ for usage of 32k sequence length on a variation of LLAMA3-8B Model.
+With the integration of FlashAttention kernel, developers can use longer sequence lengths for LLAMA models. The Flash Attention kernel is automatically used when the input sequence length is greater than 8k without any additional configuration. Refer to `Tutorial <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/transformers-neuronx/inference/llama-3-8b-32k-sampling.ipynb>`__ for usage of 32k sequence length on a variation of LLAMA3-8B Model.
 
 **Flash Decoding**
 
@@ -1266,7 +1266,7 @@ tasks in large language models (LLMs) with GQA.
 With integration of FD, developers can achieve faster inference with larger sequence
 and batch size by reducing the KV cache replication.
 Refer to `Tutorial <https://github.com/aws-neuron/aws-neuron-samples/blob/master/torch-neuronx/transformers-neuronx
-/inference/llama-3.1-8b-128k-sampling.ipynb>`_ on flash decoding usage for 128k sequence length sampling. Flash decoding
+/inference/llama-3.1-8b-128k-sampling.ipynb>`__ on flash decoding usage for 128k sequence length sampling. Flash decoding
 can be enabled by setting the flag `shard_over_sequence=True` in `NeuronConfig`
 
 .. code-block:: python
@@ -1284,6 +1284,7 @@ Note that you can skip the first Allgather introduced by flash decoding at the c
 
 - Flash decoding is expected to have performance degradation (PTL) for smaller sequence and batch sizes. We recommend flash decoding when **batch-size x sequence length > 16k**
 - Flash decoding support is not enabled for the following features
+
  - Speculative Decoding
  - Multi Head Attention (MHA) models
 

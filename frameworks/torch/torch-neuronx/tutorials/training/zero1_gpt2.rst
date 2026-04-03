@@ -1,7 +1,17 @@
 .. _zero1-gpt2-pretraining-tutorial:
 
+
+.. meta::
+   :description: ZeRO-1 Tutorial - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx, training, tutorials
+   :date-modified: 2026-03-13
+
+
 ZeRO-1 Tutorial
 ===============
+
+.. important::
+   Neuron will stop supporting XLA-based training support in a future release. For now, this tutorial is provided strictly for reference.
 
 What is ZeRO-1?
 ---------------
@@ -169,10 +179,8 @@ Training
 
 The GPT2 python fine-tuning script is adapted from the example
 `run_clm_no_trainer.py <https://github.com/huggingface/transformers/blob/main/examples/pytorch/language-modeling/run_clm_no_trainer.py>`__
-in
-https://github.com/huggingface/transformers/tree/main/examples/pytorch/language-modeling.
-It incorporates the Accelerate
-https://github.com/huggingface/accelerate. Given its beta stage,
+in the `Transformers language modeling examples <https://github.com/huggingface/transformers/tree/main/examples/pytorch/language-modeling>`__.
+It incorporates the `Accelerate <https://github.com/huggingface/accelerate>`__ library. Given its beta stage,
 some modifications are needed, along with the bridge code to XLA.
 Particularly, some workarounds to support Accelerate for the training
 script are listed in "Known Issues Workarounds and Limitations" below.

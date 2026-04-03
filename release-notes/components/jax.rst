@@ -1,12 +1,14 @@
 .. meta::
     :description: Complete release notes for the JAX NeuronX component across all AWS Neuron SDK versions.
     :keywords: jax neuronx, jax, release notes, aws neuron sdk
-    :date-modified: 09/18/2025
+    :date-modified: 04/03/2026
 
 .. _jax_rn:
 
 Component Release Notes for JAX NeuronX
 ========================================
+
+**Latest Version (in 2.29.0)**: 0.7.0.1.0.*
 
 The release notes for the JAX NeuronX component. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
 

@@ -1,5 +1,12 @@
 .. _pytorch-neuron-supported-operators:
 
+
+.. meta::
+   :description: PyTorch Neuron (``torch-neuronx``) - Supported Operators - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 PyTorch Neuron (``torch-neuronx``) - Supported Operators
 ========================================================
 

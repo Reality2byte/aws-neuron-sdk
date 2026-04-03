@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: Misc (``torch-neuronx``) - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 Misc (``torch-neuronx``)
 ========================
 
@@ -7,5 +14,5 @@ Misc (``torch-neuronx``)
     
     /release-notes/components/pytorch
 
-.. include:: /frameworks/torch/torch-neuronx/misc-inference-torch-neuronx.txt
+* :ref:`pytorch_rn`
 

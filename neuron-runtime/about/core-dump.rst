@@ -19,7 +19,7 @@ Prerequisites
 * `Launch an EC2 instance <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html#ec2-launch-instance>`__
 * Use the latest :doc:`AWS Neuron Multi-Framework DLAMI </dlami/index>`
 * `Connect to the EC2 instance <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html>`__
-* Understand the  :doc:`AWS Neuron Kernel Interface </nki/getting_started>`
+* Understand the  :doc:`AWS Neuron Kernel Interface </nki/get-started/index>`
 
 Step 1: Setup the python virtual environment
 ---------------------------------------------

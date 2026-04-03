@@ -1,5 +1,6 @@
 
 .. _save_load_developer_guide:
+.. _neuronx_distributed_save_load_developer_guide:
 
 Developer guide for save/load checkpoint
 ========================================

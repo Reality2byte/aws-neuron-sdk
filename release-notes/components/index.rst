@@ -18,46 +18,49 @@ This page provides an index of all Neuron SDK component release notes. Each comp
      - Latest Component Version
    * - :doc:`Neuron Compiler <compiler>`
      - 2.27.0
-     - 2.15.54.0
+     - 2.24.5133.0
    * - :doc:`Neuron Containers <containers>`
-     - 2.28.0
-     - 2.28.0
+     - 2.29.0
+     - 2.29.0
    * - :doc:`Neuron Developer Tools <dev-tools>`
-     - 2.28.0
-     - 2.28.0
+     - 2.29.0
+     - 2.29.0
    * - :doc:`Neuron DLAMI <dlamis>`
-     - 2.28.0
-     - 2.28.0
+     - 2.29.0
+     - 2.29.0
    * - :doc:`JAX NeuronX <jax>`
      - 2.26.0
-     - 0.6.2.1.0.*
+     - 0.7.0.1.0.*
    * - :doc:`NKI Library <nki-lib>`
-     - 2.28.0
-     - 2.28.0
+     - 2.29.0
+     - 2.29.0
    * - :doc:`Neuron Kernel Interface <nki>`
-     - 2.28.0
-     - Beta 2 (0.2.0)
+     - 2.29.0
+     - 0.3.0
    * - :doc:`NxD Core <nxd-core>`
      - 2.26.0
-     - 0.15.22259
+     - 0.18.27753
    * - :doc:`NxD Inference <nxd-inference>`
-     - 2.28.0
-     - 0.8.16251
+     - 2.29.0
+     - 0.9.17334
    * - :doc:`NxD Training <nxd-training>`
      - 2.25.0
      - 1.5.0
    * - :doc:`PyTorch Neuron Framework (torch-neuronx) <pytorch>`
-     - 2.28.0
-     - 2.28.0
+     - 2.29.0
+     - 2.9.0.2.13.*
    * - :doc:`Neuron Runtime Library <runtime>`
-     - 2.28.0
-     - 2.30.50.0
+     - 2.29.0
+     - 2.31.24.0
    * - :doc:`Neuron Driver <runtime>`
-     - 2.28.0
-     - 2.26.5.0
+     - 2.29.0
+     - 2.26.10.0
    * - :doc:`Neuron Collectives <runtime>`
-     - 2.28.0
-     - 2.30.58.0
+     - 2.29.0
+     - 2.31.24.0
+   * - :doc:`vLLM Plugin for Neuron <nxd-inference>`
+     - 2.29.0
+     - 0.5.0
   
 * For older components and features that have not been updated recently or are out of support, see :doc:`../archive/index`.
 

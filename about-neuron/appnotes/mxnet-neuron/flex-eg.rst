@@ -10,7 +10,7 @@ Inf1 instances are available with a different number of Inferentia
 chips, each Inferentia chip is combined of 4 NeuronCores and an Inf1
 instance includes 4 to 64 NeuronCores depending on the instance size.
 With Neuron Runtime 1.x (neuron-rtd server), NeuronCores could be
-combined into :ref:`NeuronCore Groups (NCG) <neuron-core-group>`,
+combined into NeuronCore Groups (NCG),
 which were basic scheduling units of compiled neural network in Neuron.
 Creation of desired sized NCGs was done at the start of the application
 and could not be modified afterwards.

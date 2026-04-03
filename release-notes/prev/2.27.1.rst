@@ -28,7 +28,7 @@ Bug Fixes
 
 ----
 
-For information about known issues in Neuron DLCs, see the :doc:`Neuron DLC component release notes </release-notes/containers/neuron-dlc>`.
+For information about known issues in Neuron DLCs, see the :doc:`Neuron DLC component release notes </release-notes/components/containers>`.
 
 .. grid:: 1 
         :gutter: 2

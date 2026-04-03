@@ -5,11 +5,11 @@
    :nofollow:
    :description: This tutorial for the AWS Neuron SDK is currently archived and not maintained. It is provided for reference only.
 
-Training Llama-2-7B/13B/70B using Tensor Parallelism and Pipeline Parallelism with Neuron PyTorch-Lightning 
-=========================================================================================
+Training Llama-2-7B/13B/70B using Tensor Parallelism and Pipeline Parallelism with Neuron PyTorch-Lightning
+============================================================================================================
 
-In this section, we showcase to pretrain a Llama2 7B/13B/70B with Tensor Parallelism and Pipeline Parallel using Neuron PyTorch-Lightning APIs, please refer to  :ref:`Llama2 13B/70B Tutorial <llama2_tp_pp_tutorial>`
-and :ref:`Neuron PT-Lightning Developer Guide <_ptl_developer_guide>` for more context.
+In this section, we showcase to pretrain a Llama2 7B/13B/70B with Tensor Parallelism and Pipeline Parallel using Neuron PyTorch-Lightning APIs, please refer to  the Llama2 13B/70B Tutorial
+and the Neuron PT-Lightning Developer Guide for more context.
 
 
 Setting up environment:

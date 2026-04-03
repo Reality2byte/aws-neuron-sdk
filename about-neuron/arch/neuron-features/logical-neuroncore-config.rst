@@ -9,6 +9,10 @@ determines the number of NeuronCores exposed to your machine learning (ML) appli
 the compute and memory resources of multiple physical NeuronCores into a single logical NeuronCore. You can configure these settings 
 to reduce the number of worker process needed for training and deployment of large-scale models. 
 
+.. important::
+
+   LNC can only be set to **1** or **2**. These are the only supported values. On Trn2, each chip has 8 physical NeuronCores. With LNC=2 (default), these are grouped into 4 Logical NeuronCores. With LNC=1, all 8 physical cores are treated as individual logical NeuronCores. LNC applies only to Trn2 and Trn3 instances.
+
 
 
 .. contents:: Concepts

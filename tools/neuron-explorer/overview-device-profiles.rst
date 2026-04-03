@@ -102,6 +102,22 @@ The Current Selection Summary provides metrics for the current time window. Zoom
 
 .. image:: /tools/profiler/images/device-profile-11.png
 
+.. _box-selection-summary:
+
+Box Selection Summary
+~~~~~~~~~~~~~~~~~~~~~
+
+The Box Selection Summary provides metrics within a bounding box region. Select and drag regions within the timeline widget to update the summary.
+
+.. image:: /tools/profiler/images/box-select.gif
+
+Box selection is supported in a couple of ways:
+
+* Toggling the box selection button within the timeline widget
+* Clear selection with `esc` key
+
+Correponding summary information of the selected region is displayed within the box selection selection widget.
+
 Code Viewer
 ~~~~~~~~~~~
 

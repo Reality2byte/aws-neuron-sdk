@@ -12,7 +12,7 @@ Introduction
 
 This guide introduces :func:`torch.neuron.DataParallel`, a Python API that
 implements data parallelism on :class:`~torch.jit.ScriptModule` models created by the
-:ref:`/frameworks/torch-neuron/api-compilation-python-api.rst`.
+:doc:`Trace API </archive/torch-neuron/api-compilation-python-api>`.
 The following sections explain how data parallelism can improve the performance of
 inference workloads on Inferentia, including how :func:`torch.neuron.DataParallel`
 uses dynamic batching to run inference on variable input sizes. It covers an
@@ -158,14 +158,14 @@ The following sections provide example usages of the
 Default usage
 ^^^^^^^^^^^^^
 
-.. include:: /frameworks/torch/torch-neuron/torch-neuron-dataparallel-example-default.rst
+.. include:: /archive/torch-neuron/torch-neuron-dataparallel-example-default.rst
 
 .. _dataparallel_example_specify_ncs:
 
 Specifying NeuronCores
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. include:: /frameworks/torch/torch-neuron/torch-neuron-dataparallel-example-specify-ncs.rst
+.. include:: /archive/torch-neuron/torch-neuron-dataparallel-example-specify-ncs.rst
 
 
 .. _dataparallel_example_dim_neq_zero:
@@ -173,7 +173,7 @@ Specifying NeuronCores
 DataParallel with dim != 0
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. include:: /frameworks/torch/torch-neuron/torch-neuron-dataparallel-example-dim-neq-zero.rst
+.. include:: /archive/torch-neuron/torch-neuron-dataparallel-example-dim-neq-zero.rst
 
 
 .. _dataparallel_example_dynamic_batching:
@@ -181,7 +181,7 @@ DataParallel with dim != 0
 Dynamic batching
 ^^^^^^^^^^^^^^^^
 
-.. include:: /frameworks/torch/torch-neuron/torch-neuron-dataparallel-example-dynamic-batching.rst
+.. include:: /archive/torch-neuron/torch-neuron-dataparallel-example-dynamic-batching.rst
 
 
 .. _dataparallel_example_disable_dynamic_batching:
@@ -189,7 +189,7 @@ Dynamic batching
 Dynamic batching disabled
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. include:: /frameworks/torch/torch-neuron/torch-neuron-dataparallel-example-disable-dynamic-batching.rst
+.. include:: /archive/torch-neuron/torch-neuron-dataparallel-example-disable-dynamic-batching.rst
 
 
 Full tutorial with torch.neuron.DataParallel

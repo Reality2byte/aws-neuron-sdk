@@ -78,7 +78,7 @@ critical bug fixes and security issues only. Previous releases of ``neuron-cli``
 10/27/2021 - End of support for NeuronCore Groups (NCG)
 -------------------------------------------------------
 
-Before the introduction of *Neuron Runtime 2.x*, :ref:`NeuronCore Group (NCG) <neuron-core-group>` has been used by Neuron Runtime 1.x 
+Before the introduction of *Neuron Runtime 2.x*, NeuronCore Group (NCG) has been used by Neuron Runtime 1.x 
 to define an execution group of one or more NeuronCores where models can be loaded and executed. It also provided separation between processes.
    
 With the introduction of *Neuron Runtime 2.x*, the strict separation of NeuronCores into groups is no longer needed and NeuronCore Groups (NCG) is 

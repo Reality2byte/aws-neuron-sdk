@@ -1,5 +1,12 @@
 .. _torch_neuronx_core_placement_api:
 
+
+.. meta::
+   :description: PyTorch NeuronX NeuronCore Placement APIs - AWS Neuron SDK documentation
+   :keywords: API reference, AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 PyTorch NeuronX NeuronCore Placement APIs
 =========================================
 

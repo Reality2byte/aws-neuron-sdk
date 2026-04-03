@@ -120,6 +120,7 @@ Neuron Explorer introduces several new capabilities:
 - **Source Code Viewer**: Navigate between source code and profile data. See :doc:`how-to-link-view-source-code`.
 - **AI Recommendation Viewer**: Get AI-powered optimization suggestions for NKI profiles. See :doc:`overview-ai-recommendations`.
 - **Database Viewer**: Run custom queries on profiling data. See :doc:`overview-database-viewer`.
+- **Memory Viewer**: Get insight into memory allocation, usage patterns, and potential memory usage inefficiencies.
 - **Tensor Viewer**: Examine tensor information including shapes and memory usage. See :doc:`overview-tensor-viewer`.
 - **VSCode Extension**: View profiles directly in your IDE with native code linking support.
 - **System Trace Viewer**: Enhanced system-level profiling visualization. See :doc:`overview-system-profiles`.

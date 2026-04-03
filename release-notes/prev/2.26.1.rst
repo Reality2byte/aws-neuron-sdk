@@ -16,7 +16,7 @@ Release *2.26.1* of the AWS Neuron SDK includes bug fixes applied to the AWS Neu
 Bug fixes in this release
 --------------------------
 
-* Fix: To address an issue with out-of-memory errors in **torch-neuronx**, this release enables you to use the :doc:`Neuron Runtime API </neuron-runtime/nrt-api-guide>` to apply direct memory allocation.
+* Fix: To address an issue with out-of-memory errors in **torch-neuronx**, this release enables you to use the Neuron Runtime API to apply direct memory allocation.
 
 
 Resources

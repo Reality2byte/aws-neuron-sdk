@@ -1,5 +1,12 @@
 .. _jax-neuron-setup:
 
+
+.. meta::
+   :description: JAX NeuronX plugin Setup - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, JAX, JAX NeuronX, setup
+   :date-modified: 2026-03-13
+
+
 JAX NeuronX plugin Setup
 ------------------------------
 

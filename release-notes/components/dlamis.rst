@@ -1,18 +1,52 @@
 .. meta::
     :description: Complete release notes for the Neuron DLAMI component across all AWS Neuron SDK versions.
     :keywords: neuron dlami, deep learning ami, release notes, aws neuron sdk
-    :date-modified: 02/26/2026
+    :date-modified: 04/09/2026
 
 .. _dlamis_rn:
+.. _dlami-rn-known-issues:
 
 Component Release Notes for Neuron DLAMI
 =========================================
 
 The release notes for the Neuron DLAMI component. Read them for the details about the changes, improvements, and bug fixes for all release versions of the AWS Neuron SDK.
 
+.. _dlami-2-29-0-rn:   
+
+Neuron DLAMIs (Neuron 2.29.0 Release)
+------------------------------------------------------------------------
+
+
+Date of Release: 04/09/2026
+
+Improvements
+~~~~~~~~~~~~~~~
+
+* All Neuron packages and their dependencies have been upgraded to support AWS Neuron SDK version 2.29.0.
+
+
+Callouts
+~~~~~~~~~~~~~~~~
+
+.. important::
+    Announcing maintenance mode for NxDT and NxD Core Training APIs starting next release. Starting with Neuron 2.30.0, NxDT and NxD Core Training APIs are entering maintenance mode. Future releases will address critical security issues only and support will be gradually ended. The NxDT virtual environment in both single and multi-framework DLAMIs has been pinned to include ``neuronx_distributed_training-1.7.0``.
+
+    **How does this impact you?**
+
+    Existing NxDT/NxD Core users should stay on Neuron 2.28 and PyTorch 2.9 until ready to migrate to native PyTorch on Neuron (starting PyTorch 2.10). Customers are recommended to use native PyTorch with standard distributed primitives (DTensor, FSDP, DDP) and TorchTitan starting with Neuron 2.30.0 and PyTorch 2.10. A migration guide will be published in a coming release.
+
+    For more information, see :doc:`/frameworks/torch/pytorch-native-overview`.
+
+Breaking Changes
+~~~~~~~~~~~~~~~~
+
+* Ubuntu 22.04 Multi-Framework DLAMI End of Support: The Ubuntu 22.04 multi-framework DLAMI is no longer published starting with this release. Customers are advised to use the Ubuntu 24.04 multi-framework DLAMI instead.
+* PyTorch 2.8 End of Support: PyTorch 2.8 virtual environments have been removed from multi-framework DLAMIs. Customers should use PyTorch 2.9 virtual environments on Ubuntu 24.04.
+
+
 .. _dlami-2-28-0-rn:   
 
-Neuron DLAMIs [(Neuron 2.28.0 Release)
+Neuron DLAMIs (Neuron 2.28.0 Release)
 ------------------------------------------------------------------------
 
 Date of Release: 02/26/2026
@@ -26,7 +60,7 @@ Known Issues
 
 .. _dlami-2-27-1-rn:
 
-Neuron DLAMI [2.27.1] (Neuron 2.27.1 Release)
+Neuron DLAMI (Neuron 2.27.1 Release)
 -----------------------------------------------
 
 Date of Release: 01/14/2026
@@ -41,7 +75,7 @@ Improvements
 
 .. _dlami-2-27-0-rn:
 
-Neuron DLAMI [2.27.0] (Neuron 2.27.0 Release)
+Neuron DLAMI (Neuron 2.27.0 Release)
 -----------------------------------------------
 
 Date of Release: 12/19/2025
@@ -67,7 +101,7 @@ Breaking Changes
 
 .. _dlami-2-26-0-rn:
 
-Neuron DLAMI [2.26.0] (Neuron 2.26.0 Release)
+Neuron DLAMI (Neuron 2.26.0 Release)
 -----------------------------------------------
 
 Date of Release: 09/18/2025
@@ -89,7 +123,7 @@ Breaking Changes
 
 .. _dlami-2-25-0-rn:
 
-Neuron DLAMI [2.25.0] (Neuron 2.25.0 Release)
+Neuron DLAMI (Neuron 2.25.0 Release)
 -----------------------------------------------
 
 Date of Release: 07/31/2025
@@ -104,7 +138,7 @@ Improvements
 
 .. _dlami-2-24-0-rn:
 
-Neuron DLAMI [2.24.0] (Neuron 2.24.0 Release)
+Neuron DLAMI (Neuron 2.24.0 Release)
 -----------------------------------------------
 
 Date of Release: 06/24/2025
@@ -121,7 +155,7 @@ Improvements
 
 .. _dlami-2-23-0-rn:
 
-Neuron DLAMI [2.23.0] (Neuron 2.23.0 Release)
+Neuron DLAMI (Neuron 2.23.0 Release)
 -----------------------------------------------
 
 Date of Release: 05/19/2025
@@ -141,7 +175,7 @@ Improvements
 
 .. _dlami-2-22-0-rn:
 
-Neuron DLAMI [2.22.0] (Neuron 2.22.0 Release)
+Neuron DLAMI (Neuron 2.22.0 Release)
 -----------------------------------------------
 
 Date of Release: 04/03/2025
@@ -166,7 +200,7 @@ Bug Fixes
 
 .. _dlami-2-21-1-rn:
 
-Neuron DLAMI [2.21.1] (Neuron 2.21.1 Release)
+Neuron DLAMI (Neuron 2.21.1 Release)
 -----------------------------------------------
 
 Date of Release: 01/14/2025
@@ -186,7 +220,7 @@ Known Issues
 
 .. _dlami-2-21-0-rn:
 
-Neuron DLAMI [2.21.0] (Neuron 2.21.0 Release)
+Neuron DLAMI (Neuron 2.21.0 Release)
 -----------------------------------------------
 
 Date of Release: 12/20/2024
@@ -212,7 +246,7 @@ Breaking Changes
 
 .. _dlami-2-20-1-rn:
 
-Neuron DLAMI [2.20.1] (Neuron 2.20.1 Release)
+Neuron DLAMI (Neuron 2.20.1 Release)
 -----------------------------------------------
 
 Date of Release: 10/25/2024
@@ -227,7 +261,7 @@ Improvements
 
 .. _dlami-2-20-0-rn:
 
-Neuron DLAMI [2.20.0] (Neuron 2.20.0 Release)
+Neuron DLAMI (Neuron 2.20.0 Release)
 -----------------------------------------------
 
 Date of Release: 09/16/2024
@@ -243,7 +277,7 @@ Improvements
 
 .. _dlami-2-19-0-rn:
 
-Neuron DLAMI [2.19.0] (Neuron 2.19.0 Release)
+Neuron DLAMI (Neuron 2.19.0 Release)
 -----------------------------------------------
 
 Date of Release: 07/03/2024

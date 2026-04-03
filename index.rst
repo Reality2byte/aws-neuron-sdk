@@ -1,6 +1,6 @@
 .. meta::
    :description: AWS Neuron SDK enables high-performance deep learning and generative AI on AWS Inferentia and Trainium instances. Get started with PyTorch, JAX, and distributed training.
-   :date-modified: 2026-02-16
+   :date-modified: 2026-04-09
 
 .. _neuron_home:
 
@@ -11,7 +11,7 @@ AWS Neuron Documentation
 
 * **For more details, see** :doc:`What is AWS Neuron? </about-neuron/what-is-neuron>` and :doc:`What's New in AWS Neuron? </about-neuron/whats-new>`
 
-* **For the latest release notes, see** :doc:`AWS Neuron Release Notes </release-notes/index>`. The current release is :doc:`version 2.28.1 </release-notes/2.28.1>`, released on March 13, 2026.
+* **For the latest release notes, see** :doc:`AWS Neuron Release Notes </release-notes/index>`. The current release is :doc:`version 2.29.0 </release-notes/2.29.0>`, released on April 09, 2026.
 
 .. grid:: 1
    :gutter: 3
@@ -144,8 +144,10 @@ Learn more about AWS Neuron
    .. grid-item-card:: **Legacy Documentation and Samples**
       :class-card: sd-border-1
 
-      * :doc:`Apache MXNet </frameworks/mxnet-neuron/index>`
-      * :doc:`Archived content </archive/index>`
+      * :doc:`Apache MXNet </archive/mxnet-neuron/index>`
+      * :doc:`TensorFlow Neuron </archive/tensorflow/index>`
+      * :doc:`torch-neuron (Inf1) </archive/torch-neuron/index>`
+      * :doc:`All archived content </archive/index>`
 
 .. toctree::
    :maxdepth: 1
@@ -173,9 +175,8 @@ Learn more about AWS Neuron
    :hidden:
 
    Home </frameworks/index>
-   Native PyTorch </frameworks/torch/pytorch-native-overview>
-   PyTorch NeuronX </frameworks/torch/index>
-   JAX NeuronX </frameworks/jax/index>
+   PyTorch </frameworks/torch/index>
+   JAX </frameworks/jax/index>
 
 .. toctree::
    :maxdepth: 1
@@ -202,9 +203,6 @@ Learn more about AWS Neuron
 
    Home </tools/index>
    Neuron Explorer </tools/neuron-explorer/index>
-   Neuron Profiler 2.0 </tools/profiler/neuron-profiler-2-0-beta-user-guide>
-   Neuron Profiler </tools/profiler/neuron-profile-user-guide>
-   System Tools </tools/neuron-sys-tools/index>
 
 .. toctree::
    :maxdepth: 1

@@ -1,5 +1,12 @@
 .. _pytorch-neuronx-debug:
 
+
+.. meta::
+   :description: How to debug models in PyTorch NeuronX - AWS Neuron SDK documentation
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, debugging, torch-neuronx, training
+   :date-modified: 2026-03-13
+
+
 How to debug models in PyTorch NeuronX
 =======================================
 
@@ -173,7 +180,7 @@ api for this purpose. With this api, you pass in the tensors that needs to
 be visualized/printed. The added tensors would then be preserved in the
 graph and can be printed as part of the callback function passed to the
 api. Here is a sample usage:
-https://github.com/pytorch/xla/blob/master/test/test_train_mp_mnist.py#L133
+`test_train_mp_mnist.py <https://github.com/pytorch/xla/blob/master/test/test_train_mp_mnist.py#L133>`__
 
 **Note:** Graph compilations can take time as the compiler optimizes the graph to run on device.
 

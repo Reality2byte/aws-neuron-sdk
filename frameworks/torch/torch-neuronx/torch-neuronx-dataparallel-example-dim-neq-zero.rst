@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: AWS Neuron SDK documentation for torch neuronx dataparallel example dim neq zero
+   :keywords: AWS Neuron, Inferentia, PyTorch, Trainium, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 In this example we run DataParallel inference using two NeuronCores and
 ``dim = 2``. Because ``dim != 0``, dynamic batching is not enabled.
 Consequently, the DataParallel inference-time batch size must be two times the

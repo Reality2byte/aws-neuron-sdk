@@ -24,7 +24,7 @@ The following steps show how to launch a Trainium EC2 instance using the latest 
 
 1. Launch a Trainium instance (trn1.32xlarge, trn2.3xlarge, trn2.48xlarge)
     1. Option 1: Launch the instance using the latest AWS Deep Learning AMI (DLAMI), which includes the Neuron SDK preinstalled. Once the instance is launched, please SSH into it and use the virtual environment for neuronx-distributed-inference by following this command -
-        1. ``source /opt/aws_neuronx_venv_pytorch_2_8_nxd_inference/bin/activate``
+        1. ``source /opt/aws_neuronx_venv_pytorch_2_9_nxd_inference/bin/activate``
     2. Option 2: If using a fresh Linux instance, manually install the latest Neuron packages by following the AWS Neuron installation guide.
 2. Install vLLM
     1. Refer to the Neuron documentation which outlines how to install the Neuron vLLM fork from source.

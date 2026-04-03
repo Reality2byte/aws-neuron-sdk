@@ -35,102 +35,6 @@ If profiling was successful, you will see NEFF (``.neff``) and NTFF (``.ntff``) 
 
 Device profiles for the first execution of each NEFF per NeuronCore are captured, and NEFF/NTFF pairs with the same prefix (for PyTorch) or unique hash (for JAX or CLI) must be uploaded together. See the section on :ref:`uploading profiles <profile-manager-upload-profile>` for more details.
 
-PyTorch Profiling API
-~~~~~~~~~~~~~~~~~~~~~
-
-The context-managed profiling API in ``torch_neuronx.experimental.profiler`` allows you to profile specific blocks of code. To use the profiling API, import it into your application:
-
-.. code-block:: python
-
-   from torch_neuronx.experimental import profiler
-
-Then, profile a block of code using the following code:
-
-.. code-block:: python
-
-   with torch_neuronx.experimental.profiler.profile(
-           profile_type='operator',
-           target='neuron_profile',
-           output_dir='./output') as profiler:
-
-Full code example:
-
-.. code-block:: python
-
-   import os
-
-   import torch
-   import torch.nn as nn
-   import torch.nn.functional as F
-
-   # XLA imports
-   import torch_xla
-   import torch_xla.core.xla_model as xm
-   import torch_xla.debug.profiler as xp
-
-   import torch_neuronx
-   from torch_neuronx.experimental import profiler
-
-   # Global constants
-   EPOCHS = 2
-
-   # Declare 3-layer MLP Model
-   class MLP(nn.Module):
-     def __init__(self, input_size = 10, output_size = 2, layers = [5, 5]):
-         super(MLP, self).__init__()
-         self.fc1 = nn.Linear(input_size, layers[0])
-         self.fc2 = nn.Linear(layers[0], layers[1])
-         self.fc3 = nn.Linear(layers[1], output_size)
-
-     def forward(self, x):
-         x = F.relu(self.fc1(x))
-         x = F.relu(self.fc2(x))
-         x = self.fc3(x)
-         return F.log_softmax(x, dim=1)
-
-
-   def main():
-       # Fix the random number generator seeds for reproducibility
-       torch.manual_seed(0)
-
-       # XLA: Specify XLA device (defaults to a NeuronCore on Trn1 instance)
-       device = xm.xla_device()
-
-       # Start the proflier context-manager
-       with torch_neuronx.experimental.profiler.profile(
-           profile_type='operator',
-           target='neuron_profile',
-           output_dir='./output') as profiler:
-
-           # IMPORTANT: the model has to be transferred to XLA within
-           # the context manager, otherwise profiling won't work
-           model = MLP().to(device)
-           optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
-           loss_fn = torch.nn.NLLLoss()
-
-           # start training loop
-           print('----------Training ---------------')
-           model.train()
-           for epoch in range(EPOCHS):
-               optimizer.zero_grad()
-               train_x = torch.randn(1,10).to(device)
-               train_label = torch.tensor([1]).to(device)
-
-               #forward
-               loss = loss_fn(model(train_x), train_label)
-
-               #back
-               loss.backward()
-               optimizer.step()
-
-               # XLA: collect ops and run them in XLA runtime
-               xm.mark_step()
-
-       print('----------End Training ---------------')
-
-   if __name__ == '__main__':
-       main()
-
 JAX Profiling API
 ~~~~~~~~~~~~~~~~~
 
@@ -655,10 +559,10 @@ Use the ``nrt_sys_trace_config_set_capture_enabled_for_event_type`` API to filte
     nrt_sys_trace_config_free(config);
 
 
-Processes-time Filtering
-------------------------
+Processing-time Filtering
+--------------------------
 
-**Processes-time filtering** preserves the complete trace and allows flexible analysis with different filters, but requires more memory and storage during capture.
+**Processing-time filtering** preserves the complete trace and allows flexible analysis with different filters, but requires more memory and storage during capture.
 Apply filters when viewing or processing already captured profiles. This approach allows you to 
 analyze the same trace data in different ways without recapturing. The filters can be used for any 
 ``neuron-explorer`` output format including ``--output-format json`` and ``--output-format perfetto``.
@@ -720,33 +624,10 @@ If the ``--system-trace-filter-instance-id`` argument is not set then events fro
 
     neuron-explorer view -d ./output --system-trace-filter-instance-id "i-abc123,i-def456,i-ghi789"
 
-
-View Profiles
--------------
-
-Use the ``neuron-explorer`` tool from ``aws-neuronx-tools`` to start the UI and API servers that are required for viewing profiles.
-
-.. code-block:: bash
-
-   neuron-explorer view --data-path .
-
-By default, the UI will be launched on port 3001 and the API server will be launched on port 3002.
-
-If this is launched on a remote EC2 instance, use port-forwarding to enable local viewing of the profiles.
-
-.. code-block:: bash
-
-   ssh -i <key.pem> <user>@<ip> -L 3001:locahost:3001 -L 3002:localhost:3002
-
-Neuron Explorer Browser UI
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-After the above setup, navigate to ``localhost:3001`` in the browser to view the NeuronExplorer UI.
-
 Processing only system or device profiles
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To reduce processing times it is possible to skip processing of system or device profiles. Sometimes users may only be interested in one or want to start with a limited set of profiling data before exploring the full profile.
+You can reduce processing times by skipping the processing of system or device profiles. Choose this when you are interested in only a specific profile, or when you want to start with a limited set of profiling data before exploring the full profile.
 
 To skip processing of device profiles use the ``--ignore-device-profile`` option. To skip processing of system profiles use the ``--ignore-system-profile`` option. These options can be used with the ``--output-format`` values ``parquet`` (default), ``perfetto``, or ``json``.
 
@@ -755,6 +636,39 @@ For example:
 .. code-block:: shell
 
     neuron-explorer view -d ./output --ignore-device-profile --output-format perfetto
+
+
+View Profiles
+-------------
+
+To view a profile in Neuron Explorer, follow these steps:
+
+1. **Start the Neuron Explorer UI and API servers** using the ``neuron-explorer`` tool from ``aws-neuronx-tools``:
+
+   .. code-block:: bash
+
+      neuron-explorer view --data-path /absolute/path/to/db
+
+   By default, the UI will be launched on port 3001 and the API server will be launched on port 3002.
+
+2. **Set up port-forwarding** (if running on a remote EC2 instance) to enable local viewing:
+
+   .. code-block:: bash
+
+      ssh -i <key.pem> <user>@<ip> -L 3001:localhost:3001 -L 3002:localhost:3002
+
+   note::
+      it is necessary to forward both 3001 (for the UI server) and 3002 (for the data server)
+
+3. **Open the UI** by navigating to ``localhost:3001`` in your browser.
+
+4. **Upload your profile** by clicking the **"Upload Profile"** button in the Profile Manager page. You can either:
+
+   * Upload the NEFF (``.neff``) and NTFF (``.ntff``) files individually using the "Individual Files" upload mode, or
+   * Upload the folder containing the NEFF and NTFF files using the "Directory Upload" mode.
+
+Neuron Explorer Browser UI
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. _neuron-explorer-profile-manager:
 
@@ -817,24 +731,14 @@ All uploaded profiles are provided in the Profile Manager page with details such
 
 Clicking on the name of profile takes you to its corresponding profile page.
 
-Neuron Explorer VSCode Extension
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Neuron Explorer for Visual Studio Code
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The UI is also available as a VSCode extension, enabling better native integration for features such as code linking.
 
-First, download the Visual Studio Code Extension (``.vsix``) file from https://github.com/aws-neuron/aws-neuron-sdk/releases/tag/v2.28.0.
+Install the Neuron Explorer extension from the Visual Studio Code Marketplace. Open the Extensions view in VSCode by pressing **Ctrl+Shift+X** (Windows/Linux) or **CMD+Shift+X** (MacOS), and search for ``AWS Neuron Explorer``. Select the extension published by **Amazon Web Services** in the sidebar, then click the blue **Install** button.
 
-.. grid:: 1
-   :gutter: 3
-
-   .. grid-item-card:: 
-      :class-card: sd-border-2
-
-      **Get the Neuron Explorer VSCode Extension**
-      ^^^
-      :download:`Neuron Explorer Visual Studio Code Extension </tools/neuron-explorer/downloads/aws-neuron.neuron-explorer-2.28.0.vsix>`
-
-Once downloaded, open the command palette by pressing **CMD+Shift+P** (MacOS) or **Ctrl+Shift+P** (Windows), type ``> Extensions: Install from VSIX...`` and press **Enter**. When you are prompted to select a file, select ``aws-neuron.neuron-explorer-2.28.0.vsix`` and then the **Install** button (or press **Enter**) to install the extension.
+.. TODO: Add screenshot of the Neuron Explorer extension in the VS Code Marketplace.
 
 .. image:: /tools/profiler/images/profile-workload-1.png
 

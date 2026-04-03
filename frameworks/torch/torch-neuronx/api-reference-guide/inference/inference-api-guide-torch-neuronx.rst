@@ -1,3 +1,10 @@
+
+.. meta::
+   :description: API Reference Guide  (``torch-neuronx``) - AWS Neuron SDK documentation
+   :keywords: API reference, AWS Neuron, Inferentia, PyTorch, Trainium, inference, torch-neuronx
+   :date-modified: 2026-03-13
+
+
 API Reference Guide  (``torch-neuronx``)
 ========================================
 
@@ -18,5 +25,10 @@ API Reference Guide  (``torch-neuronx``)
     :animate: fade-in
     :open:
 
-    .. include:: /frameworks/torch/torch-neuronx/api-reference-guide/inference/inference-api-guide-torch-neuronx.txt
+    * :ref:`torch_neuronx_trace_api`
+    * :ref:`torch_neuronx_replace_weights_api`
+    * :ref:`torch_neuronx_core_placement_api`
+    * :ref:`torch_neuronx_analyze_api`
+    * :ref:`torch_neuronx_dataparallel_api`
+    * :ref:`torch_neuronx_lazy_async_load_api`
 
