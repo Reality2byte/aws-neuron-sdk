@@ -73,6 +73,29 @@ Bug Fixes
 * Fixed BranchPrefetchHint addressing mode bug where backwards-relative branch hints computed incorrect target addresses on trn2 and later.
 * Fixed dynamically loaded kernel code carveout size on trn2 (16KB → 32KB) to support migrated operations.
 
+Compatibility Support Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Neuron runtime was tested for the following EC2 instances and configurations:
+
+=========================== ============= ============== ================= ===============
+Instance Family               OS Type       OS Version     Kernel Version    GLIBC Version
+=========================== ============= ============== ================= ===============
+``Inf2``                    Ubuntu        U24            6.17              2.39
+``Inf2``                    Ubuntu        U22            6.8               2.35
+``Inf2``                    Rocky Linux   RL9            5.14              2.34
+``Inf2``                    Amazon Linux  AL2023         6.12              2.34
+``Inf2``                    Amazon Linux  AL2023         6.1               2.34
+``Trn1``                    Ubuntu        U24            6.17              2.39
+``Trn1``                    Ubuntu        U22            6.8               2.35
+``Trn1``                    Rocky Linux   RL9            5.14              2.34
+``Trn1``                    Amazon Linux  AL2023         6.12              2.34
+``Trn1``                    Amazon Linux  AL2023         6.1               2.34
+``Trn2``                    Ubuntu        U24            6.17              2.39
+``Trn2``                    Ubuntu        U22            6.8               2.35
+``Trn2``                    Amazon Linux  AL2023         6.12              2.34
+``Trn2``                    Amazon Linux  AL2023         6.1               2.34
+=========================== ============= ============== ================= ===============
+
 Neuron Driver
 ~~~~~~~~~~~~~
 
@@ -85,6 +108,35 @@ New Features
 Improvements
 ^^^^^^^^^^^^
 * Added top-level DMA reset support during TPB reset on trn3 and later platforms, improving reset reliability.
+
+Compatibility Support Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Neuron driver was tested for the following EC2 instances and configurations:
+
+=========================== ============= ============== ================= ===============
+Instance Family               OS Type       OS Version     Kernel Version    GLIBC Version
+=========================== ============= ============== ================= ===============
+``Inf2``                    Ubuntu        U24            6.17              2.39
+``Inf2``                    Ubuntu        U22            6.8               2.35
+``Inf2``                    Rocky Linux   RL9            5.14              2.34
+``Inf2``                    Red Hat       RHEL10         6.12              2.39
+``Inf2``                    Amazon Linux  AL2023         6.12              2.34
+``Inf2``                    Amazon Linux  AL2023         6.1               2.34
+``Inf2``                    Amazon Linux  AL2            5.10              2.26
+``Trn1``                    Ubuntu        U24            6.17              2.39
+``Trn1``                    Ubuntu        U22            6.8               2.35
+``Trn1``                    Rocky Linux   RL9            5.14              2.34
+``Trn1``                    Red Hat       RHEL10         6.12              2.39
+``Trn1``                    Amazon Linux  AL2023         6.12              2.34
+``Trn1``                    Amazon Linux  AL2023         6.1               2.34
+``Trn1``                    Amazon Linux  AL2            5.10              2.26
+``Trn2``                    Ubuntu        U24            6.17              2.39
+``Trn2``                    Ubuntu        U22            6.8               2.35
+``Trn2``                    Red Hat       RHEL10         6.12              2.39
+``Trn2``                    Amazon Linux  AL2023         6.12              2.34
+``Trn2``                    Amazon Linux  AL2023         6.1               2.34
+``Trn2``                    Amazon Linux  AL2            5.10              2.26
+=========================== ============= ============== ================= ===============
 
 Neuron Collectives
 ~~~~~~~~~~~~~~~~~~~
