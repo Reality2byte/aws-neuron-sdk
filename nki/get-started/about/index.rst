@@ -331,7 +331,7 @@ For NKI kernels specifically, Neuron Explorer shows source-code level informatio
 
 This makes it easier than ever to optimize your NKI kernel performance.
 
-For a more in-depth example of profiling a NKI kernel with Neuron Explorer, see :doc:`/nki/deep-dives/use-neuron-profile` and the :doc:`Neuron Explorer documentation </tools/neuron-explorer/index>`.
+For a more in-depth example of profiling a NKI kernel with Neuron Explorer, see :doc:`/nki/guides/use-neuron-profile` and the :doc:`Neuron Explorer documentation </tools/neuron-explorer/index>`.
 
 Core Concepts
 ---------------
@@ -410,7 +410,7 @@ The print statement shows "adding tensors of type float16 and shape (128,512)" d
 Value Types and Data Structures
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The NKI language supports six basic value types:
+The NKI meta-programming language supports six basic value types:
 * None
 * Booleans
 * 32-bit integers

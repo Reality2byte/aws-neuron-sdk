@@ -85,9 +85,9 @@ Here is the kernel to perform the DMA transfer.
       Returns:
            out_tensor: an output tensor of shape [4,4096]
       """
-      out_tensor = hbm.view(dtype="bfloat16", shape=in_tensor.shape)
-      sbuf_tensor =  sbuf.view(dtype="bfloat16", shape=in_tensor.shape)
-      out_tile =  sbuf.view(dtype="bfloat16", shape=in_tensor.shape)
+      out_tensor = nl.ndarray(in_tensor.shape, dtype=nl.bfloat16, buffer=nl.shared_hbm)
+      sbuf_tensor = nl.ndarray(in_tensor.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
+      out_tile = nl.ndarray(in_tensor.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
    
       # Load input data from HBM to on-chip memory
       nisa.dma_copy(src=in_tensor[0:4, 0:4096], dst=sbuf_tensor)
@@ -157,9 +157,9 @@ Example
       Returns:
             out_tensor: an output tensor of shape [128,128]
       """
-      out_tensor = hbm.view(dtype="bfloat16", shape=in_tensor.shape)
-      sbuf_tensor =  sbuf.view(dtype="bfloat16", shape=in_tensor.shape)
-      out_tile =  sbuf.view(dtype="bfloat16", shape=in_tensor.shape)
+      out_tensor = nl.ndarray(in_tensor.shape, dtype=nl.bfloat16, buffer=nl.shared_hbm)
+      sbuf_tensor = nl.ndarray(in_tensor.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
+      out_tile = nl.ndarray(in_tensor.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
    
       # Load input data from HBM to on-chip memory
       nisa.dma_copy(src=in_tensor[0:128, 0:128], dst=sbuf_tensor)

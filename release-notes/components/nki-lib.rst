@@ -76,7 +76,7 @@ Bug Fixes
 * Fixed MLP CTE indexing in gate proj row scales.
 * Fixed QKV TKG ``sb2sb_wrapper_kernel`` signature missing QK-norm parameters.
 * Fixed MLP failure for FP4 quantization with specific dimension combinations (``vnc=2, h=3072, i=384``).
-* Fixed ``bwmm_shard_on_H`` with explicit TensorCopy from PSUM to SBUF for NKI Beta 3 compatibility.
+* Fixed ``bwmm_shard_on_H`` with explicit TensorCopy from PSUM to SBUF for NKI 0.3.0 compatibility.
 
 Known Issues
 ~~~~~~~~~~~~

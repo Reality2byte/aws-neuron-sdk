@@ -163,6 +163,10 @@ Known Issues
 
 * LNC2 requires identical control flow across cores — When running with Logical NeuronCore 2 (LNC2), the NKI compiler expects each physical NeuronCore to execute identical control flow. Programs with dynamic control flow that differs across cores may deadlock or produce incorrect results. This constraint is not enforced at compile time.
 
+**Caching**
+
+* NKI kernel caching assumes kernels are pure functions of their input arguments. If a kernel's output depends on external state (such as global variables or closures over mutable objects), the cache may return stale results. This is undefined behavior. Always ensure kernel outputs are determined solely by kernel arguments.
+
 
 .. _nki-2-28-0-rn:   
 
@@ -215,7 +219,7 @@ New Features
   * ``no_reorder`` blocks — use ``with no_reorder(): ...`` to prevent the compiler from reordering instructions within a block, for kernels where instruction ordering affects correctness
   * ``__call__`` special method support — callable objects (classes with ``__call__``) can now be used as functions within NKI kernels
   * ``tensor.view`` method — tensors now support ``.view()`` for reshaping
-  * :doc:`Shared constants </nki/api/generated/nki.language.shared_constant>` can now be passed to kernels as string arguments, not just tensor objects
+  * ``nl.shared_constant`` can now be passed to kernels as string arguments, not just tensor objects
 
 Improvements
 ~~~~~~~~~~~~
@@ -245,7 +249,7 @@ Breaking Changes
    been postponed from Neuron 2.28 to Neuron 2.29. Both the ``neuronxcc.nki.*`` 
    and ``nki.*`` namespaces continue to be supported in this release. We 
    encourage customers to migrate to the ``nki.*`` namespace using the 
-   :doc:`NKI Beta 2 Migration Guide </nki/deep-dives/nki-beta2-migration-guide>`.
+   :doc:`NKI Beta 2 Migration Guide </nki/migration/nki-beta2-migration-guide>`.
 
 Bug Fixes
 ~~~~~~~~~
@@ -325,7 +329,7 @@ Bug Fixes
   ``NotImplementedError("removed during code migration")`` message. Each now raises a specific
   message naming the unsupported API. Additionally, calling an ``nki.jit`` kernel with no
   arguments now raises a clear error instead.
-  See :doc:`NKI Beta 2 Migration Guide </nki/deep-dives/nki-beta2-migration-guide>`.
+  See :doc:`NKI Beta 2 Migration Guide </nki/migration/nki-beta2-migration-guide>`.
 
 * Fixed nested ``nki_jit`` decorators not being allowed. The NKI compiler only recognized
   ``@nki.jit``-decorated functions when they were plain function objects. Nested decorators
@@ -391,10 +395,10 @@ Improvements
   * added :doc:`Get Started with NKI </nki/get-started/quickstart-implement-run-kernel>`
   * added :doc:`NKI Language Guide </nki/get-started/nki-language-guide>`
   * added :doc:`About the NKI Compiler </nki/deep-dives/nki-compiler>`
-  * added :doc:`About NKI Beta 2 Migration </nki/deep-dives/nki-beta2-migration-guide>`
+  * added :doc:`About NKI Beta 2 Migration </nki/migration/nki-beta2-migration-guide>`
   * added :doc:`MXFP Matrix Multiplication with NKI </nki/deep-dives/mxfp-matmul>`
   * updated :doc:`Matrix Multiplication Tutorial </nki/guides/tutorials/matrix_multiplication>`
-  * updated :doc:`Profile a NKI Kernel </nki/deep-dives/use-neuron-profile>`
+  * updated :doc:`Profile a NKI Kernel </nki/guides/use-neuron-profile>`
   * updated :doc:`NKI APIs </nki/api/index>`
   * updated :doc:`NKI Library docs </nki/library/index>`
   * removed NKI Error Guide
@@ -534,7 +538,7 @@ Improvements
 * Documentation updates:
 
   * Kernels public repository https://aws-neuron.github.io/nki-samples
-  * Updated :doc:`profiling guide </nki/deep-dives/use-neuron-profile>` to use ``nki.profile`` instead of ``nki.benchmark``
+  * Updated :doc:`profiling guide </nki/guides/use-neuron-profile>` to use ``nki.profile`` instead of ``nki.benchmark``
   * NKI ISA Activation functions table now have :ref:`valid input data ranges<tbl-act-func>` listed
   * NKI ISA Supported Math operators now have :ref:`supported engine<tbl-aluop>` listed
   * Clarify ``+=`` syntax support/limitation

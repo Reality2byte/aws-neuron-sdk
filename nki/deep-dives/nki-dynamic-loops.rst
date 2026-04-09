@@ -132,10 +132,8 @@ at compile time---which is precisely when ``dynamic_range`` is needed.
 Interaction with ``no_reorder``
 ---------------------------------
 
-``dynamic_range`` loops are **not supported** inside a ``nl.no_reorder()``
-block. The ``no_reorder`` directive forces strict program-order execution,
-which requires the compiler to fully unroll the block---and that conflicts with
-the hardware loop mechanism.
+``dynamic_range`` loops inside a ``nl.no_reorder()`` block are not currently
+supported.
 
 .. code-block:: python
 
@@ -145,12 +143,9 @@ the hardware loop mechanism.
            ...
 
 ``affine_range``, ``sequential_range``, and ``static_range`` are all permitted
-inside ``no_reorder`` blocks because they are resolved or managed at compile
-time.
+inside ``no_reorder`` blocks.
 
-There are two ways to work around this. Either move the ``dynamic_range`` loop
-outside the ``no_reorder`` block, or place the ``no_reorder`` block inside the
-loop body:
+To work around this, place the ``no_reorder`` block inside the loop body:
 
 .. code-block:: python
 
@@ -203,27 +198,33 @@ Basic usage with a constant bound
 .. code-block:: python
 
    import nki.language as nl
+   import nki.isa as nisa
 
    for _ in nl.dynamic_range(1):
-       tile = nl.load(input_tensor[0:128, 0:512])
-       result = nl.multiply(tile, tile)
-       nl.store(out_tensor[0:128, 0:512], result)
+       tile = nl.ndarray((128, 512), dtype=nl.float32, buffer=nl.sbuf)
+       result = nl.ndarray((128, 512), dtype=nl.float32, buffer=nl.sbuf)
+       nisa.dma_copy(src=input_tensor[0:128, 0:512], dst=tile)
+       nisa.tensor_tensor(dst=result, data1=tile, data2=tile, op=nl.multiply)
+       nisa.dma_copy(src=result, dst=out_tensor[0:128, 0:512])
 
 Even with a constant bound, this generates a hardware loop instruction rather than unrolling.
 
-Runtime trip count from a VirtualRegister
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Runtime trip count from a ``VirtualRegister``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
    import nki.language as nl
    import nki.isa as nisa
 
-   num_tiles = nisa.register_alloc(4)
-   for i in nl.dynamic_range(num_tiles):
-       tile = nl.load(input_tensor[i * 128:(i + 1) * 128, 0:512])
-       result = nl.multiply(tile, 2.0)
-       nl.store(out_tensor[i * 128:(i + 1) * 128, 0:512], result)
+   start = nisa.register_alloc(0)
+   stop = nisa.register_alloc(512)
+   for i in nl.dynamic_range(start, stop, 128):
+       tile = nl.ndarray((128, 512), dtype=nl.float32, buffer=nl.sbuf)
+       result = nl.ndarray((128, 512), dtype=nl.float32, buffer=nl.sbuf)
+       nisa.dma_copy(src=input_tensor.ap([[512, 128], [1, 512]], scalar_offset=i), dst=tile)
+       nisa.tensor_scalar(dst=result, data=tile, op0=nl.add, operand0=2.0)
+       nisa.dma_copy(src=result, dst=out_tensor.ap([[512, 128], [1, 512]], scalar_offset=i))
 
 
 Specifying start, stop, and step
@@ -232,10 +233,11 @@ Specifying start, stop, and step
 .. code-block:: python
 
    import nki.language as nl
+   import nki.isa as nisa
 
    # Loop from `begin` to `end` with step 2
    # begin and end are VirtualRegisters; step must be a compile-time int
    begin = nisa.register_alloc(0)
    end = nisa.register_alloc(4)
-   for i in nl.dynamic_range(begin, end, step=2):
+   for i in nl.dynamic_range(begin, end, 2):
        ...

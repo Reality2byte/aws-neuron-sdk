@@ -85,7 +85,7 @@ Documentation Updates
 * Added :doc:`About NKI Beta Versions </nki/deep-dives/nki-beta-versions>`
 * Added :doc:`MXFP Matrix Multiplication with NKI </nki/deep-dives/mxfp-matmul>`
 * Updated :doc:`Matrix Multiplication Tutorial </nki/guides/tutorials/matrix_multiplication>`
-* Updated :doc:`Profile a NKI Kernel </nki/deep-dives/use-neuron-profile>`
+* Updated :doc:`Profile a NKI Kernel </nki/guides/use-neuron-profile>`
 * Updated :doc:`NKI APIs </nki/api/index>`
 * Updated :doc:`NKI Library docs </nki/library/index>`
 * Removed NKI Error Guide

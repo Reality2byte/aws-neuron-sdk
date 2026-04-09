@@ -832,7 +832,7 @@ Related concepts
 ----------------
 
 * :doc:`Tutorial: Matrix multiplication </nki/guides/tutorials/matrix_multiplication>`
-* :doc:`Profiling NKI kernels with Neuron Explorer </nki/deep-dives/use-neuron-profile>`
+* :doc:`Profiling NKI kernels with Neuron Explorer </nki/guides/use-neuron-profile>`
 
 Further reading
 ---------------

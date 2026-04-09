@@ -10,7 +10,7 @@ Trainium/Inferentia2 Architecture Guide for NKI
 
 In this guide, we will dive into hardware architecture of second-generation NeuronDevices: Trainium/Inferentia2.
 Our goal is to equip advanced Neuron users with sufficient architectural knowledge to write performant NKI kernels and
-troubleshoot performance issues on NeuronDevices using :doc:`Neuron Explorer </nki/deep-dives/use-neuron-profile>`,
+troubleshoot performance issues on NeuronDevices using :doc:`Neuron Explorer </nki/guides/use-neuron-profile>`,
 a profiler tool designed specifically for NeuronDevices. This guide is also written assuming readers have read
 through :doc:`NKI Language Guide </nki/get-started/nki-language-guide>` and familiarized themselves with key NKI concepts.
 
@@ -121,7 +121,7 @@ As shown in the diagram above, TensorE must **read** input matrices from **SBUF*
 PSUM also allows near-memory accumulation of multiple matrix multiplication output tiles (detailed usage discussed
 :ref:`here <arch_sec_accumulation_psum>`).
 
-In NKI, to perform a multiplication of two matrices, ``x[M, K]`` and ``y[K, N]``, you may invoke the NKI language API
+In NKI, to perform a multiplication of two matrices, ``x[M, K]`` and ``y[K, N]``, you may invoke the NKI ISA API
 ``nki.isa.nc_matmul(x, y)`` directly. The returned tile has a shape of ``[M, N]`` as expected. At the hardware level,
 TensorE requires both input tiles to have the **contraction dimension** ``K`` in the SBUF partition
 dimension, that is, the first dimension of input shapes (:ref:`Tiling Layout <nki-tile-layout>`).
@@ -404,7 +404,7 @@ depending on the output tile of the previous instruction, we need to add a stati
 to the above execution cost estimate.
 
 The above rules are for general guidance only. To find out the exact instruction costs for your NKI kernel, you may capture
-a detailed instruction execution trace on device using :doc:`neuron-profiler </nki/deep-dives/use-neuron-profile>`.
+a detailed instruction execution trace on device using :doc:`neuron-profiler </nki/guides/use-neuron-profile>`.
 
 
 Scalar Engine

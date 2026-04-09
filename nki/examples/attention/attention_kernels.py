@@ -791,7 +791,7 @@ def attn_fwd_v8a(q, k, v):
     assert d_head == PMAX
     assert seqlen_q >= 512
 
-    identity = nl.shared_constant(np.identity(128, dtype=np.int8), dtype=v.dtype)
+    identity = nl.shared_identity_matrix(n=128, dtype=v.dtype)
     identity_load = nl.ndarray((par_dim(128), 128), dtype=v.dtype,
                                buffer=nl.sbuf)
     identity_load[...] = nl.load(identity)
@@ -962,7 +962,7 @@ def attn_fwd_v9(q, k, v):
     assert d_head == PMAX
     assert seqlen_q >= 512
 
-    identity = nl.shared_constant(np.identity(128, dtype=np.int8), dtype=v.dtype)
+    identity = nl.shared_identity_matrix(n=128, dtype=v.dtype)
 
     identity_load = nl.ndarray((par_dim(128), 128), dtype=v.dtype, buffer=allocator.allocate(size=128, dtype=v.dtype))
     identity_load[...] = nl.load(identity)
@@ -1119,7 +1119,7 @@ def attn_fwd_v10(q, k, v):
     assert d_head == PMAX
     assert seqlen_q >= 512
 
-    identity = nl.shared_constant(np.identity(128, dtype=np.int8), dtype=v.dtype)
+    identity = nl.shared_identity_matrix(n=128, dtype=v.dtype)
 
     identity_load = nl.ndarray((par_dim(128), 128), dtype=v.dtype, buffer=allocator.allocate(size=128, dtype=v.dtype))
     identity_load[...] = nl.load(identity)
@@ -1279,7 +1279,7 @@ def attn_fwd_v11(q, k, v):
     assert d_head == PMAX
     assert seqlen_q >= 512
 
-    identity = nl.shared_constant(np.identity(128, dtype=np.int8), dtype=v.dtype)
+    identity = nl.shared_identity_matrix(n=128, dtype=v.dtype)
     identity_load = nl.ndarray((par_dim(128), 128), dtype=v.dtype,
                                buffer=nl.sbuf)
     identity_load[...] = nl.load(identity)

@@ -70,5 +70,6 @@ API Reference Guide
       :hidden:
 
       NKI FAQ <nki_faq>
+      Migration Guides <migration/index>
 
 

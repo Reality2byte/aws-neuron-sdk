@@ -120,7 +120,7 @@ Tutorials
    :gutter: 3
 
    .. grid-item-card:: Profile a NKI Kernel
-      :link: /nki/deep-dives/use-neuron-profile
+      :link: /nki/guides/use-neuron-profile
       :link-type: doc
       :class-card: sd-border-1
 

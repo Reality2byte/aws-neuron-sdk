@@ -253,8 +253,8 @@ NKI kernels go through a full compilation pipeline (NKI → NEFF binary). This m
 the simulator cannot catch compilation errors; a kernel that runs on the simulator may still fail
 to compile for hardware.
 
-Language Support
-^^^^^^^^^^^^^^^^
+NKI Meta-Programming Support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The simulator accepts any valid Python in the kernel body, including arbitrary classes, closures,
 and dynamic control flow. The NKI compiler, however, only supports a restricted subset of Python

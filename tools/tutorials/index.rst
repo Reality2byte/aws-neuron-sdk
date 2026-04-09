@@ -23,7 +23,7 @@ Tutorials
       Learn how to capture and analyze device-level and system-level profiles for vLLM inference workloads on AWS Trainium. 
 
    .. grid-item-card:: Profiling a NKI Kernel
-      :link: /nki/deep-dives/use-neuron-profile
+      :link: /nki/guides/use-neuron-profile
       :link-type: doc
       :class-card: sd-border-1
 

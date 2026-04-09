@@ -29,7 +29,7 @@ What's New in the AWS Neuron SDK
 
 .. _whats-new-2026-04-02-v2_29:
 
-AWS Neuron SDK 2.29.0: NKI Now Stable, CPU Simulator, and Expanded NKI Library
+AWS Neuron SDK 2.29.0: NKI Exits Beta, CPU Simulator, and Expanded NKI Library
 -------------------------------------------------------------------------------
 
 **Posted on**: April 09, 2026
@@ -48,7 +48,7 @@ AWS Neuron SDK 2.29.0 introduces NKI 0.3.0, the latest update to the Neuron Kern
 
 **New ISA and Hardware Features**: Added the ability to set DMA priority of DMA operations and collectives operations for Trn3 (NeuronCore-v4). A dedicated ``nki.isa.exponential`` instruction is optimized for vectorising exponents (``exp``) with VectorE. Matmul accumulation control is added via the ``accumulate`` parameter on ``nc_matmul`` and ``nc_matmul_mx``. Variable-length all-to-all collectives are now available via ``nki.collectives.all_to_all_v``.
 
-**Breaking Changes**: NKI 0.3.0 includes several API breaking changes that improve correctness and consistency. All kernels must be updated to NKI 0.3.0; mixing with Beta 2 kernels in the same model is not supported. For the full list of changes and migration examples, see the :doc:`NKI 0.3.0 Update Guide </nki/deep-dives/nki-0-3-0-update-guide>`.
+**Breaking Changes**: NKI 0.3.0 includes several API breaking changes that improve correctness and consistency. All kernels must be updated to NKI 0.3.0; mixing with Beta 2 kernels in the same model is not supported. For the full list of changes and migration examples, see the :doc:`NKI 0.3.0 Update Guide </nki/migration/nki-0-3-0-update-guide>`.
 
 For more details, see :ref:`nki-2-29-0-rn`.
 

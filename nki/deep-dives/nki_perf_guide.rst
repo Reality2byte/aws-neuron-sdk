@@ -4,7 +4,7 @@ NKI Performance Optimizations
 =============================
 
 In this document, we describe a recipe to find performance bottlenecks of NKI kernels and apply common software optimizations
-to address such bottlenecks. During this process, we will showcase how to leverage :doc:`neuron-profile </nki/deep-dives/use-neuron-profile>`,
+to address such bottlenecks. During this process, we will showcase how to leverage :doc:`neuron-profile </nki/guides/use-neuron-profile>`,
 a GUI-based performance profiler designed for NeuronDevices, to guide your performance optimization efforts. Before proceeding
 with this document, make sure to read through :doc:`NeuronDevice Architecture Guide </nki/guides/architecture/trainium_inferentia2_arch>`
 to familiarize yourself with Neuron hardware architecture.

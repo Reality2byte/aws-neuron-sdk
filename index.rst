@@ -239,6 +239,7 @@ Learn more about AWS Neuron
    Get Started </nki/get-started/index>
    Guides </nki/guides/index>
    Deep Dives </nki/deep-dives/index>
+   Migration Guides </nki/migration/index>
    NKI API Reference </nki/api/index>
    NKI Library </nki/library/index>
 

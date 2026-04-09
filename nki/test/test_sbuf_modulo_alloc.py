@@ -55,7 +55,7 @@ def allocated_loop_transpose(a_ptr, tp_ptr):
   ix0 = nl.arange(0, M1)[:, None]
   iy0 = nl.arange(0, N1)[None, :]
 
-  identity = nl.shared_constant(np.identity(n=128, dtype=np.int8), dtype=nl.bfloat16)
+  identity = nl.shared_identity_matrix(n=128, dtype=nl.bfloat16)
 
   for n0 in nl.affine_range(N0):
     for m0 in nl.affine_range(M0):

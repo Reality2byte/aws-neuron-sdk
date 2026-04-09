@@ -1,5 +1,3 @@
-:orphan:
-
 .. meta::
    :description: Best practices for migrating NKI kernels from Beta 1 to the Beta 2 NKI Compiler
    :keywords: NKI kernels, Neuron Kernel Interface, AWS Neuron SDK, kernel compilation, Trainium, Inferentia, machine learning acceleration
@@ -25,7 +23,7 @@ functions are compiled by the NKI Compiler and not evaluated by the Python
 interpreter. The goal is to offer a better programming experience with more 
 precise error messages.
 
-With the NKI Compiler, we have chosen to define the NKI language as a subset 
+With the NKI Compiler, we have chosen to define the NKI meta-programming language as a subset 
 of Python. This means that all NKI programs are valid Python programs, but not 
 all Python programs are valid NKI programs. The delineation is the ``nki.jit`` 
 decorator. Just as before, you mark your NKI kernels with the ``nki.jit`` 

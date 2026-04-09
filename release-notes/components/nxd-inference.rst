@@ -32,7 +32,7 @@ Improvements
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
-* NxD Inference no longer supports NKI kernels on Trn1/Inf2 hardware, as NKI Beta3 kernels are not supported on Trn1/Inf2. NxD Inference models are now only supported on Trn2 and newer hardware. Customers who require NxD Inference kernel support on Trn1 or Inf2 instances should pin to release 2.28.
+* NxD Inference no longer supports NKI kernels on Trn1/Inf2 hardware, as NKI 0.3.0 kernels are not supported on Trn1/Inf2. NxD Inference models are now only supported on Trn2 and newer hardware. Customers who require NxD Inference kernel support on Trn1 or Inf2 instances should pin to release 2.28.
 * The BWMM shard-on-hidden kernel previously used during prefill in Mixture-of-Experts models has been removed. Models that depend on this kernel (including Llama 4, Mixtral, and DBRX configurations) should be pinned to release 2.28 for optimal performance.
 
 Bug Fixes

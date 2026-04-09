@@ -123,6 +123,13 @@ How-To Guides
 
       Control instruction execution order using dependency edges and no-reorder blocks for kernel performance optimization.
 
+   .. grid-item-card:: Profiling a NKI Kernel with Neuron Explorer
+      :link: /nki/guides/use-neuron-profile
+      :link-type: doc
+      :class-body: sphinx-design-class-title-small
+
+      Profile NKI kernels using Neuron Explorer to analyze hardware-level performance.
+
 .. toctree::
    :maxdepth: 1
    :hidden:
@@ -132,3 +139,4 @@ How-To Guides
    NKI CPU Simulator </nki/guides/nki_simulator>
    Insert NKI Kernels into Models </nki/guides/framework_custom_op>
    Use NKI Scheduling APIs </nki/guides/how-to-scheduling-apis>
+   Profile a NKI Kernel </nki/guides/use-neuron-profile>

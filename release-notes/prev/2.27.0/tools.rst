@@ -43,7 +43,7 @@ This release introduces enhanced in-UI performance, simplified setup, and key fe
 - **AI Recommendation Viewer**: Provides AI-driven recommendations for optimizing your model based on profiling data, helping you identify bottlenecks and areas for improvement.
 - **Source Code Viewer**: Links profiling data back to your source code, enabling you to quickly identify and address performance issues in your codebase.
 - **Summary Viewer**: Offers a high-level overview of your model's performance metrics, resource utilization, and optimization opportunities.
-- Added tutorials: :doc:`How to Profile a NKI Kernel </nki/deep-dives/use-neuron-profile>`, :doc:`Profiling Multi-Node Training Jobs </tools/neuron-explorer/how-to-profile-workload>`, and :doc:`Profiling a vLLM Inference Workload </tools/tutorials/performance-profiling-vllm>`
+- Added tutorials: :doc:`How to Profile a NKI Kernel </nki/guides/use-neuron-profile>`, :doc:`Profiling Multi-Node Training Jobs </tools/neuron-explorer/how-to-profile-workload>`, and :doc:`Profiling a vLLM Inference Workload </tools/tutorials/performance-profiling-vllm>`
 
 .. note::
 

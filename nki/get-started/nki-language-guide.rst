@@ -1,7 +1,7 @@
 .. meta::
     :description: Comprehensive guide to the NKI language for AWS Neuron SDK, covering tensor operations, control flow, memory management, and programming patterns for Trainium accelerators.
     :keywords: NKI, AWS Neuron, Language Guide, Tensor Operations, Trainium
-    :date-modified: 03/30/2026
+    :date-modified: 04/08/2026
 
 .. _nki-language-guide:
 
@@ -68,9 +68,67 @@ However, when we run this compiled function on Trainium devices they will not ou
 
 We have just seen that the print statement is evaluated at compile-time, and not at runtime. In fact, most things in NKI programs are evaluated at compile time. In general, calls to nki.isa.* functions will result in on-device operations, and (almost) all other things will be evaluated by the compiler at compile time. We will discuss some exceptions to this rule below, but for now it is generally the case that only the nki.isa.* calls result in run-time operations, and everything else is evaluated by the compiler at compile-time.
 
-This leads us to our the last observation about NKI functions. The nki.isa.* APIs are the heart of the matter. These APIs are designed to expose the underlying hardware capabilities in as direct a way as possible. If you write a nki.isa function, then the hardware will execute that operation at that point in the program. The NKI language simply provides a convenient way to specify which ISA operations you want to run on your data.
+This leads us to our the last observation about NKI functions. The nki.isa.* APIs are the heart of the matter. These APIs are designed to expose the underlying hardware capabilities in as direct a way as possible. If you write a nki.isa function, then the hardware will execute that operation at that point in the program. The NKI meta-programming language simply provides a convenient way to specify which ISA operations you want to run on your data.
 
-In the rest of this guide we will focus on the NKI language, starting with the values you can manipulate in a NKI function. We will then cover tensor indexing, control flow, and end with a discussion of class support and interoperation with Python.
+In the rest of this guide we will focus on the NKI language, starting with the compilation model and namespaces, then the values you can manipulate in a NKI function. We will then cover tensor indexing, control flow, and end with a discussion of class support, interoperation with Python, and composable kernels.
+
+Compilation Model
+------------------
+
+When you decorate a function with ``@nki.jit`` and call it, the NKI compiler processes your kernel in three stages:
+
+1. **Specialization**: The compiler takes your Python function and evaluates all meta-programming constructs. This includes resolving tensor shapes, unrolling loops, inlining function calls, and evaluating if-statements with compile-time conditions. The result is a specialized, flat sequence of ``nki.isa.*`` operations with all compile-time values resolved.
+
+2. **Compilation**: The specialized program is lowered to Trainium machine code. This stage performs instruction scheduling, register allocation, and memory layout.
+
+3. **Graph-compiler linking**: The compiled kernel is linked into the larger computation graph managed by the Neuron graph compiler, which handles data movement between the host and device.
+
+The specialization stage is key to understanding NKI programming. During specialization, the compiler acts as an interpreter for the meta-programming parts of your kernel. Everything that is not a ``nki.isa.*`` call or a ``dynamic_range`` loop is evaluated and resolved at this stage. This means:
+
+- All ``for`` loops (except ``dynamic_range``) are **unrolled** at specialization time. The compiler expands the loop body once for each iteration.
+- All function calls are **inlined** at specialization time. The compiler substitutes the function body at each call site.
+- All ``if`` statements with compile-time conditions are **resolved** at specialization time. Only the taken branch is included in the specialized program.
+- All Python expressions on compile-time values (integers, booleans, strings, shapes) are **evaluated** at specialization time.
+
+The only constructs that survive specialization and become runtime operations are ``nki.isa.*`` calls and ``dynamic_range`` loops. Everything else is part of the meta-programming language that controls how the final sequence of ISA operations is generated.
+
+.. note::
+
+   Throughout this documentation, we use the term **NKI meta-programming language** to refer to the Python subset that is evaluated at specialization time (loops, conditionals, function calls, and expressions on compile-time values), and **NKI language** to refer to the runtime primitives (``nki.isa.*`` operations and ``dynamic_range`` loops) that execute on the device.
+
+.. code-block:: python
+
+   @nki.jit
+   def example_kernel(a_input):
+       # Meta-programming: this loop is unrolled at specialization time
+       for i in range(4):
+           tile = nl.ndarray((128, 512), dtype=nl.float16, buffer=nl.sbuf)
+           nisa.dma_copy(dst=tile, src=a_input[i * 128:(i + 1) * 128, :])
+           # Meta-programming: this if is resolved at specialization time
+           if i % 2 == 0:
+               nisa.tensor_scalar(dst=tile, data=tile, op0=nl.add, operand0=1.0)
+
+After specialization, this kernel becomes a flat sequence of ``dma_copy`` and ``tensor_scalar`` operations, with the loop and if-statement fully resolved.
+
+NKI Namespaces
+---------------
+
+NKI is organized into several Python namespaces:
+
+- ``nki`` — The top-level package. Provides the ``@nki.jit`` decorator for compiling kernel functions.
+- ``nki.language`` (commonly imported as ``nl``) — The high-level language API. This includes tensor creation (``ndarray``), data types, memory buffers, loop ranges (``affine_range``, ``dynamic_range``), and high-level math operations (``nl.add``, ``nl.matmul``, ``nl.softmax``, etc.). Many of the functions in ``nki.language`` are convenience wrappers around one or more ``nki.isa`` operations.
+- ``nki.isa`` (commonly imported as ``nisa``) — The low-level instruction set architecture API. Each function in this namespace maps directly to a Trainium hardware operation. These are the only calls that produce runtime operations on the device.
+- ``nki.collectives`` — APIs for multi-device collective communication operations such as ``all_reduce``, ``all_gather``, and ``collective_permute``.
+
+A typical NKI kernel imports these namespaces as follows:
+
+.. code-block:: python
+
+   import nki
+   import nki.language as nl
+   import nki.isa as nisa
+
+The distinction between ``nki.language`` and ``nki.isa`` is important. When you call a ``nki.language`` function like ``nl.add(a, b)``, the compiler may lower this to one or more ``nki.isa`` operations depending on the tensor shapes and types. When you call a ``nki.isa`` function like ``nisa.tensor_tensor(...)``, you are directly specifying the hardware operation. Use ``nki.language`` for readability and portability; use ``nki.isa`` when you need precise control over which hardware engine executes an operation.
 
 NKI Values
 -----------
@@ -140,10 +198,12 @@ We will discuss user-defined classes later in the guide. For now, let's take a c
 Tensor Values
 --------------
 
-The NkiTensor class represents an on-chip tensor. That is, a NkiTensor instance is really a reference to some region of memory on the Trainium device at runtime. At compile-time, we do not yet know the precise location nor the precise contents of this tensor, and therefore, code evaluated at compile-time will not be able to query the precise location nor the contents. At compile-time we can only query meta-data about the tensor, such as its shape and element type. NkiTensor exposes the following meta-data:
+The ``NkiTensor`` class represents an on-chip tensor. That is, an ``NkiTensor`` instance is really a reference to some region of memory on the Trainium device at runtime. At compile-time, we do not yet know the precise location nor the precise contents of this tensor, and therefore, code evaluated at compile-time will not be able to query the precise location nor the contents. At compile-time we can only query meta-data about the tensor, such as its shape and element type. ``NkiTensor`` exposes the following meta-data:
 
 * ``t.dtype`` - The element type of the tensor, e.g. "float16"
 * ``t.shape`` - The shape of the tensor, e.g. (128,64,64)
+* ``t.ndim`` - The number of dimensions
+* ``t.size`` - The total number of elements
 * ``t.offset`` - The access pattern offset (discussed below)
 * ``t.buffer`` - The memory buffer this tensor lives in (discussed below)
 * ``t.get_pattern()`` - The access pattern (discussed below)
@@ -159,10 +219,29 @@ The most commonly used fields are dtype and shape. We have already seen an examp
 
 Note, because the shape is part of the meta-data of the tensor, the expression ``t.shape[0]`` is a compile-time constant. Therefore, the bounds of the for-loop are known at compile time. The compiler will unroll this loop into a sequence of calls to my_function, one for each subtensor of t.
 
+In addition to the basic meta-data fields, ``NkiTensor`` provides two methods for creating alternate views of the same underlying storage:
+
+``view(dtype)``
+  Reinterpret the tensor's storage bits as a different data type. The underlying memory is not modified; only the interpretation changes. This is useful for bitwise manipulation, such as reinterpreting ``int32`` values as ``float32``.
+
+  .. code-block:: python
+
+     int_tensor = nl.ndarray((128, 256), dtype=nl.int32, buffer=nl.sbuf)
+     float_tensor = int_tensor.view(nl.float32)
+
+``ap(pattern, offset=0, scalar_offset=None, vector_offset=None, indirect_dim=0, dtype=None)``
+  Create a tensor with an explicit hardware access pattern sharing the same storage. The ``pattern`` is a list of ``[step, num]`` tuples that define how elements are accessed. This is an advanced feature for controlling the exact memory access pattern used by the hardware. See the architecture guide for details on access patterns.
+
+  .. code-block:: python
+
+     t = nl.ndarray((128, 1024), dtype=nl.float16, buffer=nl.sbuf)
+     # Access every other element in the free dimension
+     u = t.ap(pattern=[(1, 128), (2, 512)])
+
 Creating Tensors
 -----------------
 
-The easiest way to create tensors is using the nki.language.ndarray API. This function takes a shape, a dtype, and a memory type, and creates a reference to a memory region in the given memory type large enough to hold the tensor.
+The easiest way to create tensors is using the ``nki.language.ndarray`` API. This function takes a shape, a dtype, and a memory type, and returns an ``NkiTensor`` representing a reference to a memory region in the given memory type large enough to hold the tensor.
 
 .. note::
 
@@ -175,6 +254,13 @@ The easiest way to create tensors is using the nki.language.ndarray API. This fu
    assert t.shape = (128,128)
    assert t.dtype == nl.float16
    assert t.buffer == nl.sbuf
+
+You can also pass an optional ``name`` argument to ``ndarray``. The name is a string label that is propagated through the compiler into the generated IR and debug information. This can be helpful when profiling or debugging compiled kernels, since the name will appear in compiler output and diagnostic messages.
+
+.. code-block:: python
+
+   # Named tensor for easier identification in compiler output
+   t = nl.ndarray((128,128), nl.float16, nl.sbuf, name="my_weights")
 
 You can also create a tensor from an existing tensor using the ``reshape`` method. The ``reshape`` method will create a new reference to the same memory with a different shape. The reshaped tensor must have the same total number of elements as the original.
 
@@ -267,7 +353,7 @@ For more details on hardware access patterns, see the architecture guide.
 Control Flow
 -------------
 
-NKI supports basic control flow constructs, including if-statements, for-loops over ranges, lists or tuples, and while loops. All of these constructs work similarly their equivalents in Python. For example, the code below uses a simple loop with an nested if statement to process the even and odd elements of a list differently.
+NKI supports basic control flow constructs, including if-statements, for-loops over ranges, lists or tuples, and while loops. All of these constructs work similarly their equivalents in Python, but with one important difference: they are all evaluated at specialization time. This means the compiler unrolls every loop and resolves every branch before generating device code. For example, the code below uses a simple loop with a nested if statement to process the even and odd elements of a list differently.
 
 .. code-block:: python
 
@@ -335,7 +421,13 @@ The for loop above will lower to a loop on the Trainium device. The loop will ex
 
 The loop above uses a register value as the upper bound. This register is allocated with the ``register_alloc`` function, and then its value is populated from a tensor using ``register_load``. The for loop will then execute ``count`` times.
 
-There are four register APIs that can be used to create, and load and store values to and from registers. Each register is 32-bit and supports multiple data types: ``u8``, ``u16``, ``u32``, ``i8``, ``i16``, ``i32``, and ``fp32`` (or a pair of registers for ``u64``/``i64``). Signed integers are supported, so negative values (e.g., ``count=-5``) are valid.
+There are four register APIs that can be used to create, and load and store values to and from registers. Each register is 32-bit and supports multiple data types: ``u8``, ``u16``, ``u32``, ``i8``, ``i16``, ``i32``, and ``fp32`` (or a pair of registers for ``u64``/``i64``). Signed integers are supported, so negative values (e.g., ``count=-5``) are valid. The register APIs return and operate on ``VirtualRegister`` objects.
+
+A ``VirtualRegister`` represents a scalar value stored in a hardware register on the Trainium device. Unlike compile-time integer values, a ``VirtualRegister`` holds a value that exists at runtime. You can use a ``VirtualRegister`` as a loop bound for ``dynamic_range``, as a condition for a dynamic ``while`` loop, or as a ``scalar_offset`` in a tensor access pattern for dynamic indexing.
+
+.. note::
+
+   The induction variable of a ``dynamic_range`` loop is also a ``VirtualRegister``, but it is frozen: you cannot write to it with ``register_move`` or ``register_load``. This prevents ambiguity about whether modifying the induction variable would affect loop termination.
 
 .. code-block:: python
 
@@ -465,3 +557,72 @@ Similar to Python, the NKI compiler will translate the enumration class E to the
        self.value = value
 
 Equality in NKI is structural, so no additional code is needed to replicate the behavior of == and != for objects of type E. No other binary operators on enum values are supported.
+
+Composable Kernels
+-------------------
+
+Because all functions are inlined at specialization time, NKI supports a powerful composition pattern: you can pass functions as arguments to other functions, and the compiler will inline them at each call site. This allows you to write generic kernel templates that can be specialized with different operations.
+
+For example, consider a generic tiled processing kernel that applies a user-supplied function to each tile:
+
+.. code-block:: python
+
+   def tiled_process(input_tensor, output_tensor, tile_fn):
+       """Generic kernel that applies tile_fn to each tile of the input."""
+       for i in range(input_tensor.shape[0] // nl.tile_size.pmax):
+           tile = nl.ndarray((128, 512), dtype=input_tensor.dtype, buffer=nl.sbuf)
+           nisa.dma_copy(dst=tile, src=input_tensor[i * 128:(i + 1) * 128, :])
+
+           result = nl.ndarray((128, 512), dtype=input_tensor.dtype, buffer=nl.sbuf)
+           tile_fn(dst=result, src=tile)
+
+           nisa.dma_copy(dst=output_tensor[i * 128:(i + 1) * 128, :], src=result)
+
+   def my_activation(dst, src):
+       nisa.activation(dst=dst, data=src, op=nl.relu)
+
+   def my_scale(dst, src):
+       nisa.tensor_scalar(dst=dst, data=src, op0=nl.multiply, operand0=0.5)
+
+   @nki.jit
+   def relu_kernel(a_input, a_output):
+       tiled_process(a_input, a_output, my_activation)
+
+   @nki.jit
+   def scale_kernel(a_input, a_output):
+       tiled_process(a_input, a_output, my_scale)
+
+During specialization, the compiler inlines ``tiled_process`` and then inlines the specific ``tile_fn`` (either ``my_activation`` or ``my_scale``) at each call site. The result is a fully specialized kernel with no function call overhead.
+
+This pattern is especially useful for building mega-kernels that compose multiple operations. You can pass function references as hyperparameters when using the kernel builder API:
+
+.. code-block:: python
+
+   from nki.compiler.kernel_builder import compile_kernel
+
+   compile_kernel(
+       tiled_process,
+       inputs={"input_tensor": input_array},
+       outputs={"output_tensor": output_array},
+       compile_opts=opts,
+       tile_fn=my_activation,  # passed as a hyperparameter
+   )
+
+Functions can also be stored in data structures, returned from other functions, and selected dynamically at specialization time based on compile-time conditions:
+
+.. code-block:: python
+
+   def select_activation(name):
+       if name == "relu":
+           return my_relu
+       elif name == "gelu":
+           return my_gelu
+
+   @nki.jit
+   def kernel(a_input, a_output):
+       act_fn = select_activation("relu")
+       # act_fn is resolved at specialization time; the selected
+       # function is inlined directly
+       act_fn(dst=a_output, src=a_input)
+
+Because all of this resolution happens at specialization time, there is no runtime cost. The compiled kernel contains only the specific ISA operations for the chosen function.

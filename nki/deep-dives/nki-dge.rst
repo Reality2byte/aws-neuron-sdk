@@ -183,6 +183,32 @@ Mode Selection Summary
      - Default---recommended unless tuning
 
 
+How ``.ap()`` Affects DGE Mode
+-------------------------------
+
+When you use ``.ap()`` with ``vector_offset`` for indirect (gather/scatter)
+access, the DGE mode is constrained to ``swdge``:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 30 30
+
+   * - Access Pattern
+     - ``dma_copy``
+     - ``dma_transpose``
+   * - Static (no ``.ap()``, or ``.ap()`` without offsets)
+     - Any mode
+     - ``none``, ``hwdge``, or compiler-selected
+   * - ``.ap()`` with ``scalar_offset``
+     - Any mode
+     - Any mode
+   * - ``.ap()`` with ``vector_offset``
+     - ``unknown`` or ``swdge``
+     - ``unknown`` or ``swdge``
+
+If you specify ``dge_mode=unknown`` (the default) with ``vector_offset``, the
+compiler will automatically select ``swdge``.
+
 The ``name`` Parameter
 -----------------------
 
@@ -227,7 +253,7 @@ Static copy (no DGE)
 
 .. code-block:: python
 
-   import neuronxcc.nki.isa as nisa
+   import nki.isa as nisa
 
    # Pre-computed descriptors — addresses fully known at compile time
    nisa.dma_copy(dst=sbuf_tile, src=hbm_tensor,
@@ -239,7 +265,7 @@ Software DGE copy with dynamic address
 
 .. code-block:: python
 
-   import neuronxcc.nki.isa as nisa
+   import nki.isa as nisa
 
    # GpSimd generates the descriptor at runtime
    nisa.dma_copy(dst=sbuf_tile, src=hbm_tensor,
@@ -251,7 +277,7 @@ Hardware DGE copy
 
 .. code-block:: python
 
-   import neuronxcc.nki.isa as nisa
+   import nki.isa as nisa
 
    # Hardware DGE block generates the descriptor (NeuronCore-v3+)
    nisa.dma_copy(dst=sbuf_tile, src=hbm_tensor,
@@ -263,7 +289,7 @@ Hardware DGE transpose
 
 .. code-block:: python
 
-   import neuronxcc.nki.isa as nisa
+   import nki.isa as nisa
 
    # src must be [16, ...] with last dim divisible by 128, 2-byte dtype
    nisa.dma_transpose(dst=sbuf_tile, src=hbm_tensor,
@@ -275,11 +301,18 @@ Software DGE indirect transpose (gather + transpose)
 
 .. code-block:: python
 
-   import neuronxcc.nki.isa as nisa
+   import nki.isa as nisa
+   import nki.language as nl
 
    # indices is a 2-D uint32 SBUF tensor; src is on HBM
    # Effectively: dst = src[indices.T.flatten()[:src.shape[0]], :].T
-   nisa.dma_transpose(dst=sbuf_tile, src=hbm_tensor[indices],
+   P, F = 128, 128
+   src_ap = hbm_tensor.ap(
+       pattern=[[P, F], [1, P]],
+       vector_offset=indices,
+       indirect_dim=0,
+   )
+   nisa.dma_transpose(dst=sbuf_tile, src=src_ap,
                       dge_mode=nisa.dge_mode.swdge,
                       name="gather_transpose")
 
@@ -288,7 +321,7 @@ Compiler-selected mode (default)
 
 .. code-block:: python
 
-   import neuronxcc.nki.isa as nisa
+   import nki.isa as nisa
 
    # Let the compiler pick the best DGE mode
    nisa.dma_copy(dst=sbuf_tile, src=hbm_tensor,

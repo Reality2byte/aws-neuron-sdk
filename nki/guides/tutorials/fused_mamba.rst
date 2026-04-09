@@ -15,7 +15,7 @@ In this tutorial, we learn about:
 * Mapping different vector operations efficiently to NeuronCore compute engines, such as associative scan and element-wise
   operations between tensors
 * Leveraging data reuse and tiling to reduce excessive data movement and keep compute engines busy
-* Using :doc:`neuron-profile </nki/deep-dives/use-neuron-profile>` to identify performance bottlenecks and opportunities
+* Using :doc:`neuron-profile </nki/guides/use-neuron-profile>` to identify performance bottlenecks and opportunities
 
 PyTorch Reference Implementation
 --------------------------------
@@ -47,7 +47,7 @@ The key model parameters are:
 We use ``[batch=1, seq_len=512, channels = 256, state_size = 16]`` as a simple test case for initial performance evaluation.
 
 Running the above Python script will compile the ``PyTorch`` compute graph using Neuron Compiler and generate a Neuron executable
-file (NEFF) in the same directory. We can then profile the NEFF on a single NeuronCore using :doc:`neuron-profiler </nki/deep-dives/use-neuron-profile>`.
+file (NEFF) in the same directory. We can then profile the NEFF on a single NeuronCore using :doc:`neuron-profiler </nki/guides/use-neuron-profile>`.
 Figure below is a screenshot of the profile. We see this initial PyTorch implementation takes **151.83 ms** to execute *on
 device*.
 

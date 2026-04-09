@@ -20,7 +20,7 @@ The diagram below shows the detailed compilation flow inside the Neuron compiler
 .. image:: /nki/img/compiler/nki-compiler-1.jpg
 
 .. important::
-    While the NKI language looks and feels like Python, it is not actually Python code. When the Python interpreter encounters a top level function decorated with ``@nki.jit``, it invokes the NKI Compiler to handle compilation of that function.
+    While the NKI meta-programming language looks and feels like Python, it is not actually Python code. When the Python interpreter encounters a top level function decorated with ``@nki.jit``, it invokes the NKI Compiler to handle compilation of that function.
 
 .. code-block:: python
     
@@ -35,7 +35,7 @@ The diagram below shows the detailed compilation flow inside the Neuron compiler
         # this is kernel code
 
 
-Using Python features within NKI kernels that are not supported will result in useful errors from the NKI Compiler indicating that the feature is not a valid NKI feature. Neuron has intentionally constrained the NKI language to be as minimal as possible while serving the needs of building high performance kernels for today's popular models and will continue to grow and evolve the language over time. 
+Using Python features within NKI kernels that are not supported will result in useful errors from the NKI Compiler indicating that the feature is not a valid NKI feature. Neuron has intentionally constrained the NKI meta-programming language to be as minimal as possible while serving the needs of building high performance kernels for today's popular models and will continue to grow and evolve the language over time. 
 
 NKI Compiler Open Source
 -------------------------

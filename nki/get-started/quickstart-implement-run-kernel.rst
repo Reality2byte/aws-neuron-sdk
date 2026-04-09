@@ -259,7 +259,7 @@ You will also see some additional output depending on whether you used PyTorch o
 
       .. code-block:: text
 
-            /home/ubuntu/beta3/test_torch.py:6: DeprecationWarning: Use torch_xla.device instead
+            /home/ubuntu/nki/test_torch.py:6: DeprecationWarning: Use torch_xla.device instead
                 device = xm.xla_device()
             2026-03-30 22:53:53.548591: W neuron/pjrt-api/neuronpjrt.cc:1781] Use PJRT C-API 0.79 as client did not specify a PJRT C-API version
             2026-Mar-30 22:54:00.0013 349295:349354 [2] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):263 CCOM WARN NET/OFI Unable to find a protocol that worked.  Failing initialization.

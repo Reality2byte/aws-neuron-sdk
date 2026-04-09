@@ -6,15 +6,19 @@ NKI FAQ
 When should I use NKI?
 ~~~~~~~~~~~~~~~~~~~~~~
 
-NKI enables customers to self serve, onboard novel deep learning
-architectures, and implement operators currently unsupported by
-traditional ML Framework operators. With NKI, customers can experiment
-with models and operators and can create unique differentiation.
-Additionally, in cases where the compiler's optimizations are too
-generalized for a developers' particular use case, NKI enables customers
-to program directly against the Neuron ISA and therefore optimize
-performance of existing operators that are not being compiled
-efficiently.
+NKI lets you write custom operators that program directly against the Neuron ISA.
+There are two common reasons to use NKI:
+
+* **Performance optimization**: When the Neuron Compiler's general-purpose optimizations
+  don't fully exploit the hardware for your specific workload, NKI lets you write
+  hand-tuned operators that maximize compute and memory throughput. For example,
+  the NKI Library provides optimized kernels for attention, MLP, RMSNorm with
+  quantization, and collective communication that outperform compiler-generated
+  equivalents.
+
+* **Novel operators and architectures**: NKI enables you to implement operators that
+  are not yet supported by the Neuron Compiler, letting you self-serve new deep learning
+  architectures and custom operations without waiting for compiler support.
 
 Which AWS chips does NKI support?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,12 +61,13 @@ Neuron Custom C++ Operators, Transformers NeuronX, and Neuron Collective Communi
 Where can I find NKI sample kernels?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-NKI hosts an open source sample repository
-`nki-samples <https://github.com/aws-neuron/nki-samples>`__ which
-includes a set of reference kernels and tutorial kernels built by the
-Neuron team and external contributors. For more information, see the
-`NKI sample kernels <https://github.com/aws-neuron/nki-samples>`__ and
-:doc:`NKI tutorials </nki/guides/tutorials/index>`.
+NKI provides two open source repositories with kernel examples:
+
+* `NKI Library <https://github.com/aws-neuron/nki-library>`__ — Production-ready, optimized kernels for common operations (matrix multiplication, attention, normalization, quantization, etc.) that you can use directly in your models. See the :doc:`NKI Library documentation </nki/library/index>` for API reference and design specifications.
+
+* `NKI Samples <https://github.com/aws-neuron/nki-samples>`__ — Reference and tutorial kernels that demonstrate NKI programming patterns and concepts. These are designed for learning and experimentation rather than production use.
+
+For step-by-step guides on writing NKI kernels, see the :doc:`NKI tutorials </nki/guides/tutorials/index>`.
 
 What should I do if I have trouble resolving a kernel compilation error?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1564,34 +1564,13 @@ def sequential_range(start, stop=None, step=1):
     ...
 
 
-def shared_constant(constant):
-    r"""Create a tensor in shared HBM initialized with constant data.
-
-    The constant is embedded in the compiled binary and loaded to HBM
-    at model load time. With LNC=2, both cores share the same constant;
-    the data must not diverge across cores.
-
-    Supported element types: float32, float16, bfloat16, int32, int16,
-    int8, uint32, uint16, uint8, float8_e4m3fn, float8_e5m2.
-    Packed types (float8_e4m3fn_x4, float8_e5m2_x4, float4_e2m1fn_x4)
-    and tfloat32 are supported at the MLIR level but not yet tested
-    end-to-end on hardware.
-
-    :param constant: the constant data. Can be a numpy array or a file path
-        to a ``.npy`` file.
-    :return: an NkiTensor in shared_hbm containing the constant data."""
-    ...
-
-
 shared_hbm = MemoryRegion.shared_hbm
 
 
 def shared_identity_matrix(n, dtype='uint8', dst=None):
-    r"""Create a new identity tensor with specified data type.
+    r"""Create an identity matrix in SBUF with the specified data type.
 
-    This function has the same behavior to :doc:`nki.language.shared_constant <nki.language.shared_constant>` but
-    is preferred if the constant matrix is an identity matrix. The
-    compiler will reuse all the identity matrices of the same
+    The compiler will reuse all identity matrices of the same
     dtype in the graph to save space.
 
     :param n: the number of rows (and columns) of the returned identity matrix
