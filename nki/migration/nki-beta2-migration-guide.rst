@@ -10,7 +10,7 @@ NKI Migration Guide from Beta 1 to Beta 2
 
 This topic covers best practices for migrating NKI kernels from the legacy 
 ``neuronxcc.nki.*`` namespace to the new ``nki.*`` namespace which uses the 
-new NKI Compiler. See :ref:`nki-beta-versions` and :ref:`nki_compiler_about` 
+new NKI Compiler. See :ref:`nki_compiler_about` 
 for more in-depth information.
 
 Background: NKI has a Compiler!

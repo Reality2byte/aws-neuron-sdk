@@ -19,7 +19,7 @@ What's New
 
 This release introduces NKI Beta 2, featuring the new :doc:`NKI Compiler </nki/deep-dives/nki-compiler>`
 and significant enhancements to the NKI language constructs and APIs, including changes to existing APIs. 
-For information about the different NKI Beta versions, see :doc:`About NKI Beta Versions </nki/deep-dives/nki-beta-versions>`.
+For information about the different NKI Beta versions, see :doc:`About the NKI Compiler </nki/deep-dives/nki-compiler>`.
 
 To take advantage of Beta 2 with the new compiler, import the ``nki.*`` namespace in your code
 and annotate your top-level kernel function with ``@nki.jit``.
@@ -82,7 +82,7 @@ Documentation Updates
 * Added :doc:`Get Started with NKI </nki/get-started/quickstart-implement-run-kernel>`
 * Added :doc:`NKI Language Guide </nki/get-started/nki-language-guide>`
 * Added :doc:`About the NKI Compiler </nki/deep-dives/nki-compiler>`
-* Added :doc:`About NKI Beta Versions </nki/deep-dives/nki-beta-versions>`
+* Added :doc:`About the NKI Compiler </nki/deep-dives/nki-compiler>`
 * Added :doc:`MXFP Matrix Multiplication with NKI </nki/deep-dives/mxfp-matmul>`
 * Updated :doc:`Matrix Multiplication Tutorial </nki/guides/tutorials/matrix_multiplication>`
 * Updated :doc:`Profile a NKI Kernel </nki/guides/use-neuron-profile>`

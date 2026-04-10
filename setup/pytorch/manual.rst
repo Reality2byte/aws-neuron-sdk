@@ -83,9 +83,8 @@ Installation steps
 
           .. tab-item:: PyTorch 2.8.0
 
-              .. include:: /src/helperscripts/installationScripts/python_instructions.txt
-                  :start-line: 305
-                  :end-line: 306
+              .. note::
+                PyTorch versions 2.7 and 2.8 are no longer supported on Neuron. If you are looking for setup instructions specific to PyTorch 2.7 and 2.8 on Amazon Linux 2023, Ubuntu 24.04, or Ubuntu 22.04, see `the Neuron release 2.28.0 version of the setup docs <https://awsdocs-neuron.readthedocs-hosted.com/en/v2.28.0/setup/neuron-setup/pytorch/neuronx/ubuntu/torch-neuronx-ubuntu24.html#setup-torch-neuronx-ubuntu24>`__.
 
       **Step 5: Verify installation**
 
@@ -138,14 +137,13 @@ Installation steps
           .. tab-item:: PyTorch 2.9.0
 
               .. include:: /src/helperscripts/installationScripts/python_instructions.txt
-                  :start-line: 287
-                  :end-line: 288
+                  :start-line: 286
+                  :end-line: 287
 
           .. tab-item:: PyTorch 2.8.0
 
-              .. include:: /src/helperscripts/installationScripts/python_instructions.txt
-                  :start-line: 281
-                  :end-line: 282
+              .. note::
+                  PyTorch versions 2.7 and 2.8 are no longer supported on Neuron. If you are looking for setup instructions specific to PyTorch 2.7 and 2.8 on Amazon Linux 2023, Ubuntu 24.04, or Ubuntu 22.04, see `the Neuron release 2.28.0 version of the setup docs <https://awsdocs-neuron.readthedocs-hosted.com/en/v2.28.0/setup/neuron-setup/pytorch/neuronx/ubuntu/torch-neuronx-ubuntu22.html#setup-torch-neuronx-ubuntu22>`__.
 
       **Step 5: Verify installation**
 
@@ -172,62 +170,8 @@ Installation steps
    .. tab-item:: Amazon Linux 2023
       :sync: al2023
 
-      **Step 1: Launch instance**
-
-      * Follow the instructions to `launch an Amazon EC2 Instance <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html#ec2-launch-instance>`_.
-      * Select Amazon Linux 2023 AMI.
-      * For Trn1, adjust your primary EBS volume size to a minimum of 512GB.
-      * `Connect to your instance <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html>`_.
-
-      **Step 2: Install drivers and tools**
-
-      .. include:: /src/helperscripts/installationScripts/python_instructions.txt
-          :start-line: 239
-          :end-line: 240
-
-      **Step 3: Install EFA** (Trn1/Trn1n/Trn2/Trn3 only)
-
-      .. include:: /src/helperscripts/installationScripts/python_instructions.txt
-          :start-line: 245
-          :end-line: 246
-
-      **Step 4: Install PyTorch and Neuron packages**
-
-      .. tab-set::
-
-          .. tab-item:: PyTorch 2.8.0
-
-              .. program-output:: python3 src/helperscripts/n2-helper.py --install-type=install --category=compiler_framework --framework=pytorch --framework-version=2.8.0 --file=src/helperscripts/n2-manifest.json --os=amazonlinux2023 --instance=trn1 --ami=non-dlami
-
-          .. tab-item:: PyTorch 2.7.0
-
-              .. program-output:: python3 src/helperscripts/n2-helper.py --install-type=install --category=compiler_framework --framework=pytorch --framework-version=2.7.0 --file=src/helperscripts/n2-manifest.json --os=amazonlinux2023 --instance=trn1 --ami=non-dlami
-
       .. note::
-         PyTorch 2.9 is not yet available on Amazon Linux 2023.
-         Use Ubuntu 24.04 for PyTorch 2.9 support.
-
-      **Step 5: Verify installation**
-
-      .. code-block:: bash
-
-         python3 -c "import torch; import torch_neuronx; print(f'PyTorch {torch.__version__}, torch-neuronx {torch_neuronx.__version__}')"
-         neuron-ls
-
-      You should see output similar to this (the versions, instance IDs, and details should match your expected ones, not the ones in this example):
-
-      .. code-block::
-
-         PyTorch version: 2.9.1+cu128, torch-neuronx version: 2.9.0.2.13.23887+8e870898
-         $ neuron-ls
-         instance-type: trn1.2xlarge
-         instance-id: i-0bea223b1afb7e159
-         +--------+--------+----------+--------+--------------+----------+------+
-         | NEURON | NEURON |  NEURON  | NEURON |     PCI      |   CPU    | NUMA |
-         | DEVICE | CORES  | CORE IDS | MEMORY |     BDF      | AFFINITY | NODE |
-         +--------+--------+----------+--------+--------------+----------+------+
-         | 0      | 2      | 0-1      | 32 GB  | 0000:00:1e.0 | 0-7      | -1   |
-         +--------+--------+----------+--------+--------------+----------+------+
+         Currently, PyTorch 2.9 is not available on Amazon Linux 2023 and PyTorch 2.7 and 2.8 are no longer supported for Neuron. Use Ubuntu 24.04 for PyTorch 2.9 support. If you are using Neuron 2.28.0, `see the Amazon Linux 2023 setup documentation in the 2.28.0 version of the Neuron docs <https://awsdocs-neuron.readthedocs-hosted.com/en/v2.28.0/setup/neuron-setup/pytorch/neuronx/amazon-linux/torch-neuronx-al2023.html>`__.
 
 
 .. tip:: **vLLM for LLM inference**
