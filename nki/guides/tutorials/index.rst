@@ -1,6 +1,6 @@
 .. meta::
     :description: Hands-on tutorials for AWS Neuron Kernel Interface (NKI), covering matrix operations, normalization techniques, advanced kernels, and distributed computing patterns.
-    :keywords: NKI, AWS Neuron, Tutorials, Matrix Multiplication, Normalization, SPMD
+    :keywords: NKI, AWS Neuron, Tutorials, Matrix Multiplication, Normalization
     :date-modified: 12/01/2025
 
 .. _nki-tutorials:
@@ -17,8 +17,6 @@ NKI Tutorials
    transpose2d
    fused_mamba
    kernel-optimization
-   SPMD Tensor Addition <spmd_tensor_addition>
-   Multi-Core SPMD Addition <spmd_multiple_nc_tensor_addition>
 
 This section provides hands-on tutorials for the Neuron Kernel Interface (NKI), demonstrating how to write custom kernels for AWS Trainium and Inferentia instances. These tutorials cover fundamental operations, advanced techniques, and distributed computing patterns using NKI.
 
@@ -76,25 +74,3 @@ Advanced Kernels
       **Kernel Optimization**
       ^^^
       Learn the recommended workflow for optimizing NKI kernels using profiling and performance analysis
-
-Distributed Computing
----------------------
-
-.. grid:: 1 1 2 2
-   :gutter: 2
-
-   .. grid-item-card::
-      :link: spmd_tensor_addition
-      :link-type: doc
-
-      **SPMD Tensor Addition**
-      ^^^
-      Single Program Multiple Data tensor addition across multiple cores
-
-   .. grid-item-card::
-      :link: spmd_multiple_nc_tensor_addition
-      :link-type: doc
-
-      **Multi-Core SPMD Addition**
-      ^^^
-      Advanced SPMD tensor operations across multiple NeuronCores

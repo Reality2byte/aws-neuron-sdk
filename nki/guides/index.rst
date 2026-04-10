@@ -48,22 +48,6 @@ Tutorials
       ^^^
       Implement fused Mamba state space model kernels
 
-   .. grid-item-card::
-      :link: nki-tutorial-spmd-tensor-addition
-      :link-type: ref
-
-      **SPMD Tensor Addition**
-      ^^^
-      Single Program Multiple Data tensor addition
-
-   .. grid-item-card::
-      :link: nki_spmd_multiple_nc_tensor_addition
-      :link-type: ref
-
-      **Multi-Core SPMD Addition**
-      ^^^
-      Advanced SPMD tensor addition across multiple NeuronCores
-
 Architecture Guides
 -------------------
 

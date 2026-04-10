@@ -1,5 +1,5 @@
-from neuronxcc import nki
-import neuronxcc.nki.language as nl
+import nki
+import nki.language as nl
 
 @nki.jit
 def nki_tensor_add_kernel(a_input, b_input):

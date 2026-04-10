@@ -191,11 +191,11 @@ In this step, you create a test program as a Python script using either PyTorch 
       .. code-block:: python
 
           import torch
-          from torch_xla.core import xla_model as xm
+          import torch_xla
           from add_kernel import nki_tensor_add_kernel
 
           # Setup the XLA device and generate input tensors.
-          device = xm.xla_device()
+          device = torch_xla.device()
 
           a = torch.ones((4, 3), dtype=torch.float16).to(device=device)
           b = torch.ones((4, 3), dtype=torch.float16).to(device=device)
@@ -260,7 +260,7 @@ You will also see some additional output depending on whether you used PyTorch o
       .. code-block:: text
 
             /home/ubuntu/nki/test_torch.py:6: DeprecationWarning: Use torch_xla.device instead
-                device = xm.xla_device()
+                device = torch_xla.device()
             2026-03-30 22:53:53.548591: W neuron/pjrt-api/neuronpjrt.cc:1781] Use PJRT C-API 0.79 as client did not specify a PJRT C-API version
             2026-Mar-30 22:54:00.0013 349295:349354 [2] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):263 CCOM WARN NET/OFI Unable to find a protocol that worked.  Failing initialization.
             2026-Mar-30 22:54:00.0016 349295:349354 [2] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed

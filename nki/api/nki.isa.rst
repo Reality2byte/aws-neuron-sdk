@@ -3,6 +3,9 @@ nki.isa
 
 .. currentmodule:: nki.isa
 
+The ``nki.isa`` module exposes low-level ISA instructions for compute, data movement, and synchronization.
+These APIs map to individual Tensor Engine, Vector Engine, Scalar Engine, and DMA Engine operations,
+giving you fine-grained control over the underlying hardware capabilities.
 
 .. _nki-isa:
 

@@ -1,4 +1,4 @@
-import neuronxcc.nki.language as nl
+import nki.language as nl
 from torch_neuronx import nki_jit
 
 @nki_jit

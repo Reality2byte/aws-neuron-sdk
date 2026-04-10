@@ -155,16 +155,19 @@ Note that Double FP8 matmul performance mode cannot be combined with the followi
       """
       _, compress_ratio, _ = moving_tensor.shape
       
-      moving = nl.load(moving_tensor)
-      stationary = nl.load(stationary_tensor)
-      tag = nl.load(tag_tensor)
+      moving = nl.ndarray(moving_tensor.shape, dtype=moving_tensor.dtype, buffer=nl.sbuf)
+      stationary = nl.ndarray(stationary_tensor.shape, dtype=stationary_tensor.dtype, buffer=nl.sbuf)
+      tag = nl.ndarray(tag_tensor.shape, dtype=tag_tensor.dtype, buffer=nl.sbuf)
+      nisa.dma_copy(dst=moving, src=moving_tensor)
+      nisa.dma_copy(dst=stationary, src=stationary_tensor)
+      nisa.dma_copy(dst=tag, src=tag_tensor)
 
       psum_buf = nc_matmul_sparse(moving, # [128P, 4, 512F] 
                                     stationary, # [128P, 128F]
                                     tag, # [128, 32]
                                     compress_ratio)
 
-      nl.store(output, value=psum_buf)
+      nisa.dma_copy(dst=output, src=psum_buf)
 
       # Sparse matmul     
       def test_nc_matmul_sparse(self):
@@ -307,13 +310,13 @@ In NKI, programmers can invoke an HBM2SBUF DMA transpose using the ``nisa.dma_tr
 
 .. code-block:: python
 
-   import neuronxcc.nki as nki
-   import neuronxcc.nki.language as nl
-   import neuronxcc.nki.isa as nisa
+   import nki
+   import nki.language as nl
+   import nki.isa as nisa
 
-   # hbm_src: nt.tensor[512, 128]
-   # sbuf_dst: nt.tensor[128, 512]
-   sbuf_dst = nisa.dma_transpose(src=hbm_src)
+   # hbm_src: [512, 128] in shared_hbm
+   sbuf_dst = nl.ndarray((128, 512), dtype=hbm_src.dtype, buffer=nl.sbuf)
+   nisa.dma_transpose(dst=sbuf_dst, src=hbm_src)
 
 .. admonition:: Performance Consideration
 
@@ -328,13 +331,13 @@ The same ``nisa.dma_transpose`` API can be used to perform an SBUF2SBUF DMA tran
 
 .. code-block:: python
 
-   import neuronxcc.nki as nki
-   import neuronxcc.nki.language as nl
-   import neuronxcc.nki.isa as nisa
+   import nki
+   import nki.language as nl
+   import nki.isa as nisa
 
-   # sbuf_src: nt.tensor[128, 128]
-   # sbuf_dst: nt.tensor[128, 128]
-   sbuf_dst = nisa.dma_transpose(src=hbm_src)
+   # sbuf_src: [128, 128] in sbuf
+   sbuf_dst = nl.ndarray((128, 128), dtype=sbuf_src.dtype, buffer=nl.sbuf)
+   nisa.dma_transpose(dst=sbuf_dst, src=sbuf_src)
 
 Performance Consideration. SBUF2SBUF transpose can achieve up to 50% of DMA throughput on Trainium2. Compared to TensorE transpose that is more performant but requires ScalarE/VectorE to evict the transposed output from PSUM back to SBUF, DMA transpose can read from and write to SBUF directly. Therefore, DMA transpose is particularly useful in operators that are ScalarE/VectorE bound, such as self attention.
 

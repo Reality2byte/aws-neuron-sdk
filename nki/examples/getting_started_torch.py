@@ -1,5 +1,5 @@
-from neuronxcc import nki
-import neuronxcc.nki.language as nl
+import nki
+import nki.language as nl
 
 @nki.jit
 def nki_tensor_add_kernel(a_input, b_input):
@@ -31,9 +31,9 @@ def nki_tensor_add_kernel(a_input, b_input):
 if __name__ == "__main__":
     # NKI_EXAMPLE_10_BEGIN
     import torch
-    from torch_xla.core import xla_model as xm
+    import torch_xla
 
-    device = xm.xla_device()
+    device = torch_xla.device()
 
     a = torch.ones((4, 3), dtype=torch.float16).to(device=device)
     b = torch.ones((4, 3), dtype=torch.float16).to(device=device)

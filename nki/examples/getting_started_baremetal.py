@@ -1,6 +1,6 @@
 # NKI_EXAMPLE_0_BEGIN NKI_EXAMPLE_1_BEGIN
-from neuronxcc import nki
-import neuronxcc.nki.language as nl
+import nki
+import nki.language as nl
 # NKI_EXAMPLE_1_END
 
 

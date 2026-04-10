@@ -6,7 +6,7 @@ PyTorch implementation for transpose2d NKI tutorial.
 
 # NKI_EXAMPLE_34_BEGIN
 import torch
-from torch_xla.core import xla_model as xm
+import torch_xla
 # NKI_EXAMPLE_34_END
 
 from transpose2d_nki_kernels import tensor_transpose2D_kernel_
@@ -14,7 +14,7 @@ from transpose2d_nki_kernels import tensor_transpose2D_kernel_
 
 # NKI_EXAMPLE_34_BEGIN
 if __name__ == "__main__":
-  device = xm.xla_device()
+  device = torch_xla.device()
 
   P, X, Y = 5, 3, 4
   a = torch.arange(P*X*Y, dtype=torch.int8).reshape((P, X*Y)).to(device=device)
@@ -22,7 +22,8 @@ if __name__ == "__main__":
 
   a_t_nki = tensor_transpose2D_kernel_(a, (X, Y))
 
-  a_t_torch = torch.transpose(a.reshape(P, X, Y), 1, 2).reshape(P, X * Y)
+  a_cpu = torch.arange(P*X*Y, dtype=torch.int8).reshape((P, X*Y))
+  a_t_torch = torch.transpose(a_cpu.reshape(P, X, Y), 1, 2).reshape(P, X * Y).to(device=device)
 
   print(a, a_t_nki, a_t_torch)
 

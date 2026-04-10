@@ -7,12 +7,12 @@
 Profile a NKI Kernel
 ====================
 
-Learn how to profile Neuron Kernel Interface (NKI) kernels using Neuron Explorer to analyze hardware-level performance characteristics on Trainium and Inferentia devices. This comprehensive guide covers two profiling methods: using the ``neuron-profile capture`` command-line tool and the ``@nki.profile`` decorator API. You'll discover how to generate NEFF and NTFF files, identify performance bottlenecks, optimize kernel execution, and leverage the interactive web-based Neuron Profile UI to visualize execution traces with source code integration for efficient NKI kernel development and optimization.
+Learn how to profile Neuron Kernel Interface (NKI) kernels using Neuron Explorer to analyze hardware-level performance characteristics on Trainium and Inferentia devices. This comprehensive guide covers two profiling methods: using the ``neuron-explorer capture`` command-line tool. You'll discover how to generate NEFF and NTFF files, identify performance bottlenecks, optimize kernel execution, and leverage the interactive web-based Neuron Profile UI to visualize execution traces with source code integration for efficient NKI kernel development and optimization.
 
 Install Neuron Explorer
 ------------------------
 
-Ensure that you have the latest version of the ``aws-neuronx-tools`` package installed as Neuron Explorer comes with this package. The ``aws-neuronx-tools`` package is pre-installed on Neuron DLAMIs. 
+Ensure that you have the latest version of the ``aws-neuronx-tools`` package installed as Neuron Explorer comes with this package. The ``aws-neuronx-tools`` package is pre-installed on Neuron DLAMIs.
 
 * For detailed installation instructions, see: :ref:`How to Get Started with Neuron Explorer <new-neuron-profiler-setup>`.
 
@@ -27,14 +27,14 @@ Profiling NKI (Neuron Kernel Interface) kernels helps you understand hardware le
 
 You can profile NKI kernels using several approaches. In this guide, you'll learn two primary methods for profiling NKI kernels.
 
-How to profile using neuron-profile capture
+How to profile using neuron-explorer capture
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To profile an NKI kernel using neuron-profile capture, follow these three steps:
+To profile an NKI kernel using neuron-explorer capture, follow these three steps:
 
 1. Set the environment variable ``NEURON_FRAMEWORK_DEBUG=1`` to instruct the compiler to save the NEFF (Neuron Executable File Format) file.
 2. Execute the NKI kernel to generate the NEFF file.
-3. Run ``neuron-profile capture`` to create an Neuron Trace File Format (NTFF) file for performance analysis.
+3. Run ``neuron-explorer capture`` to create an Neuron Trace File Format (NTFF) file for performance analysis.
 
 Each of these steps is explained in detail below.
 
@@ -50,14 +50,16 @@ We will profile a 3-layer MLP model that fuses matrix multiplications with ReLU 
     import torch
     import torch.nn as nn
     import torch.nn.functional as F
-    import neuronxcc.nki as nki
-    import neuronxcc.nki.isa as nisa
-    import neuronxcc.nki.language as nl
+    import torch_neuronx
+    import nki
+    import nki.isa as nisa
+    import nki.language as nl
     import os
 
     os.environ["NEURON_FRAMEWORK_DEBUG"] = "1"
     os.environ["XLA_IR_DEBUG"] = "1"
     os.environ["XLA_HLO_DEBUG"] = "1"
+    os.environ["NEURON_LOGICAL_NC_CONFIG"] = "1"
 
 
     @nki.jit
@@ -69,116 +71,140 @@ We will profile a 3-layer MLP model that fuses matrix multiplications with ReLU 
         TILES_IN_BLOCK_N=2,
         TILES_IN_BLOCK_K=8,
     ):
-      """NKI kernel to compute a large matrix multiplication efficiently by
-         blocking all dimensions and doing layout optimization.
+        """NKI kernel to compute a large matrix multiplication efficiently by
+        blocking all dimensions and doing layout optimization.
 
-      Args:
-          lhsT: an input tensor of shape [K,M], where K is a multiple of 128 *
+        Args:
+            lhsT: an input tensor of shape [K,M], where K is a multiple of 128 *
             TILES_IN_BLOCK_K and M is a multiple of 128 * TILES_IN_BLOCK_M.  It is the
             left-hand-side argument of the matrix multiplication, delivered transposed
             for optimal performance.
-          rhs: an input tensor of shape [K,N],  where K is a multiple of 128 *
+            rhs: an input tensor of shape [K,N],  where K is a multiple of 128 *
             TILES_IN_BLOCK_K and N is a multiple of 512 * TILES_IN_BLOCK_N.  It is
             the right-hand-side argument of the matrix multiplication.
-          TILES_IN_BLOCK_*: meta parameters to control blocking dimensions
-      Returns:
-          result: the resulting output tensor of shape [M,N]
-      """
+            TILES_IN_BLOCK_*: meta parameters to control blocking dimensions
+        Returns:
+            result: the resulting output tensor of shape [M,N]
+        """
 
-      K, M = lhsT.shape
-      K_, N = rhs.shape
-      assert K == K_, "lhsT and rhs must have the same contraction dimension"
-      result = nl.ndarray((M, N), dtype=lhsT.dtype, buffer=nl.shared_hbm)
+        K, M = lhsT.shape
+        K_, N = rhs.shape
+        assert K == K_, "lhsT and rhs must have the same contraction dimension"
 
-      TILE_M = nl.tile_size.gemm_stationary_fmax  # 128
-      TILE_K = nl.tile_size.pmax  # 128
-      TILE_N = nl.tile_size.gemm_moving_fmax  # 512
+        TILE_M = nl.tile_size.gemm_stationary_fmax  # 128
+        TILE_K = nl.tile_size.pmax  # 128
+        TILE_N = nl.tile_size.gemm_moving_fmax  # 512
 
-      BLOCK_M = TILE_M * TILES_IN_BLOCK_M
-      BLOCK_N = TILE_N * TILES_IN_BLOCK_N
-      BLOCK_K = TILE_K * TILES_IN_BLOCK_K
+        BLOCK_M = TILE_M * TILES_IN_BLOCK_M
+        BLOCK_N = TILE_N * TILES_IN_BLOCK_N
+        BLOCK_K = TILE_K * TILES_IN_BLOCK_K
 
-      # the size has to be multiple of block size
-      assert M % BLOCK_M == 0
-      assert N % BLOCK_N == 0
-      assert K % BLOCK_K == 0
+        assert M % BLOCK_M == 0
+        assert N % BLOCK_N == 0
+        assert K % BLOCK_K == 0
 
-      NUM_BLOCK_M = M // BLOCK_M
-      NUM_BLOCK_N = N // BLOCK_N
-      NUM_BLOCK_K = K // BLOCK_K
+        NUM_BLOCK_M = M // BLOCK_M
+        NUM_BLOCK_N = N // BLOCK_N
+        NUM_BLOCK_K = K // BLOCK_K
 
-      # Blocking N dimension (the RHS free dimension)
-      for n in nl.affine_range(NUM_BLOCK_N):
-        result_tiles = nl.zeros((NUM_BLOCK_M, TILES_IN_BLOCK_M, TILES_IN_BLOCK_N,
-                                 nl.par_dim(TILE_M), TILE_N),
-                                dtype=lhsT.dtype,
-                                buffer=nl.sbuf)
+        result = nl.ndarray((M, N), dtype=lhsT.dtype, buffer=nl.shared_hbm)
 
-        # Blocking K dimension (the contraction dimension)
-        # Use `sequential_range` because we do not want the compiler to change this loop by,
-        # for example, vectorizing it
-        for k in nl.sequential_range(NUM_BLOCK_K):
-          # Loading tiles from rhs
-          # setting the load tile to `TILE_K x BLOCK_SIZE_N` to optimize DMA performance
-          i_rhs = nl.mgrid[0:TILE_K, 0:BLOCK_N]
-          rhs_tiles = nl.ndarray((TILES_IN_BLOCK_K, nl.par_dim(TILE_K), BLOCK_N),
-                                 dtype=rhs.dtype,
-                                 buffer=nl.sbuf)
+        # Blocking N dimension (the RHS free dimension)
+        for n in nl.affine_range(NUM_BLOCK_N):
+            # Initialize result tiles in SBUF to 0.0
+            # Block dims (NUM_BLOCK_M, TILES_IN_BLOCK_M, TILES_IN_BLOCK_N) are on the free dim
+            result_tmps = nl.ndarray(
+                shape=(TILE_M, NUM_BLOCK_M, TILES_IN_BLOCK_M, TILES_IN_BLOCK_N, TILE_N),
+                dtype=lhsT.dtype,
+                buffer=nl.sbuf,
+            )
+            nisa.memset(dst=result_tmps, value=0.0)
 
-          for bk_r in nl.affine_range(TILES_IN_BLOCK_K):
-            rhs_tiles[bk_r, i_rhs.p, i_rhs.x] = nl.load(
-                rhs[(TILES_IN_BLOCK_K * k + bk_r) * TILE_K + i_rhs.p,
-                    BLOCK_N * n + i_rhs.x])
+            # Blocking K dimension (the contraction dimension)
+            for k in nl.sequential_range(NUM_BLOCK_K):
+                # Loading tiles from rhs
+                # setting the load tile to `TILE_K x BLOCK_SIZE_N` to optimize DMA performance
+                rhs_tiles = nl.ndarray(
+                    shape=(TILE_K, TILES_IN_BLOCK_K, BLOCK_N),
+                    dtype=rhs.dtype,
+                    buffer=nl.sbuf,
+                )
 
-          # Blocking M dimension (the LHS free dimension)
-          for m in nl.affine_range(NUM_BLOCK_M):
-            # Loading tiles from lhsT
-            i_lhsT = nl.mgrid[0:TILE_K, 0:BLOCK_M]
-            lhsT_tiles = nl.ndarray((TILES_IN_BLOCK_K, nl.par_dim(TILE_K), BLOCK_M),
-                                    dtype=lhsT.dtype,
-                                    buffer=nl.sbuf)
-            for bk_l in nl.affine_range(TILES_IN_BLOCK_K):
-              lhsT_tiles[bk_l, i_lhsT.p, i_lhsT.x] = nl.load(
-                  lhsT[(TILES_IN_BLOCK_K * k + bk_l) * TILE_K + i_lhsT.p,
-                       BLOCK_M * m + i_lhsT.x])
+                for bk_r in range(TILES_IN_BLOCK_K):
+                    k_start = (TILES_IN_BLOCK_K * k + bk_r) * TILE_K
+                    k_end = k_start + TILE_K
+                    n_start = BLOCK_N * n
+                    n_end = n_start + BLOCK_N
+                    nisa.dma_copy(
+                        dst=rhs_tiles[0:TILE_K, bk_r, 0:BLOCK_N],
+                        src=rhs[k_start:k_end, n_start:n_end],
+                    )
 
-            # Do matmul with all tiles in the blocks
-            i_lhsT_mm = nl.mgrid[0:TILE_K, 0:TILE_M]
-            i_rhs_mm = nl.mgrid[0:TILE_K, 0:TILE_N]
-            i_res_mm = nl.mgrid[0:TILE_M, 0:TILE_N]
-            for bn in nl.affine_range(TILES_IN_BLOCK_N):
-              for bm in nl.affine_range(TILES_IN_BLOCK_M):
-                res_tile = nl.zeros((TILE_M, TILE_N), dtype=nl.float32, buffer=nl.psum)
+                # Blocking M dimension (the LHS free dimension)
+                for m in nl.affine_range(NUM_BLOCK_M):
+                    # Loading tiles from lhsT
+                    lhsT_tiles = nl.ndarray(
+                        shape=(TILE_K, TILES_IN_BLOCK_K, BLOCK_M),
+                        dtype=lhsT.dtype,
+                        buffer=nl.sbuf,
+                    )
 
-                for bk in nl.affine_range(TILES_IN_BLOCK_K):
-                  res_tile[...] += nisa.nc_matmul(
-                      lhsT_tiles[bk, i_lhsT_mm.p, bm * TILE_M + i_lhsT_mm.x],
-                      rhs_tiles[bk, i_rhs_mm.p, bn * TILE_N + i_rhs_mm.x])
+                    for bk_l in nl.affine_range(TILES_IN_BLOCK_K):
+                        k_start = (TILES_IN_BLOCK_K * k + bk_l) * TILE_K
+                        k_end = k_start + TILE_K
+                        m_start = BLOCK_M * m
+                        m_end = m_start + BLOCK_M
+                        nisa.dma_copy(
+                            dst=lhsT_tiles[0:TILE_K, bk_l, 0:BLOCK_M],
+                            src=lhsT[k_start:k_end, m_start:m_end],
+                        )
 
-                # Accumulate on corresponding SBUF tile
-                result_tiles[m, bm, bn, i_res_mm.p,
-                             i_res_mm.x] += res_tile[i_res_mm.p, i_res_mm.x]
+                    # Do matmul with all tiles in the blocks
+                    for bn in nl.affine_range(TILES_IN_BLOCK_N):
+                        for bm in nl.affine_range(TILES_IN_BLOCK_M):
+                            result_tile = nl.ndarray(
+                                shape=(TILE_M, TILE_N), dtype=nl.float32, buffer=nl.psum
+                            )
+                            for bk in nl.affine_range(TILES_IN_BLOCK_K):
+                                nisa.nc_matmul(
+                                    dst=result_tile,
+                                    stationary=lhsT_tiles[
+                                        0:TILE_K, bk, bm * TILE_M : (bm + 1) * TILE_M
+                                    ],
+                                    moving=rhs_tiles[
+                                        0:TILE_K, bk, bn * TILE_N : (bn + 1) * TILE_N
+                                    ],
+                                )
 
-        # Copying the result from SBUF to HBM
-        for m in nl.affine_range(NUM_BLOCK_M):
-          for bm in nl.affine_range(TILES_IN_BLOCK_M):
-            i_res = nl.mgrid[0:TILE_M, 0:TILE_N]
-            i_res_packed = nl.mgrid[0:TILE_M, 0:BLOCK_N]
-            result_packed = nl.ndarray((TILE_M, BLOCK_N),
-                                       dtype=result_tiles.dtype,
-                                       buffer=nl.sbuf)
+                            # Accumulate on corresponding SBUF tile
+                            nisa.tensor_tensor(
+                                dst=result_tmps[0:TILE_M, m, bm, bn, 0:TILE_N],
+                                data1=result_tmps[0:TILE_M, m, bm, bn, 0:TILE_N],
+                                data2=result_tile,
+                                op=nl.add,
+                            )
 
-            # coalesce result tiles for better DMA performance
-            for bn in nl.affine_range(TILES_IN_BLOCK_N):
-              result_packed[i_res.p,
-                            bn * TILE_N + i_res.x] = nl.copy(result_tiles[m, bm, bn,
-                                                                          i_res.p,
-                                                                          i_res.x])
-            nl.store(result[(TILES_IN_BLOCK_M * m + bm) * TILE_M + i_res_packed.p,
-                            BLOCK_N * n + i_res_packed.x],
-                     value=result_packed[i_res_packed.p, i_res_packed.x])
+            # Copying the result from SBUF to HBM
+            for m in nl.affine_range(NUM_BLOCK_M):
+                for bm in nl.affine_range(TILES_IN_BLOCK_M):
+                    m_start = (TILES_IN_BLOCK_M * m + bm) * TILE_M
+                    n_start = BLOCK_N * n
+                    result_packed = nl.ndarray(
+                        shape=(TILE_M, BLOCK_N), dtype=nl.float32, buffer=nl.sbuf
+                    )
+                    # coalesce result tiles for better DMA performance
+                    for bn in nl.affine_range(TILES_IN_BLOCK_N):
+                        nisa.tensor_copy(
+                            dst=result_packed[0:TILE_M, bn * TILE_N : (bn + 1) * TILE_N],
+                            src=result_tmps[0:TILE_M, m, bm, bn, 0:TILE_N],
+                        )
 
-      return result
+                    nisa.dma_copy(
+                        dst=result[m_start : m_start + TILE_M, n_start : n_start + BLOCK_N],
+                        src=result_packed[0:TILE_M, 0:BLOCK_N],
+                    )
+
+        return result
 
 
     class NKILinear(nn.Module):
@@ -209,31 +235,32 @@ We will profile a 3-layer MLP model that fuses matrix multiplications with ReLU 
 
 
     def main():
-        from torch_xla.core import xla_model as xm
-
         torch.manual_seed(0)
-        device = xm.xla_device()
 
-        model = MLP().to(device)
-        train_x = torch.randn(2048, 2048).to(device)
+        model = MLP()
+        train_x = torch.randn(2048, 2048)
 
-        output = model(train_x)
+        # Use torch_neuronx.trace to compile the model and generate the NEFF
+        traced_model = torch_neuronx.trace(model, train_x, compiler_args="--lnc=1", compiler_workdir="./compiler_workdir")
 
+        output = traced_model(train_x)
         print(f"Output tensor: {output}")
-
-        xm.mark_step()
 
 
     if __name__ == "__main__":
         main()
 
-As you can see, at the very top we have added the following flags::
+As you can see, at the very top we have added the following environment variables::
 
     os.environ["NEURON_FRAMEWORK_DEBUG"] = "1"
     os.environ["XLA_IR_DEBUG"] = "1"
     os.environ["XLA_HLO_DEBUG"] = "1"
 
-The ``NEURON_FRAMEWORK_DEBUG`` environment variable enables Neuron debug output. This will trigger the Neuron compiler to save the Neuron Executable File Format (NEFF) artifact to the current directory after compilation of your NKI kernel. The NEFF contains all hardware instructions required to execute your NKI kernel on a NeuronDevice, as well as metadata and debug info needed for profiling. To enable source code linking to framework code (ex. PyTorch) set the environment variables ``XLA_IR_DEBUG=1`` and ``XLA_HLO_DEBUG=1``.
+These environment variables serve the following purposes:
+
+* ``NEURON_FRAMEWORK_DEBUG=1``: Enables Neuron debug output. This triggers the Neuron compiler to save the Neuron Executable File Format (NEFF) artifact to the current directory after compilation of your NKI kernel. The NEFF contains all hardware instructions required to execute your NKI kernel on a NeuronDevice, as well as metadata and debug info needed for profiling.
+* ``XLA_IR_DEBUG=1``: Preserves the mapping between high-level framework operations (e.g., PyTorch operators) and the intermediate representation (IR) passed to the compiler. This enables source code linking from device instructions back to framework-level code in the profiler.
+* ``XLA_HLO_DEBUG=1``: Preserves the mapping between the HLO (High Level Operation) graph and the original framework operations. This enables the profiler to display descriptive operator names and stack frame information, making it easier to identify which part of your model corresponds to each device instruction.
 
 Step 2: Compile Your NKI Kernel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -242,18 +269,18 @@ Compile your NKI kernel to create a NEFF in your current directory::
 
     $ python3 mlp_with_mm_kernel.py
 
-.. note:: Find your NEFF file, which will be named something like ``MODULE_SyncTensorsGraph.81_690876920003119736.neff``.
+.. note:: The ``compiler_workdir`` argument to ``torch_neuronx.trace`` specifies the directory where the compiler saves artifacts, including the NEFF file. Look for your NEFF file inside the ``./compiler_workdir`` directory, which will be named ``graph.neff``.
 
 Step 3: Profile the Generated NEFF
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The last step is profiling the generated NEFF. This step executes the NEFF on the NeuronDevice and records a raw execution trace into a NTFF artifact::
 
-    $ neuron-explorer capture -n <path_to_neff> -s profile.ntff --profile-nth-exec=2 --enable-dge-notifs
+    $ neuron-explorer capture -n ./compiler_workdir/graph.neff -s profile.ntff --profile-nth-exec=2 --enable-dge-notifs
 
 This will save your NTFF profile to ``profile_exec_2.ntff``.
 
-important::
+.. important::
 
     The ``--profile-nth-exec=2`` option will profile your NEFF twice on the NeuronDevice and output a NTFF profile for the second iteration. This is recommended to avoid one-time warmup delays which can be seen in the first iteration of execution.
 
@@ -264,7 +291,7 @@ View the Neuron Explorer UI
 
 This section assumes you've completed the previous step and have already generated both the NEFF and NTFF files, and downloaded them on your local machine.
 
-Neuron Explorer includes an interactive, web-based UI for exploring execution traces in detail. In this section, we'll open the Neuron Explorer UI to examine NKI-specific profiling information. These details can be found in multiple areas of the interface — including instruction hover tooltips, instruction click panels, search results, and box select results.
+Neuron Explorer includes an interactive, web-based UI for exploring execution traces in detail. In this section, we'll open the Neuron Explorer UI to examine NKI-specific profiling information. These details can be found in multiple areas of the interface — including instruction hover tooltips, instruction click panels, search results, and box select results. For a comprehensive overview of all available viewers, see the :doc:`Neuron Explorer documentation </tools/neuron-explorer/index>`.
 
 To view the Neuron Profile Web UI, execute the view command to start Web UI, replacing ``<workspace>`` with a path to a folder to store your profiling artifacts::
 
@@ -279,7 +306,7 @@ The above command should print a URL that you can click to open the web UI::
 Port Forwarding for Remote Instances
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If ``neuron-profile view`` is run on a remote instance, you may need to use port forwarding to access the web UI. By default, neuron-profile creates a web server on port 3001 and the API server on port 3002. To enable connection to your browser in you local computer, we will need to establish an ssh tunnel to both of the ports.
+If ``neuron-explorer view`` is run on a remote instance, you may need to use port forwarding to access the web UI. By default, neuron-explorer creates a web server on port 3001 and the API server on port 3002. To enable connection to your browser in you local computer, we will need to establish an ssh tunnel to both of the ports.
 
 For example::
 
@@ -329,7 +356,7 @@ Using the Profile UI
       :align: center
       :width: 750
 
-* To view hierarchy of this profile, click on Add Widget and select Hierarchy.
+* To view hierarchy of this profile, click on Add Widget and select Hierarchy. For more details, see the :doc:`Hierarchy Viewer </tools/neuron-explorer/overview-hierarchy-view>` documentation.
 
    .. image:: /nki/img/how-to/nki-profiler-7.png
       :align: center
@@ -350,7 +377,7 @@ Using the Profile UI
 View NKI Source Code in Neuron Profile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can optionally include your NKI source code files for display in Neuron Profile. When provided, Neuron Profile loads the source code into an integrated viewer, displayed side-by-side with the execution timeline in the web UI. This makes it easier to navigate between the instruction trace and the corresponding NKI source code, and to track the exact version of the code that generated the profile.
+You can optionally include your NKI source code files for display in Neuron Profile. When provided, Neuron Profile loads the source code into an integrated viewer, displayed side-by-side with the execution timeline in the web UI. This makes it easier to navigate between the instruction trace and the corresponding NKI source code, and to track the exact version of the code that generated the profile. For more details on source code linking, see the :doc:`Source Code Viewer </tools/neuron-explorer/how-to-link-view-source-code>` documentation.
 
 .. note:: Even if you don't upload the source code, the NKI source filename and line number remain available in the instruction detail view as noted in View Neuron Profile UI.
 
@@ -366,25 +393,19 @@ You can optionally include your NKI source code files for display in Neuron Prof
       :align: center
       :width: 750
 
-* Hover on an instruction that has NKI source location and **Command + left click** on Mac (**Ctrl + right click** on Windows), and it will pop-up a window for showing file selection for stack trace.
+* Hover on an instruction that has NKI source location and **Command + left click** on Mac (**Ctrl + right click** on Windows), and it will jump to the line of the source code and highlight all of instructions related to this line.
 
    .. image:: /nki/img/how-to/nki-profiler-12.png
       :align: center
       :width: 750
 
-* Selecting any option from the list, it will jump to the line of the source code and highlight all of instructions related to this line.
+* You can also enable different source code decorations in **Source Code Settings**.
 
    .. image:: /nki/img/how-to/nki-profiler-13.png
       :align: center
       :width: 750
 
-* You can also enable different source code decorations in **Source Code Settings**.
-
    .. image:: /nki/img/how-to/nki-profiler-14.png
-      :align: center
-      :width: 750
-
-   .. image:: /nki/img/how-to/nki-profiler-15.png
       :align: center
       :width: 750
 
@@ -395,5 +416,12 @@ Great! Now that you've learned how to profile an NKI kernel, it's time to take t
 
 * Dive into the :doc:`NKI Performance Guide </nki/deep-dives/nki_perf_guide>` to discover techniques for making your kernels faster and more efficient.
 * Explore the `NKI sample kernels <https://github.com/aws-neuron/nki-samples>`__ to see real-world examples of high-performance kernel implementations — and get inspiration for your own NKI kernels.
+* Learn more about the Neuron Explorer viewers to deepen your profiling analysis:
 
-By combining profiling insights with optimization strategies and practical examples, you'll be well-equipped to write NKI kernels that leverage Neuron hardware in an efficient way.
+  * :doc:`Device Trace Viewer </tools/neuron-explorer/overview-device-profiles>` — Explore hardware-level execution with timeline view, operator table, and event details.
+  * :doc:`Hierarchy Viewer </tools/neuron-explorer/overview-hierarchy-view>` — Visualize execution from model layers down to hardware operations.
+  * :doc:`Source Code Viewer </tools/neuron-explorer/how-to-link-view-source-code>` — Navigate between source code and profile data with bidirectional linking.
+  * :doc:`Summary Viewer </tools/neuron-explorer/overview-summary-page>` — Get high-level performance insights and optimization recommendations.
+  * :doc:`AI Recommendation Viewer </tools/neuron-explorer/overview-ai-recommendations>` — Get AI-powered bottleneck analysis and optimization suggestions for NKI profiles.
+
+By combining profiling insights with optimization strategies and practical examples, you'll be well prepared to write NKI kernels that leverage Neuron hardware in an efficient way.

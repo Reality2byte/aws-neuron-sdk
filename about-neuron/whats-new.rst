@@ -40,11 +40,11 @@ Today we are releasing AWS Neuron SDK 2.29.0. This release brings NKI 0.3.0 out 
 Neuron Kernel Interface (NKI)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-AWS Neuron SDK 2.29.0 introduces NKI 0.3.0, the latest update to the Neuron Kernel Interface. NKI 0.3.0 is now out of Beta and Stable. It features the NKI Standard Library (``nki-stdlib``), which provides developer-visible code for all NKI APIs and native language objects (such as ``NkiTensor``). This release provides new exposed Trainium capabilities and features in the NKI API and re-introduces ``nki.language`` APIs.
+AWS Neuron SDK 2.29.0 introduces NKI 0.3.0, the latest update to the Neuron Kernel Interface. NKI 0.3.0 is now out of Beta and Stable. It features the NKI Standard Library (``nki-stdlib``), which provides developer-visible code for all NKI APIs and native language objects (such as ``NkiTensor``). This release provides new exposed Trainium capabilities and features in the NKI API and introduces ``nki.language`` APIs.
 
 **NKI CPU Simulator (Experimental)**: NKI 0.3.0 includes a CPU Simulator, which executes NKI kernels entirely on CPU and allows for a fast development cycle on inexpensive CPUs and compute instances to validate kernel correctness, using standard Python step-by-step debugging tools and instrumentation to print results for every line of kernel code. Activate it with ``NKI_SIMULATOR=1`` or use ``nki.simulate(kernel)``.
 
-**New Language APIs (Experimental)**: Re-introduced ``nki.language`` high-level convenience wrappers including ``nl.load``, ``nl.store``, ``nl.copy``, ``nl.matmul``, ``nl.transpose``, and ``nl.softmax``. 
+**New Language APIs (Experimental)**: Introduced ``nki.language`` high-level convenience wrappers including ``nl.load``, ``nl.store``, ``nl.copy``, ``nl.matmul``, ``nl.transpose``, and ``nl.softmax``. 
 
 **New ISA and Hardware Features**: Added the ability to set DMA priority of DMA operations and collectives operations for Trn3 (NeuronCore-v4). A dedicated ``nki.isa.exponential`` instruction is optimized for vectorising exponents (``exp``) with VectorE. Matmul accumulation control is added via the ``accumulate`` parameter on ``nc_matmul`` and ``nc_matmul_mx``. Variable-length all-to-all collectives are now available via ``nki.collectives.all_to_all_v``.
 

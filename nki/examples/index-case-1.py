@@ -1,5 +1,5 @@
-from neuronxcc import nki
-import neuronxcc.nki.language as nl
+import nki
+import nki.language as nl
 import math
 
 @nki.jit
@@ -40,9 +40,9 @@ def tensor_split_kernel_(in_tensor):
 
 if __name__ == "__main__":
     import torch
-    from torch_xla.core import xla_model as xm
+    import torch_xla
 
-    device = xm.xla_device()
+    device = torch_xla.device()
 
     X, Y = 4, 5
     in_tensor = torch.arange(X * Y, dtype=torch.bfloat16).reshape(X, Y).to(device=device)

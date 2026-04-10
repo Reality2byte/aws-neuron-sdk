@@ -508,8 +508,8 @@ The below pseudo-code illustrates the above computation without and with partiti
 
 .. code-block::
 
-   import neuronxcc.nki.isa as nisa
-   import neuronxcc.nki.language as nl
+   import nki.isa as nisa
+   import nki.language as nl
 
    ################################################################
    # option 1: No partition vectorization
@@ -572,8 +572,8 @@ and running all three operations (multiply, add, exp) in a pipeline.
 
 .. code-block::
 
-   import neuronxcc.nki.isa as nisa
-   import neuronxcc.nki.language as nl
+   import nki.isa as nisa
+   import nki.language as nl
 
    # input: data (tile[128, 512]), scale (tile[128, 1]) , bias (tile[128, 1])
 
@@ -868,7 +868,7 @@ a transfer size of 32KiB:
 
 .. code-block::
 
-   import neuronxcc.nki.language as nl
+   import nki.language as nl
 
    def load_store_32kib_contiguous(in_tensor, out_tensor):
        # both in_tensor and out_tensor have FP32 data type, 4B/element
@@ -880,18 +880,17 @@ a transfer size of 32KiB:
        # free dim size is at the ideal size to achieve good bandwidth usage: 1024
        # Beyond 1024 has diminished return on bandwidth and
        # runs the risk of degrading compute/data movement pipelining efficiency
-       i_p, i_f = nl.mgrid[0:128, 0:1024]
 
        # This access pattern should map to 16 DMA transfers (1 transfer/DMA engine),
        # with each DMA transfer moving 8 partitions worth of data:
        # 8 partitions * 1024 elements * 4B/element = 32 KiB
-       data_tile = nl.load(in_tensor[i_p, i_f])
+       data_tile = nl.load(in_tensor[0:128, 0:1024])
 
        # Do some useful computation
        ...
 
        # Store, similar size as the load
-       nl.store(out_tensor[i_p, i_f], data_tile)
+       nl.store(out_tensor[0:128, 0:1024], data_tile)
 
 Opt #10: Minimize use of DMA transposes.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

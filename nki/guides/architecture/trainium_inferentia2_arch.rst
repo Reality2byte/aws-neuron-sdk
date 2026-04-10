@@ -663,7 +663,7 @@ done through 16 DMA transfers (one per DMA engine), each moving a scatter-gather
 
 .. code-block::
 
-   import neuronxcc.nki.language as nl
+   import nki.language as nl
    tile = nl.load(in_tensor[0:128, 0:512])
 
 To achieve good performance out of the DMAs, we generally aim to:
@@ -836,19 +836,19 @@ The second instruction accumulates instruction output onto the previous instruct
 accumulation is always done in FP32. A series of TensorE matmul instructions with the first one writing to a PSUM bank and
 more subsequent instructions accumulating into the same PSUM bank data is called a *matmul accumulation group*.
 
-In current release of NKI, the ``nki.isa.nc_matmul`` does not have an explicit
-control field to indicate ``overwrite`` or ``accumulate`` for
-the PSUM. Instead, NeuronCompiler relies on the following NKI code pattern to trigger PSUM accumulation:
+In NKI, ``nisa.nc_matmul`` supports an ``accumulate`` parameter to control PSUM accumulation behavior.
+When not specified (default), the compiler auto-detects: the first write to a PSUM bank overwrites, and
+subsequent writes accumulate. The following NKI code pattern demonstrates PSUM accumulation:
 
 .. code-block::
 
    # condition 1: a psum buffer with zeros
-   psum_buf = nl.zeros(..., buffer=nl.psum)
+   psum_buf = nl.zeros((128, 128), dtype=nl.float32, buffer=nl.psum)
 
    # condition 2: an affine range loop
    for i in nl.affine_range(N):
       # condition 3: add matmul results from TensorEngine
-      psum_buf += nl.matmul(stationary_tile, moving_tile) # or nisa.nc_matmul
+      nisa.nc_matmul(dst=psum_buf, stationary=stationary_tile, moving=moving_tile)
 
 
 Refer to the
@@ -857,10 +857,9 @@ tutorial for a detailed implementation.
 
 .. note::
 
-   Due to current limitations in NKI, ``psum_buf[...] = psum_buf + nisa.nc_matmul(stationary_tile, moving_tile)``
-   will not reliably trigger the PSUM accumulation architecture feature. Therefore, even though this alternative
-   syntax is functionally equivalent to the use of ``+=``, it may get lowered to nisa.tensor_tensor on VectorEngine for
-   accumulation instead, leading to much lower performance.
+   When ``accumulate`` is not specified (default), ``nisa.nc_matmul`` auto-detects accumulation:
+   the first write to a PSUM location overwrites, and subsequent writes accumulate. Accumulation
+   can also be controlled explicitly with ``accumulate=True`` or ``accumulate=False``.
 
 Finally, with 8 PSUM banks per partition, TensorE can have up to eight outstanding matmul accumulation groups, which allows
 flexible scheduling of matmul instructions on TensorE. Also, the extra buffering from multiple PSUM banks allows us to pipeline

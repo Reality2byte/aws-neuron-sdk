@@ -38,9 +38,9 @@ We can perform ``(a + b) * a * b`` using native PyTorch code.
 ::
 
    import torch
-   from torch_xla.core import xla_model as xm
+   import torch_xla
 
-   device = xm.xla_device()
+   device = torch_xla.device()
 
    a = torch.randn(256, 1024, dtype=torch.float32).to(device)
    b = torch.randn(256, 1024, dtype=torch.float32).to(device)
@@ -56,7 +56,7 @@ caller (``nki_tensor_add``), and everything else works as before.
 
 ::
 
-   device = xm.xla_device()
+   device = torch_xla.device()
    a = torch.randn(256, 1024, dtype=torch.float32).to(device)
    b = torch.randn(256, 1024, dtype=torch.float32).to(device)
    c = nki_tensor_add(a, b) # calling a NKI kernel, instead of the built-in torch op
@@ -240,8 +240,8 @@ propagates the ``dy`` gradients from the previous backward function.
 ::
 
    import torch
-   import torch_xla.core.xla_model as xm
-   device = xm.xla_device()
+   import torch_xla
+   device = torch_xla.device()
 
    class NkiAddFunc(torch.autograd.Function):
      @staticmethod
@@ -265,7 +265,7 @@ propagates the ``dy`` gradients from the previous backward function.
    # lastly, let's invoke the auto-grad engine
    loss.backward()
 
-   xm.mark_step()
+   torch_xla.sync()
 
 ^^^
 JAX

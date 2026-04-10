@@ -1,5 +1,5 @@
-import neuronxcc.nki.language as nl
-from neuronxcc import nki
+import nki.language as nl
+import nki
 
 @nki.jit
 def tensor_exp_kernel_(in_tensor):
@@ -15,7 +15,7 @@ def tensor_exp_kernel_(in_tensor):
                           buffer=nl.shared_hbm)
 
   # Load input data from HBM to on-chip memory
-  in_tile = nl.load(in_tensor[0:128, 0:512)
+  in_tile = nl.load(in_tensor[0:128, 0:512])
 
   # perform the computation:
   out_tile = nl.exp(in_tile)
@@ -28,9 +28,9 @@ def tensor_exp_kernel_(in_tensor):
 
 if __name__ == "__main__":
   import torch
-  from torch_xla.core import xla_model as xm
+  import torch_xla
 
-  device = xm.xla_device()
+  device = torch_xla.device()
 
   shape = (128, 512)
   in_tensor = torch.ones(shape,  dtype=torch.bfloat16).to(device=device)

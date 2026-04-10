@@ -5,6 +5,10 @@ nki.language
 
 .. currentmodule:: nki.language
 
+The ``nki.language`` module provides high-level constructs for writing NKI kernels.
+It includes tensor creation, indexing, type casting, math operations, and loop constructs
+that the NKI compiler translates into efficient hardware instructions.
+
 .. _nl_creation:
 
 Creation operations

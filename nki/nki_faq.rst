@@ -42,10 +42,7 @@ A logical NeuronCore (LNC) can consist of multiple physical NeuronCores. In the 
 For more details on NeuronCore configurations, see
 `Logical NeuronCore configurations <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/about-neuron/arch/neuron-features/logical-neuroncore-config.html#logical-neuroncore-config>`__.
 
-In NKI, users can launch a NKI kernel onto multiple physical NeuronCores within a logical NeuronCore using single program, multiple data (SPMD) grids.
-
-For a step-by-step guide, refer to the tutorial here:
-:doc:`SPMD Tensor addition with multiple NeuronCores </nki/guides/tutorials/spmd_multiple_nc_tensor_addition>`.
+In NKI, users can launch a NKI kernel onto multiple physical NeuronCores within a logical NeuronCore using ``kernel[2]`` to set LNC=2. Each core receives a different ``nl.program_id(0)`` value (0 or 1).
 
 What ML Frameworks support NKI kernels?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

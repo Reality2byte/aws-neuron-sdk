@@ -17,7 +17,7 @@ Neuron Kernel Interface (NKI) [0.3.0] (Neuron 2.29.0 Release)
 
 Date of Release: 04/09/2026
 
-AWS Neuron SDK 2.29.0 introduces NKI 0.3.0, a significant update to the Neuron Kernel Interface for General Availability. NKI 0.3.0 features NKI Standard Library (nki-stdlib), which provides developer-visible code for all NKI APIs and native language objects (e.g., NkiTensor). This release provides new exposed Trainium capabilities and features in the NKI API and re-introduces nki.language APIs. NKI 0.3.0 includes a CPU Simulator, which executes NKI kernels entirely on CPU using NumPy — enabling developers to validate kernel logic on laptops and CI environments without Trainium hardware. NKI 0.3.0 also includes the ``nki.typing`` module for declaring expected tensor shapes, a dedicated ``nki.isa.exponential`` instruction optimized for Softmax computation, matmul accumulation control, explicit memory address placement, and variable-length all-to-all collectives via ``nki.collectives.all_to_all_v``. NKI 0.3.0 includes several API breaking changes that improve correctness and consistency along with updated documentation.
+AWS Neuron SDK 2.29.0 introduces NKI 0.3.0, a significant update to the Neuron Kernel Interface for General Availability. NKI 0.3.0 features NKI Standard Library (nki-stdlib), which provides developer-visible code for all NKI APIs and native language objects (e.g., ``NkiTensor``). This release provides new exposed Trainium capabilities and features in the NKI API and introduces ``nki.language`` APIs. NKI 0.3.0 includes a CPU Simulator, which executes NKI kernels entirely on CPU using NumPy — enabling developers to validate kernel logic on laptops and CI environments without Trainium hardware. NKI 0.3.0 also includes the ``nki.typing`` module for declaring expected tensor shapes, a dedicated ``nki.isa.exponential`` instruction optimized for Softmax computation, matmul accumulation control, explicit memory address placement, and variable-length all-to-all collectives via ``nki.collectives.all_to_all_v``. NKI 0.3.0 includes several API breaking changes that improve correctness and consistency along with updated documentation.
 
 For the full list of changes and update examples, see the :ref:`NKI 0.3.0 Update Guide <nki-0-3-0-update-guide>`.
 
@@ -28,7 +28,7 @@ New Features
 
 * **NKI CPU Simulator** *(Experimental)*: Executes NKI kernels entirely on CPU using NumPy, enabling local development, debugging, and functional correctness testing without Trainium hardware. Set the environment variable ``NKI_SIMULATOR=1`` to run existing kernels without code changes, or wrap the kernel call with ``nki.simulate(kernel)``. See :doc:`nki.simulate API Reference </nki/api/nki.simulate>`.
 
-* **nki.language APIs** *(Experimental)*: Re-introduces ``nki.language`` APIs as convenience wrappers around ``nki.isa`` APIs, including ``nl.load``, ``nl.store``, ``nl.copy``, ``nl.matmul``, ``nl.transpose``, ``nl.softmax``, and other high-level operations. See :doc:`nki.language API Reference </nki/api/nki.language>`.
+* **nki.language APIs** *(Experimental)*: Introduces ``nki.language`` APIs as convenience wrappers around ``nki.isa`` APIs, including ``nl.load``, ``nl.store``, ``nl.copy``, ``nl.matmul``, ``nl.transpose``, ``nl.softmax``, and other high-level operations. See :doc:`nki.language API Reference </nki/api/nki.language>`.
 
 * **nki.typing module**: New module for type-annotating kernel tensor parameters. Use ``nt.tensor[shape]`` to declare expected tensor shapes.
 

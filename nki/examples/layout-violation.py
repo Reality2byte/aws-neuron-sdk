@@ -1,5 +1,5 @@
-import neuronxcc.nki.language as nl
-from neuronxcc import nki
+import nki.language as nl
+import nki
 
 
 @nki.jit
@@ -27,9 +27,9 @@ def tensor_exp_kernel_(in_tensor):
 # NKI_EXAMPLE_12_BEGIN
 if __name__ == "__main__":
   import torch
-  from torch_xla.core import xla_model as xm
+  import torch_xla
 
-  device = xm.xla_device()
+  device = torch_xla.device()
 
   shape = (256, 512) # Previously (128, 512)
   in_tensor = torch.ones(shape,  dtype=torch.bfloat16).to(device=device)

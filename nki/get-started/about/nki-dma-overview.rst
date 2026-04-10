@@ -40,6 +40,46 @@ The points on the graph refer to various Free (Dimension) Byte values (that is, 
 
 Another key consideration for performance is overhead to initiate a DMA transfer. Small, frequent transfers incur significant overhead causing us to be latency bound, while larger transfers help amortize these costs, moving to a more bandwidth bound regime. For optimal performance, it's important to batch data movements into larger transfers whenever possible. 
 
+The table below shows the theoretical peak DMA bandwidth per NeuronCore generation:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Generation
+     - BW / Engine
+     - Engines / NC
+     - Aggregate BW
+   * - Trainium1
+     - 17 B/ns
+     - 16
+     - 272 GB/s
+   * - Trainium2
+     - 23 B/ns
+     - 16
+     - 368 GB/s
+   * - Trainium3
+     - 33 B/ns
+     - 16
+     - 528 GB/s
+
+The minimum free dimension size to reach the recommended 2 KiB per partition depends on the data type:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Data Type
+     - Minimum Free Dimension
+     - Bytes per Partition
+   * - float32
+     - 512 elements
+     - 2 048
+   * - bfloat16 / float16
+     - 1 024 elements
+     - 2 048
+   * - float8
+     - 2 048 elements
+     - 2 048
+
 We will look at two examples below, which show various shapes, sizes and access patterns, and how this affects the the achieved DMA throughput of the corresponding DMA transfers.
 
 Examples
@@ -102,7 +142,7 @@ Here is the kernel to perform the DMA transfer.
     if __name__ == "__main__":
       import torch
       import torch_xla
-      from torch_xla.core import xla_model as xm
+      import torch_xla
       device = torch_xla.device()
       shape = (4,4096) # Tensor shape : [4,4096]
       in_tensor = torch.ones(shape,  dtype=torch.bfloat16).to(device=device)

@@ -6,14 +6,14 @@ PyTorch implementation for average pool 2D NKI tutorial.
 """
 # NKI_EXAMPLE_38_BEGIN
 import torch
-from torch_xla.core import xla_model as xm
+import torch_xla
 # NKI_EXAMPLE_38_END
 from average_pool2d_nki_kernels import tensor_avgpool_kernel
 
 
 # NKI_EXAMPLE_38_BEGIN
 if __name__ == "__main__":
-  device = xm.xla_device()
+  device = torch_xla.device()
 
   # Now let's run the kernel
   POOL_SIZE = 2

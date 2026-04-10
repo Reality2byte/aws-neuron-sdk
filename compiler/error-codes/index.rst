@@ -90,8 +90,6 @@ This page lists the error codes you can encounter while developing with the Neur
    * - :ref:`NCC_EVRF022 <error-code-evrf022>`
      - Shift-right-arithmetic operation on non 32-bit inputs is not supported. Cast the first argument's data type to be S32, U32, or F32.
      - You need to use 32-bit data types for shift operations. Cast inputs to int32, uint32, or float32.
-   * - :ref:`NCC_EVRF024 <error-code-evrf024>`
-     - The output tensor size limit of 4GB was exceeded.
      - Reduce batch/tensor size or utilize tensor parallelism via neuronx-distributed.
    * - :ref:`NCC_EVRF031 <error-code-evrf031>`
      - The compiler encountered a scatter out-of-bounds error.
@@ -132,7 +130,6 @@ This page lists the error codes you can encounter while developing with the Neur
     EVRF018
     EVRF019
     EVRF022
-    EVRF024
     EVRF031
     EXSP001
     EXTP004

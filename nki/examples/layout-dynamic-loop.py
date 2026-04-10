@@ -1,5 +1,5 @@
-import neuronxcc.nki.language as nl
-from neuronxcc import nki
+import nki.language as nl
+import nki
 import math
 
 @nki.jit

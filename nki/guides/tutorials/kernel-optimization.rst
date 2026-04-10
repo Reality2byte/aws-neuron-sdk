@@ -115,7 +115,7 @@ This small kernel allows you to experiment with the ``nki.isa.nc_matmul`` instru
           import numpy as np
           import torch
           import torch_xla
-          from torch_xla.core import xla_model as xm
+          import torch_xla
           from multiply_kernel import matrix_multiply_kernel
 
           # Set up our initial inputs in numpy, and compute the matrix multiply in pure
