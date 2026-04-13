@@ -28,18 +28,18 @@ new features, deprecated and removed APIs, and breaking changes with before-and-
 
 
 What's New in NKI 0.3.0
-========================
+------------------------
 
 
 NKI Standard Library (nki-stdlib)
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 NKI 0.3.0 ships with the NKI Standard Library (nki-stdlib), which provides developer-visible code for all
 NKI APIs and native language objects (e.g., ``NkiTensor``).
 
 
 NKI CPU Simulator
------------------
+~~~~~~~~~~~~~~~~~
 
 NKI 0.3.0 introduces ``nki.simulate(kernel)``, which executes NKI kernels entirely on CPU without requiring
 NeuronDevice hardware. The simulator interprets NKI operations using NumPy, producing numerically equivalent
@@ -77,7 +77,7 @@ The simulator can be invoked in two ways:
 
 
 ``nki.typing`` Module
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 A new module for type-annotating kernel tensor parameters. Use ``nt.tensor[shape]`` to declare expected
 tensor shapes:
@@ -95,19 +95,19 @@ tensor shapes:
 
 
 New ``nki.isa`` APIs
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 * ``nki.isa.exponential`` — Dedicated exponential instruction with max subtraction, faster than ``nisa.activation(op=nl.exp)`` and useful for Softmax calculation. Trn3 (NeuronCore-v4) only.
 
 
 New ``nki.collectives`` APIs
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * ``nki.collectives.all_to_all_v`` — Variable-length all-to-all collective. Unlike ``all_to_all``, uses a metadata tensor to specify per-rank send/recv counts.
 
 
 Matmul Accumulation
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 ``nc_matmul`` and ``nc_matmul_mx`` now have an ``accumulate`` parameter that controls whether the operation
 overwrites or accumulates on the destination PSUM tile. The default (``accumulate=None``) auto-detects:
@@ -121,7 +121,7 @@ behavior.
 
 
 Address Placement
------------------
+~~~~~~~~~~~~~~~~~
 
 The ``address`` parameter was added to ``nki.language.ndarray`` as an optional parameter for explicit
 memory placement.
@@ -132,7 +132,7 @@ memory placement.
 
 
 ``nki.language`` APIs
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 NKI 0.3.0 introduces ``nki.language`` APIs as convenience wrappers around ``nki.isa`` APIs. These
 include operations such as ``nl.load``, ``nl.store``, ``nl.copy``, ``nl.matmul``, ``nl.transpose``,
@@ -144,17 +144,17 @@ include operations such as ``nl.load``, ``nl.store``, ``nl.copy``, ``nl.matmul``
 
 
 Deprecated and Removed APIs
-============================
+----------------------------
 
 
 ``nki.isa.tensor_copy_dynamic_src`` / ``nki.isa.tensor_copy_dynamic_dst``
--------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Deprecated and scheduled for removal. Use ``nisa.tensor_copy()`` with ``.ap()`` and ``scalar_offset`` instead.
 
 
 ``nki.jit(platform_target=...)``
---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``platform_target`` parameter is deprecated. Set the target platform via the
 ``NEURON_PLATFORM_TARGET_OVERRIDE`` environment variable instead.
@@ -165,7 +165,7 @@ The ``platform_target`` parameter is deprecated. Set the target platform via the
 
 
 ``nki.jit(mode=...)``
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 The ``mode`` parameter is deprecated and ignored. The NKI Compiler now inspects the kernel arguments to
 detect the appropriate machine learning framework automatically:
@@ -183,13 +183,13 @@ kernel call in ``nki.simulate``.
 
 
 API Breaking Changes
-====================
+--------------------
 
 This section describes each breaking change with before-and-after code examples.
 
 
 ``nisa.dma_copy`` — Reading from PSUM
---------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``nisa.dma_copy`` no longer supports reading directly from PSUM. Copy the PSUM tensor to SBUF first
 using ``nisa.tensor_copy``.
@@ -206,7 +206,7 @@ using ``nisa.tensor_copy``.
 
 
 ``nisa.dma_copy`` — ``dge_mode`` Type Matching
------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 NKI 0.3.0 enforces that source and destination element types must match when using
 ``dge_mode=dge_mode.hwdge``. Beta 2 did not validate this, allowing mismatched types to pass silently.
@@ -226,7 +226,7 @@ Alternatively, use ``dge_mode.swdge`` or ``dge_mode.none`` if type casting is in
 
 
 ``nisa.dma_copy`` — ``dst_rmw_op`` and ``unique_indices`` Removed
------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``nisa.dma_copy`` no longer supports read-modify-write operations. The ``dst_rmw_op`` and ``unique_indices``
 parameters have been removed. Use ``nisa.dma_compute`` instead.
@@ -268,7 +268,7 @@ For accumulation loops with indirect indexing:
 
 
 ``nisa.memset`` — Strict Type Matching
----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 NKI 0.3.0 enforces that the ``value`` argument must match the destination tensor's dtype. Beta 2 silently
 cast float values to the destination type. For integer-typed tensors, pass an integer literal.
@@ -285,7 +285,7 @@ cast float values to the destination type. For integer-typed tensors, pass an in
 
 
 ``nisa.tensor_reduce`` — Axis Handling Fix
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 NKI 0.3.0 fixes incorrect axis handling that existed in Beta 2. Beta 2 incorrectly allowed ``axis=1`` to
 refer to the last free dimension even for 3D/4D tensors. NKI 0.3.0 corrects this so that axis values
@@ -296,7 +296,7 @@ tensor) will produce errors in NKI 0.3.0.
 
 
 ``nisa.dma_compute`` — Parameter Reorder
------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``scales`` and ``reduce_op`` parameters swapped positions. ``scales`` is now optional, and
 ``unique_indices`` was added (moved from ``dma_copy``).
@@ -311,7 +311,7 @@ The ``scales`` and ``reduce_op`` parameters swapped positions. ``scales`` is now
 
 
 ``nisa.sendrecv`` — ``dma_engine`` Enum
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The boolean ``use_gpsimd_dma`` parameter is replaced by the ``dma_engine`` enum.
 
@@ -327,7 +327,7 @@ The boolean ``use_gpsimd_dma`` parameter is replaced by the ``dma_engine`` enum.
 
 
 ``nisa.affine_select`` — ``offset`` Parameter Moved
-----------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``offset`` parameter moved from the 3rd positional argument to a keyword argument with default ``0``.
 Existing positional call sites will break.
@@ -342,7 +342,7 @@ Existing positional call sites will break.
 
 
 ``nisa.register_move`` — ``imm`` Renamed to ``src``
-----------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``imm`` parameter has been renamed to ``src`` and now accepts a ``VirtualRegister`` instead of a
 compile-time constant. To move a compile-time constant into a register, first allocate a register with
@@ -359,7 +359,7 @@ the constant value.
 
 
 Collectives — ``num_channels`` Removed
----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``num_channels`` removed from ``collective_permute_implicit_current_processing_rank_id``. The high-level
 ``collective_permute_implicit()`` now accepts a ``channel_ids`` list directly.
@@ -385,7 +385,7 @@ Collectives — ``num_channels`` Removed
 
 
 Output Tensors Must Use ``nl.shared_hbm``
-------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All kernel output (return) tensors must be allocated with ``buffer=nl.shared_hbm``. Using ``nl.hbm``
 for output tensors will cause compilation failures.
@@ -400,7 +400,7 @@ for output tensors will cause compilation failures.
 
 
 Integer Enum Constants No Longer Supported
-------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Raw integer values (e.g., ``dge_mode=2``) are no longer accepted for enum parameters. Use the named enum
 members instead: ``nki.isa.engine``, ``nki.isa.dge_mode``, ``nki.isa.oob_mode``, ``nki.isa.reduce_cmd``,
@@ -416,7 +416,7 @@ and ``nki.isa.nc_version``.
 
 
 String Buffer Names No Longer Supported
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``nl.ndarray``, ``nl.zeros``, and other creation ops no longer accept strings for the ``buffer`` parameter.
 Use buffer objects from ``nki.language`` instead.
@@ -449,7 +449,7 @@ Use buffer objects from ``nki.language`` instead.
 
 
 ``nki.isa.dma_engine`` Alias Repurposed
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Beta 2 ``nki.isa.dma_engine`` module-level alias was unused and did not map correctly to a valid engine.
 In NKI 0.3.0, it has been replaced with the ``nki.isa.dma_engine`` enum, which provides explicit control
@@ -458,13 +458,13 @@ internal DMA engine).
 
 
 Language Restrictions
-=====================
+---------------------
 
 The NKI 0.3.0 compiler has stricter validation. The following patterns require changes for NKI 0.3.0.
 
 
 Remove Keyword-Only Argument Separator (``*``)
------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The NKI 0.3.0 compiler does not support the ``*`` separator in kernel function signatures. Move all
 parameters with defaults to the end of the signature.
@@ -483,7 +483,7 @@ parameters with defaults to the end of the signature.
 
 
 Replace ``is`` / ``is not`` with ``==`` / ``!=``
--------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The NKI 0.3.0 compiler does not support Python's ``is`` / ``is not`` operators. These operators check
 object identity, which is not meaningful during NKI compilation tracing. Use ``==`` / ``!=`` instead.
@@ -500,7 +500,7 @@ object identity, which is not meaningful during NKI compilation tracing. Use ``=
 
 
 Replace List Kernel Arguments with Tuples
-------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The NKI 0.3.0 compiler does not support ``list`` as a kernel argument type. Convert list arguments to
 tuples at the call site.
@@ -524,13 +524,13 @@ the compiler to cache compilations based on the kernel's arguments.
 
 
 API Improvements
-================
+----------------
 
 These changes improve correctness or usability but are non-breaking for most kernels.
 
 
 ``nisa.memset`` — x4 Packed Type Restriction
----------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 x4 packed types (``float8_e4m3fn_x4``, ``float8_e5m2_x4``, ``float4_e2m1fn_x4``) now enforce ``value=0``.
 The ISA memset instruction fills the destination with a single u32 value and has no notion of the
@@ -549,7 +549,7 @@ use ``nisa.dma_copy`` to load pre-computed x4 data from an HBM kernel argument.
 
 
 ``nisa.range_select`` — Parameter Fixes
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Beta 2 silently overrode ``on_false_value`` to ``FP32_MIN`` and ``reduce_cmd`` to ``reset_reduce``,
 regardless of user input. In NKI 0.3.0:
@@ -560,7 +560,7 @@ regardless of user input. In NKI 0.3.0:
 
 
 Parameter Default Value Updates
--------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following default values changed in NKI 0.3.0:
 

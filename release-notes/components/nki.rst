@@ -167,6 +167,10 @@ Known Issues
 
 * NKI kernel caching assumes kernels are pure functions of their input arguments. If a kernel's output depends on external state (such as global variables or closures over mutable objects), the cache may return stale results. This is undefined behavior. Always ensure kernel outputs are determined solely by kernel arguments.
 
+**Compiler**
+
+* Address rotation cannot be disabled — Address rotation, a backend compiler optimization that rotates tensor addresses for improved memory utilization, is enabled by default and cannot be opted out of in this release.
+
 
 .. _nki-2-28-0-rn:   
 

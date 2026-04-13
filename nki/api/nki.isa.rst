@@ -30,8 +30,6 @@ NKI ISA
    tensor_scalar_reduce
    tensor_scalar_cumulative
    tensor_copy
-   tensor_copy_dynamic_src
-   tensor_copy_dynamic_dst
    tensor_copy_predicated
    reciprocal
    quantize_mx

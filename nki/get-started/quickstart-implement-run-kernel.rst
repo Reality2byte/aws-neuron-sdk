@@ -7,7 +7,7 @@
 Quickstart: Implement and run your first kernel
 ================================================
 
-The Neuron Kernel Interface (NKI) lets you write low-level kernels that use the ISA of Trainium1/Inferentia2/Trainium2/Trainium3 ML accelerators. Your kernels can be used in PyTorch and JAX models to speed up critical parts of your model. This topic guides you through your first time writing a NKI kernel. It will help you understand the process when using AWS Neuron and NKI. 
+The Neuron Kernel Interface (NKI) lets you write low-level kernels that use the ISA of Trainium2 and Trainium3 ML accelerators. Your kernels can be used in PyTorch and JAX models to speed up critical parts of your model. This topic guides you through your first time writing a NKI kernel. It will help you understand the process when using AWS Neuron and NKI. 
 
 When you have completed it, you will have a simple kernel that adds two input tensors and returns the result and a test program in PyTorch or JAX.
 
@@ -17,7 +17,7 @@ When you have completed it, you will have a simple kernel that adds two input te
 Prerequisites
 --------------
 
-Before you begin, you will need an Inf2, Trn1, Trn2, or Trn3 EC2 instance.
+Before you begin, you will need a Trn2 or Trn3 EC2 instance.
 
 * Your EC2 instance should have the Neuron SDK and NKI library installed on them. If you used the Deep Learning AMI (DLAMI), these will be available by activating a PyTorch or JAX environment with Python's venv.
 * You will need a text editor or IDE for editing code.
@@ -191,22 +191,23 @@ In this step, you create a test program as a Python script using either PyTorch 
       .. code-block:: python
 
           import torch
-          import torch_xla
+          import torch_neuronx
           from add_kernel import nki_tensor_add_kernel
 
-          # Setup the XLA device and generate input tensors.
-          device = torch_xla.device()
+          # Generate input tensors.
+          a = torch.ones((4, 3), dtype=torch.float16)
+          b = torch.ones((4, 3), dtype=torch.float16)
 
-          a = torch.ones((4, 3), dtype=torch.float16).to(device=device)
-          b = torch.ones((4, 3), dtype=torch.float16).to(device=device)
+          # Trace the kernel for Neuron.
+          trace = torch_neuronx.trace(nki_tensor_add_kernel, (a, b))
 
-          # Invoke the kernel to add the results.
-          c = nki_tensor_add_kernel(a, b)
+          # Run the traced kernel.
+          c = trace(a, b)
 
-          # Print creates an implicit XLA barrier/mark-step (triggers XLA compilation)
+          # Print the result.
           print(c)
 
-      You use the ``xla_device`` function to look up device information. You use the device to move tensors created in PyTorch onto the Neuron device. You call the ``nki_tensor_add_kernel(a, b)`` function to invoke the kernel. The ``print`` function tells PyTorch to trace the model, causing the kernel to be compiled and run on the Neuron device.
+      You create input tensors using PyTorch. You use ``torch_neuronx.trace`` to compile the kernel for the Neuron device, then call the traced function to run it. The ``print`` function prints the result to the console.
 
    .. tab:: JAX
 
@@ -240,7 +241,7 @@ You can confirm the success of the kernel by running the driver you created in s
 
     NEURON_PLATFORM_TARGET_OVERRIDE=trn3 python test_program.py
 
-The ``NEURON_PLATFORM_TARGET_OVERRIDE`` environment variable sets the target architecture for compilation. In this example it is set to ``trn3`` which creates a binary suitable for running on Trn3 machines. For Trn1 and Inf2, specify ``trn1``; and for Trn2 specify ``trn2``.
+The ``NEURON_PLATFORM_TARGET_OVERRIDE`` environment variable sets the target architecture for compilation. In this example it is set to ``trn3`` which creates a binary suitable for running on Trn3 machines. For Trn2, specify ``trn2``.
 
 Whether you used PyTorch or JAX for the driver, you should see the following result.
 
@@ -259,42 +260,39 @@ You will also see some additional output depending on whether you used PyTorch o
 
       .. code-block:: text
 
-            /home/ubuntu/nki/test_torch.py:6: DeprecationWarning: Use torch_xla.device instead
-                device = torch_xla.device()
-            2026-03-30 22:53:53.548591: W neuron/pjrt-api/neuronpjrt.cc:1781] Use PJRT C-API 0.79 as client did not specify a PJRT C-API version
-            2026-Mar-30 22:54:00.0013 349295:349354 [2] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):263 CCOM WARN NET/OFI Unable to find a protocol that worked.  Failing initialization.
-            2026-Mar-30 22:54:00.0016 349295:349354 [2] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
-            2026-Mar-30 22:54:00.0019 349295:349354 [2] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
-            2026-Mar-30 22:54:00.0021 349295:349354 [2] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
-            2026-Mar-30 22:54:00.0025 349295:349349 [1] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
-            2026-Mar-30 22:54:00.0025 349295:349354 [2] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
-            2026-Mar-30 22:54:00.0025 349295:349359 [3] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
-            2026-Mar-30 22:54:00.0025 349295:349344 [0] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            2026-Apr-13 01:46:31.0675 837617:837663 [2] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):219 CCOM WARN NET/OFI Failed to initialize rdma protocol
+            2026-Apr-13 01:46:31.0678 837617:837663 [2] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+            2026-Apr-13 01:46:31.0681 837617:837663 [2] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+            2026-Apr-13 01:46:31.0683 837617:837663 [2] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
             .
             Compiler status PASS
-            2026-03-30 22:54:03.000603:  349295  [INFO]: Compilation Successfully Completed for model.MODULE_142812826281072284+70e3f644.hlo_module.pb
+            2026-04-13 01:46:33.000003: 837617 [INFO]: Compilation Successfully Completed for model.MODULE_9886333626096130500+70e3f644.hlo_module.pb
             tensor([[2., 2., 2.],
-                    [2., 2., 2.],
-                    [2., 2., 2.],
-                    [2., 2., 2.]], device='xla:0', dtype=torch.float16)
+             [2., 2., 2.],
+             [2., 2., 2.],
+             [2., 2., 2.]], device='xla:0', dtype=torch.float16)
+
+      .. note::
+
+         The CCOM warnings about OFI/EFA initialization are harmless on single-node instances without EFA networking and can be safely ignored.
 
    .. tab:: JAX
 
       .. code-block:: text
 
-            WARNING:2026-03-30 22:56:39,405:jax._src.xla_bridge:825: Platform 'neuron' is experimental and not all JAX functionality may be correctly supported!
-            2026-Mar-30 22:56:45.0857 349545:349597 [3] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):263 CCOM WARN NET/OFI Unable to find a protocol that worked.  Failing initialization.
-            2026-Mar-30 22:56:45.0860 349545:349597 [3] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
-            2026-Mar-30 22:56:45.0862 349545:349597 [3] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
-            2026-Mar-30 22:56:45.0865 349545:349597 [3] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
-            2026-Mar-30 22:56:45.0869 349545:349597 [3] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
-            2026-Mar-30 22:56:45.0869 349545:349582 [0] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
-            2026-Mar-30 22:56:45.0869 349545:349587 [1] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
-            2026-Mar-30 22:56:45.0869 349545:349592 [2] graph/topo_neuron_mariana.cc:130 CCOM WARN TRN3 topo is a copy of TRN2 topo! Update when TRN3 instance arrives!
+            WARNING:2026-04-13 01:56:40,630:jax._src.xla_bridge:901: Platform 'neuron' is experimental and not all JAX functionality may be correctly supported!
+            2026-Apr-13 01:56:47.0115 838811:838863 [3] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):219 CCOM WARN NET/OFI Failed to initialize rdma protocol
+            2026-Apr-13 01:56:47.0117 838811:838863 [3] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+            2026-Apr-13 01:56:47.0120 838811:838863 [3] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+            2026-Apr-13 01:56:47.0122 838811:838863 [3] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
             [[2. 2. 2.]
              [2. 2. 2.]
              [2. 2. 2.]
              [2. 2. 2.]]
+
+      .. note::
+
+         The "Platform 'neuron' is experimental" warning and CCOM warnings are harmless and can be safely ignored.
 
 Congratulations! You have now your first NKI kernel written and running. If you encountered any issues, see the Common issues section below.
 

@@ -57,8 +57,8 @@ We will profile a 3-layer MLP model that fuses matrix multiplications with ReLU 
     import os
 
     os.environ["NEURON_FRAMEWORK_DEBUG"] = "1"
-    os.environ["XLA_IR_DEBUG"] = "1"
-    os.environ["XLA_HLO_DEBUG"] = "1"
+    os.environ["XLA_IR_DEBUG"] = "1"       # Preserve source-level IR names in the compiled graph for profiler source mapping
+    os.environ["XLA_HLO_DEBUG"] = "1"      # Preserve HLO operation names and metadata for profiler attribution
     os.environ["NEURON_LOGICAL_NC_CONFIG"] = "1"
 
 

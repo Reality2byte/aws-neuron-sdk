@@ -111,13 +111,8 @@ Here is the kernel to perform the DMA transfer.
     import nki.language as nl
     import nki.isa as nisa
     import nki
-    import os
 
-    os.environ["NEURON_FRAMEWORK_DEBUG"] = "1"
-    os.environ["NEURON_RT_ENABLE_DGE_NOTIFICATIONS"] = "1"
-    os.environ["NEURON_PLATFORM_TARGET_OVERRIDE"] = "trn2"
-
-    @nki.jit(mode="torchxla")
+    @nki.jit
     def tensor_exp_kernel_isa(in_tensor):
       """NKI kernel to compute elementwise exponential of an input tensor
       Args:
@@ -128,26 +123,24 @@ Here is the kernel to perform the DMA transfer.
       out_tensor = nl.ndarray(in_tensor.shape, dtype=nl.bfloat16, buffer=nl.shared_hbm)
       sbuf_tensor = nl.ndarray(in_tensor.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
       out_tile = nl.ndarray(in_tensor.shape, dtype=nl.bfloat16, buffer=nl.sbuf)
-   
+
       # Load input data from HBM to on-chip memory
       nisa.dma_copy(src=in_tensor[0:4, 0:4096], dst=sbuf_tensor)
 
       # perform the computation:
       out_tile = nisa.activation(op=nl.exp, data=sbuf_tensor)
-   
+
       # store the results back to HBM
       nisa.dma_copy(src=out_tile, dst=out_tensor[0:4, 0:4096])
       return out_tensor
 
     if __name__ == "__main__":
       import torch
-      import torch_xla
-      import torch_xla
-      device = torch_xla.device()
-      shape = (4,4096) # Tensor shape : [4,4096]
-      in_tensor = torch.ones(shape,  dtype=torch.bfloat16).to(device=device)
+      import torch_neuronx
+      shape = (4, 4096)
+      in_tensor = torch.ones(shape, dtype=torch.bfloat16)
       out_tensor = tensor_exp_kernel_isa(in_tensor)
-      print(out_tensor) # an implicit XLA barrier/mark-step
+      print(out_tensor)
 
 Profile
 """""""

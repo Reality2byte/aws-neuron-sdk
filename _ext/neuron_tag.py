@@ -344,7 +344,7 @@ def _get_explicit_override(cur_file):
     # --- NKI -----------------------------------------------------------------
 
     if cur_file.startswith('nki/'):
-        return ['Trn1', 'Trn2', 'Trn3'], True
+        return ['Trn2', 'Trn3'], True
 
     # --- CustomOps -----------------------------------------------------------
 
