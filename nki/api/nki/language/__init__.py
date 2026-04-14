@@ -447,8 +447,8 @@ def empty_like(x, dtype=None, buffer=None, name=''):
     :param x: the tensor.
     :param dtype: the data type of the tensor (default: same as ``x``).
     :param buffer: the specific buffer (ie, sbuf, psum, hbm), (default: same as ``x``).
-    :param name: optional name for debugging.
-    :return: a tensor with the same shape and type as ``x``."""
+    :param name: the name of the tensor, used in :ref:`scheduling <how-to-scheduling-apis>`.
+    :return: a new :class:`NkiTensor` with the same shape and type as ``x``."""
     ...
 
 
@@ -623,8 +623,8 @@ def full(shape, fill_value, dtype, buffer=MemoryRegion.sbuf, name=''):
     :param fill_value: the value to fill the tensor with.
     :param dtype: the data type of the tensor.
     :param buffer: the specific buffer (ie, sbuf, psum, hbm), defaults to sbuf.
-    :param name: the name of the tensor.
-    :return: a new tensor allocated on the buffer."""
+    :param name: the name of the tensor, used in :ref:`scheduling <how-to-scheduling-apis>`.
+    :return: a new :class:`NkiTensor` allocated on the buffer."""
     ...
 
 
@@ -1178,9 +1178,9 @@ def ndarray(shape, dtype, buffer=MemoryRegion.sbuf, name='', address=None):
     :param shape: the shape of the tensor.
     :param dtype: the data type of the tensor.
     :param buffer: the specific buffer (ie, sbuf, psum, hbm), defaults to sbuf.
-    :param name: the name of the tensor.
+    :param name: the name of the tensor, used in :ref:`scheduling <how-to-scheduling-apis>`.
     :param address: optional memory address ``(partition_offset, free_offset)``.
-    :return: a new tensor allocated on the buffer."""
+    :return: a new :class:`NkiTensor` allocated on the buffer."""
     ...
 
 
@@ -1284,8 +1284,8 @@ def ones(shape, dtype, buffer=MemoryRegion.sbuf, name=''):
     :param shape: the shape of the tensor.
     :param dtype: the data type of the tensor.
     :param buffer: the specific buffer (ie, sbuf, psum, hbm), defaults to sbuf.
-    :param name: the name of the tensor.
-    :return: a new tensor allocated on the buffer."""
+    :param name: the name of the tensor, used in :ref:`scheduling <how-to-scheduling-apis>`.
+    :return: a new :class:`NkiTensor` allocated on the buffer."""
     ...
 
 
@@ -1370,8 +1370,8 @@ def rand(shape, dtype, buffer=MemoryRegion.sbuf, name=''):
     :param shape: the shape of the tensor.
     :param dtype: the data type of the tensor (see :ref:`nki-dtype` for more information).
     :param buffer: the specific buffer (sbuf, psum, hbm), defaults to sbuf.
-    :param name: the name of the tensor.
-    :return: a new tensor allocated on the buffer with random values.
+    :param name: the name of the tensor, used in :ref:`scheduling <how-to-scheduling-apis>`.
+    :return: a new :class:`NkiTensor` allocated on the buffer with random values.
 
     Examples:
 
@@ -1575,7 +1575,7 @@ def shared_identity_matrix(n, dtype='uint8', dst=None):
 
     :param n: the number of rows (and columns) of the returned identity matrix
     :param dtype: the data type of the tensor, default to be ``nl.uint8`` (see :ref:`nki-dtype` for more information).
-    :return: a tensor which contains the identity tensor
+    :return: a new :class:`NkiTensor` which contains the identity tensor
 
     Examples:
 
@@ -2039,8 +2039,8 @@ def zeros(shape, dtype, buffer=MemoryRegion.sbuf, name=''):
     :param shape: the shape of the tensor.
     :param dtype: the data type of the tensor.
     :param buffer: the specific buffer (ie, sbuf, psum, hbm), defaults to sbuf.
-    :param name: the name of the tensor.
-    :return: a new tensor allocated on the buffer."""
+    :param name: the name of the tensor, used in :ref:`scheduling <how-to-scheduling-apis>`.
+    :return: a new :class:`NkiTensor` allocated on the buffer."""
     ...
 
 
@@ -2056,7 +2056,7 @@ def zeros_like(x, dtype=None, buffer=None, name=''):
     :param x: the tensor.
     :param dtype: the data type of the tensor.
     :param buffer: the specific buffer (ie, sbuf, psum, hbm), defaults to sbuf.
-    :param name: the name of the tensor.
-    :return: a tensor of zeros with the same shape as ``x``."""
+    :param name: the name of the tensor, used in :ref:`scheduling <how-to-scheduling-apis>`.
+    :return: a new :class:`NkiTensor` of zeros with the same shape as ``x``."""
     ...
 

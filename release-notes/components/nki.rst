@@ -74,8 +74,6 @@ Breaking Changes
 
 * ``nisa.register_move`` — ``imm`` renamed to ``src``, now accepts ``VirtualRegister``. Update keyword argument from ``imm=`` to ``src=``.
 
-* ``nl.shared_constant`` — ``dtype`` parameter removed. Remove the ``dtype`` argument from ``nl.shared_constant`` calls; the type is now inferred from the constant.
-
 * ``nki.collectives.collective_permute_implicit_current_processing_rank_id`` — ``num_channels`` parameter removed. Remove ``num_channels`` from call sites and pass ``channel_ids`` list to ``collective_permute_implicit()`` instead.
 
 * Output tensors must use ``buffer=nl.shared_hbm``. Using ``nl.hbm`` causes compilation failures.

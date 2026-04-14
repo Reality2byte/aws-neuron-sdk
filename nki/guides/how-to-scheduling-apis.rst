@@ -1,3 +1,5 @@
+.. _how-to-scheduling-apis:
+
 .. meta::
    :description: Learn how to use NKI Scheduling APIs to control automatic instruction scheduling by adding dependency edges and using no-reorder blocks.
    :keywords: NKI, scheduling, instruction scheduling, dependency edges, no-reorder, Neuron Kernel Interface
