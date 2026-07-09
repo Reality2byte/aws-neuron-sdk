@@ -12,7 +12,7 @@ This page contains the packages, libraries, and other artifacts (and the version
 
 << :ref:`Back to the release notes <latest-neuron-release>`
 
-Neuron 2.30.1 (07/07/2026)
+Neuron 2.31.0 (07/07/2026)
 ---------------------------
 
 Trn1 packages
