@@ -12,6 +12,19 @@ This page contains the packages, libraries, and other artifacts (and the version
 
 << :ref:`Back to the release notes <latest-neuron-release>`
 
+Neuron 2.31 — vLLM Neuron Beta (07/20/2026)
+----------------------------------------------
+
+Trn2/Trn3 packages
+^^^^^^^^^^^^^^^^^^^
+
+Base packages are the same as Neuron 2.31.0. Additional packages compatible with Neuron 2.31.0:
+
+.. code-block:: text
+
+   Component                           Package
+   vllm-neuron                         vllm_neuron-0.21.0.1.0.0+794754d-py3-none-any.whl
+
 Neuron 2.31.0 (07/07/2026)
 ---------------------------
 
