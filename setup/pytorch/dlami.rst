@@ -359,7 +359,7 @@ To update PyTorch versions or Neuron drivers on an existing DLAMI, see
    
    .. code-block:: bash
       
-      source /opt/aws_neuronx_venv_pytorch_inference_vllm_0_16/bin/activate
+      source /opt/aws_neuronx_venv_pytorch_inference_vllm_0_21_0_1_0_0/bin/activate
    
    vLLM provides an OpenAI-compatible API, continuous batching, and supports models like
    Llama 2/3.1/3.3/4, Qwen 2.5/3, and multimodal models with quantization support (INT8/FP8).

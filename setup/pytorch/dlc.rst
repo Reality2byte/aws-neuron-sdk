@@ -80,11 +80,11 @@ The fastest way to get started with LLM inference on Neuron:
      docker login --username AWS --password-stdin 763104351884.dkr.ecr.us-east-1.amazonaws.com
 
    # Pull the vLLM inference container
-   docker pull 763104351884.dkr.ecr.us-east-1.amazonaws.com/pytorch-inference-vllm-neuronx:0.16.0-neuronx-py312-sdk2.31.0-ubuntu24.04
+   docker pull 763104351884.dkr.ecr.us-east-1.amazonaws.com/pytorch-inference-vllm-neuronx:0.21.0.1.0.0-neuronx-py312-sdk2.31.0-ubuntu24.04
 
    # Run with Neuron device access
    docker run -it --device=/dev/neuron0 \
-     763104351884.dkr.ecr.us-east-1.amazonaws.com/pytorch-inference-vllm-neuronx:0.16.0-neuronx-py312-sdk2.31.0-ubuntu24.04
+     763104351884.dkr.ecr.us-east-1.amazonaws.com/pytorch-inference-vllm-neuronx:0.21.0.1.0.0-neuronx-py312-sdk2.31.0-ubuntu24.04
 
 For the latest image tags and a step-by-step walkthrough, see
 :doc:`/deploy/environments/quickstart-deploy-dlc`.

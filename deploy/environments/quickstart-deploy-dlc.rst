@@ -31,6 +31,9 @@ Before you begin, ensure you have:
 * Docker installed on your instance. You can set up docker environment according to :ref:`tutorial-docker-env-setup`
 * SSH access to your instance
 
+.. note::
+   This tutorial is compatible with Trn2 and Trn3 instances only. If you are using Trn1 instances, use the legacy vLLM 0.16 DLC instead.
+
 Prepare your environment
 ------------------------
 
@@ -47,12 +50,12 @@ Get the latest vLLM Docker image from Neuron's ECR public gallery `pytorch-infer
 
    docker pull public.ecr.aws/neuron/pytorch-inference-vllm-neuronx:<image_tag>
 
-For example, replace ``<image_tag>`` with an SDK 2.31.0 released DLC image tag such as ``0.16.0-neuronx-py312-sdk2.31.0-ubuntu24.04``
+For example, replace ``<image_tag>`` with an SDK 2.31.0 released DLC image tag such as ``0.21.0.1.0.0-neuronx-py312-sdk2.31.0-ubuntu24.04``
 
 Step 2: Start the Docker container
 -----------------------------------
 
-In this step, you will run the container with access to Neuron devices. For this tutorial, we are using a trn1.32xlarge instance.
+In this step, you will run the container with access to Neuron devices. For this tutorial, we are using a trn2.48xlarge instance.
 
 Run the container interactively with access to Neuron devices:
 
@@ -83,7 +86,7 @@ Run the container interactively with access to Neuron devices:
    bash
 
 .. note::
-   The trn1.32xlarge instance provides 16 Neuron devices. Adjust the number of Neuron devices (``--device=/dev/neuronX``) based on your instance type and requirements.
+   The trn2.48xlarge instance provides 16 Neuron devices. Adjust the number of Neuron devices (``--device=/dev/neuronX``) based on your instance type and requirements.
 
 Step 3: Start the vLLM server
 ------------------------------
@@ -94,15 +97,29 @@ Inside the container, start the vLLM inference server:
 
 .. code-block:: bash
 
-   vllm serve \
-   --model='TinyLlama/TinyLlama-1.1B-Chat-v1.0' \
-   --max-num-seqs=4 \
-   --max-model-len=128 \
-   --tensor-parallel-size=2 \
-   --block-size=32 \
-   --num-gpu-blocks-override=16 \
-   --port=8080 \
-   --additional-config='{"override_neuron_config":{"enable_bucketing":false}}'
+   vllm serve openai/gpt-oss-20b \
+   --max-model-len 10240 \
+   --max-num-batched-tokens 2048 \
+   --max-num-seqs 2 \
+   --tensor-parallel-size 8 \
+   --hf-overrides '{"quantization_config": {}}' \
+   --additional-config '{"neuron_config": {"num_batched_tokens_buckets": [2048], "num_seqs_buckets": [2]}}' \
+   --port=8080
+
+.. note::
+   If you are using the legacy vLLM 0.16 DLC, use the following server startup command instead:
+
+   .. code-block:: bash
+
+      vllm serve \
+      --model='TinyLlama/TinyLlama-1.1B-Chat-v1.0' \
+      --max-num-seqs=4 \
+      --max-model-len=128 \
+      --tensor-parallel-size=2 \
+      --block-size=32 \
+      --num-gpu-blocks-override=16 \
+      --port=8080 \
+      --additional-config='{"override_neuron_config":{"enable_bucketing":false}}'
 
 .. note::
    **Version compatibility**: The command above is compatible with vLLM version 0.11.0 and later. If you are using an older version (such as 0.9.1), you must:

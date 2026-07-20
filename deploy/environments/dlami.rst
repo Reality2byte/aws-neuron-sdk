@@ -46,7 +46,7 @@ Neuron Multi-Framework DLAMIs provide the most comprehensive environment, suppor
   
   ``ImportError: /lib64/libm.so.6: version `GLIBC_2.35' not found``
 
-  Since the latest vLLM version depends on PyTorch 2.9, we have also removed that environment from the DLAMI.
+  Since vLLM depends on PyTorch, the vLLM environment is also not available on AL2023 DLAMIs.
   
   For a workaround, use the latest Ubuntu-based AMIs instead.
 
@@ -95,6 +95,9 @@ Virtual Environments pre-installed
     * - vLLM 0.16.0 NxD Inference, Torch NeuronX (Ubuntu 24.04)
       - /opt/aws_neuronx_venv_pytorch_inference_vllm_0_16
 
+    * - vLLM 0.21.0, vllm-neuron 0.21.0.1.0.0 (Ubuntu 24.04)
+      - /opt/aws_neuronx_venv_pytorch_inference_vllm_0_21_0_1_0_0
+
 
 You can easily get started with the multi-framework DLAMI through AWS console by following this :doc:`setup guide </setup/multiframework-dlami>`. If you are looking to 
 use the Neuron DLAMI in your cloud automation flows, Neuron also supports :ref:`SSM parameters <ssm-parameter-neuron-dlami>` to easily retrieve the latest DLAMI id.
@@ -140,6 +143,11 @@ Single Framework DLAMIs supported
       - Inf2, Trn1, Trn1n, Trn2, Trn3
       - Deep Learning AMI Neuron PyTorch Inference vLLM 0.16 (Ubuntu 24.04)
 
+    * - vLLM 0.21.0
+      - Ubuntu 24.04
+      - Trn2, Trn3
+      - Deep Learning AMI Neuron PyTorch Inference vLLM 0.21.0.1.0.0 (Ubuntu 24.04)
+
 
 Virtual Environments pre-installed
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -169,6 +177,10 @@ Virtual Environments pre-installed
     * - Deep Learning AMI Neuron PyTorch Inference vLLM 0.16 (Ubuntu 24.04) 
       - vLLM NeuronX 0.16.0
       - /opt/aws_neuronx_venv_pytorch_inference_vllm_0_16
+
+    * - Deep Learning AMI Neuron PyTorch Inference vLLM 0.21.0.1.0.0 (Ubuntu 24.04) 
+      - vLLM 0.21.0, vllm-neuron 0.21.0.1.0.0
+      - /opt/aws_neuronx_venv_pytorch_inference_vllm_0_21_0_1_0_0
 
 
 Get started with the single framework DLAMI through AWS console by following one of the corresponding setup guides. If you want to
@@ -281,6 +293,9 @@ SSM Parameter Prefix
 
     * - Deep Learning AMI Neuron PyTorch Inference vLLM 0.16 (Ubuntu 24.04)
       - /aws/service/neuron/dlami/pytorch-inference-vllm-0.16/ubuntu-24.04
+
+    * - Deep Learning AMI Neuron PyTorch Inference vLLM 0.21.0.1.0.0 (Ubuntu 24.04)
+      - /aws/service/neuron/dlami/pytorch-inference-vllm-0.21.0.1.0.0/ubuntu-24.04
 
     * - Deep Learning Base Neuron AMI (Amazon Linux 2023)
       - /aws/service/neuron/dlami/base/amazon-linux-2023
