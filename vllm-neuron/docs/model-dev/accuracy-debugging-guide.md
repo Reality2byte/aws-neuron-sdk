@@ -338,7 +338,7 @@ To confirm the accuracy issue is resolved:
 ## Accuracy tools reference
 
 For API details on logit validation, KV cache analysis, tensor capture,
-tensor comparison, and module-level testing, see [Accuracy examples](https://github.com/vllm-project/vllm-neuron/tree/main/examples/vllm_neuron/accuracy).
+tensor comparison, and module-level testing, see [Accuracy examples](https://github.com/vllm-project/vllm-neuron/tree/HEAD/examples/vllm_neuron/accuracy).
 
 ## Related information
 
