@@ -250,14 +250,14 @@ Learn more
    NxD Core (Training) </libraries/neuronx-distributed/index-training>
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
    :caption: Inference
    :hidden:
 
-   Inference on Neuron </libraries/nxd-inference/neuron-inference-overview>
-   vLLM </libraries/nxd-inference/vllm/index>
-   NxD Inference </libraries/nxd-inference/index>
+   Inference on Neuron </libraries/vllm-neuron/neuron-inference-overview>
+   NxD Inference + vLLM </libraries/nxd-inference/index>
    NxD Core (Inference) </libraries/neuronx-distributed/index-inference>
+   vLLM Neuron (Beta) </vllm-neuron/docs/index>
 
 .. toctree::
    :maxdepth: 1

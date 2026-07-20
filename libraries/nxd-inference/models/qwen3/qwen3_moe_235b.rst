@@ -1,3 +1,5 @@
+.. include:: /libraries/nxd-inference/vllm/_includes/vllm-nxdi-note.rst
+
 .. datatemplate:yaml:: data/card_qwen3_moe_235b.yml
    :template: model_card_qwen3.jinja.rst
 

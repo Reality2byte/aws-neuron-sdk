@@ -2,7 +2,7 @@
 
 .. meta::
     :description: Blog posts for the latest features and updates for the AWS Neuron SDK
-    :date-modified: 07/07/2026
+    :date-modified: 07/20/2026
 
 What's New in the AWS Neuron SDK
 ================================
@@ -24,6 +24,38 @@ What's New in the AWS Neuron SDK
         :class-header: sd-bg-primary sd-text-white
 
         **Latest release**: 2.31.0 (07/07/2026)
+
+----
+
+.. _whats-new-2026-07-20-vllm-neuron-beta:
+
+vLLM Neuron Beta now available
+-------------------------------
+
+**Posted on**: July 20, 2026
+
+We are releasing **vLLM Neuron Beta (v0.21.0.1.0.0)** — an enhanced vLLM plugin for
+serving models on Trn2 and Trn3. vLLM Neuron implements models directly within the
+plugin with no dependency on NxD Inference.
+
+vLLM Neuron highlights
+^^^^^^^^^^^^^^^^^^^^^^^
+
+* Supported models: GPT-OSS 20B/120B (text) and Qwen3-VL (multimodal) on Trn2 and Trn3
+* Disaggregated inference with prefill/decode separation (1P1D, xPyD) via NiXL KV transfer
+* Segmented prefill for long-context serving (tested up to 128K sequence length)
+* EAGLE3 speculative decoding
+* Structured outputs with on-device enforcement and tool calling
+* Multimodal inference (image + text) with vision encoder parallelism
+* Wide expert parallelism (Wide-EP) for MoE models
+* MXFP4 weight quantization (Trn3)
+* Full compatibility with vLLM production metrics and profiler API
+* CPU compilation and NKI CPU simulator support without Neuron hardware
+* Transformers V5 support
+
+For the complete list of features, see the
+`vLLM Neuron release notes on GitHub <https://github.com/vllm-project/vllm-neuron/releases>`_.
+For full documentation, see :doc:`/vllm-neuron/docs/index`.
 
 ----
 

@@ -4,6 +4,7 @@ enchant
 Sphinx==5.3
 sphinx-book-theme==1.0.0
 sphinx_design==0.3.0
+myst-parser==1.0.0
 pydata-sphinx-theme==0.13.0
 sphinxcontrib.htmlhelp
 Jinja2

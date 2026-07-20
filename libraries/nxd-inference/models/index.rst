@@ -6,6 +6,8 @@
 Neuron Inference Model Support
 =================================
 
+.. include:: /libraries/nxd-inference/vllm/_includes/vllm-nxdi-note.rst
+
 This section provides information on model support in **NeuronX Distributed Inference (NxDI)** and how to determine appropriate configurations for both online and offline use cases.
 
 .. _nxdi-models-llama3-index:

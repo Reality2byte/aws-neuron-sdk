@@ -6,6 +6,8 @@
 vLLM on Neuron
 ===============
 
+.. include:: /libraries/nxd-inference/vllm/_includes/vllm-nxdi-note.rst
+
 vLLM on Neuron enables high-performance LLM inference on AWS Trainium and Inferentia instances, providing a streamlined deployment experience with minimal code changes. The integration leverages AWS Neuron's optimized AI inference capabilities and vLLM's advanced features like continuous batching to deliver efficient model serving for both latency-sensitive applications and high-throughput batch processing workloads.
 
 Overview

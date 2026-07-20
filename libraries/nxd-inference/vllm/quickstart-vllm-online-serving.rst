@@ -7,6 +7,8 @@
 Quickstart: Serve models online with vLLM on Neuron
 ===================================================
 
+.. include:: /libraries/nxd-inference/vllm/_includes/vllm-nxdi-note.rst
+
 This quickstart shows you how to launch the vLLM OpenAI-compatible API server on AWS Neuron. You install the ``vllm-neuron`` plugin, start the server, validate it with ``curl``, and call it from the OpenAI Python SDK.
 
 **This quickstart is for**: Developers who need an interactive, low-latency serving endpoint on Neuron  

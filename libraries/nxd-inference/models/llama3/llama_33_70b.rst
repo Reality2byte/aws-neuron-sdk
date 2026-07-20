@@ -1,3 +1,5 @@
+.. include:: /libraries/nxd-inference/vllm/_includes/vllm-nxdi-note.rst
+
 .. datatemplate:yaml:: data/card_llama33_70b.yml
    :template: model_card.jinja.rst
 

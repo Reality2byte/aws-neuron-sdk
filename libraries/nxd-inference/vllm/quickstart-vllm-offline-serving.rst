@@ -7,6 +7,8 @@
 Quickstart: Run offline inference with vLLM on Neuron
 ======================================================
 
+.. include:: /libraries/nxd-inference/vllm/_includes/vllm-nxdi-note.rst
+
 This quickstart walks you through running vLLM in offline (batch) inference mode on AWS Neuron. You install the ``vllm-neuron`` plugin, generate text for a batch of prompts, and cache the compiled artifacts so reruns stay fast.
 
 **This quickstart is for**: Developers who want to run offline/batch inference on Neuron without an API server  

@@ -333,7 +333,10 @@ def _get_explicit_override(cur_file):
 
     # vLLM must come before general nxd-inference
     if cur_file.startswith('libraries/nxd-inference/vllm/'):
-        return ['Trn2', 'Trn3'], True
+        return ['Inf2', 'Trn1', 'Trn2'], True
+
+    if cur_file == 'libraries/vllm-neuron/neuron-inference-overview':
+        return ['Inf2', 'Trn1', 'Trn2', 'Trn3'], True
 
     if cur_file.startswith('libraries/nxd-inference/'):
         return ['Inf2', 'Trn1', 'Trn2'], True
@@ -689,8 +692,22 @@ class NeuronTag(SphinxDirective):
         return node.children
 
 
+def _inject_vllm_neuron_myst_tags(app, docname, source):
+    """Add instance tags to vLLM Neuron MyST pages.
+
+    ``rst_prolog`` and ``rst_epilog`` add the directive to RST pages, but
+    Sphinx does not apply them to MyST Markdown sources.
+    """
+    if not docname.startswith('vllm-neuron/docs/'):
+        return
+
+    tag_text = TEXT_TEMPLATE + '`Trn2`, `Trn3`'
+    source[0] = f'{tag_text}\n\n{source[0].rstrip()}\n\n{tag_text}\n'
+
+
 def setup(app):
     app.add_directive("neuron-tag", NeuronTag)
+    app.connect("source-read", _inject_vllm_neuron_myst_tags)
     return {
         'version': '0.2',
         'parallel_read_safe': True,

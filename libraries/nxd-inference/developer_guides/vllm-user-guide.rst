@@ -3,6 +3,8 @@
 vLLM V0 User Guide for NxD Inference (Legacy)
 ==============================================
 
+.. include:: /libraries/nxd-inference/vllm/_includes/vllm-nxdi-note.rst
+
 `vLLM <https://docs.vllm.ai/en/latest/>`_ is a popular library for LLM inference and serving utilizing advanced inference features such as continuous batching.
 This guide describes how to utilize AWS Inferentia and AWS Trainium AI accelerators in vLLM by using NxD Inference (``neuronx-distributed-inference``).
 

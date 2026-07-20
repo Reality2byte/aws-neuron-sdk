@@ -85,6 +85,27 @@ extensions = [
     "sphinxcontrib.datatemplates",
     "sphinxcontrib.spelling",
     "sphinx_tabs.tabs",
+    "myst_parser",
+]
+
+# MyST (Markdown) support for vLLM Neuron docs (vllm-neuron/docs/).
+# myst-parser registers the .md source suffix on load; we use include_patterns
+# below to restrict Markdown discovery to vllm-neuron/docs/ only.
+myst_enable_extensions = [
+    "colon_fence",
+    "deflist",
+    "fieldlist",
+    "substitution",
+    "tasklist",
+]
+myst_heading_anchors = 4
+
+# Restrict Markdown source discovery to vllm-neuron/docs/ so that root-level
+# README.md, CONTRIBUTING.md, etc. are not accidentally built as Sphinx pages.
+include_patterns = [
+    '*.rst', '**/*.rst',
+    '*.ipynb', '**/*.ipynb',
+    'vllm-neuron/docs/**',
 ]
 
 
