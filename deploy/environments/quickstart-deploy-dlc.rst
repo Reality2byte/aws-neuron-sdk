@@ -1,6 +1,6 @@
 .. meta::
    :description: Learn how to deploy a vLLM server using preconfigured Neuron Deep Learning Container with on Trainium and Inferentia instances.
-   :date_updated: 01/26/2026
+   :date_updated: 07/21/2026
 
 .. _quickstart_vllm_dlc_deploy:
 
@@ -107,6 +107,9 @@ Inside the container, start the vLLM inference server:
    --port=8080
 
 .. note::
+   If EFA (Elastic Fabric Adapter) is not installed on your host instance, the server will fail to start. To work around this, prepend ``NEURON_SKIP_EFA_AFFINITY=1`` to the ``vllm serve`` command.
+
+.. note::
    If you are using the legacy vLLM 0.16 DLC, use the following server startup command instead:
 
    .. code-block:: bash
@@ -121,11 +124,6 @@ Inside the container, start the vLLM inference server:
       --port=8080 \
       --additional-config='{"override_neuron_config":{"enable_bucketing":false}}'
 
-.. note::
-   **Version compatibility**: The command above is compatible with vLLM version 0.11.0 and later. If you are using an older version (such as 0.9.1), you must:
-   
-   * Replace ``--additional-config='{"override_neuron_config":{"enable_bucketing":false}}'`` with ``--override-neuron-config '{"enable_bucketing":false}'``
-   
 .. important::
    * Choose the appropriate model for your use case
    * Set ``--tensor-parallel-size`` to be less than or equal to total number of NeuronCores (or TP ranks) available from your devices, accounting for cores per device and logical core configuration
@@ -136,14 +134,18 @@ Step 4: Verify server status
 
 In this step, you will confirm the server starts successfully.
 
-Wait for the server to fully initialize. You will see output showing available API routes:
+Wait for the server to fully initialize. You will see output showing the server has started and available API routes:
 
 .. code-block:: text
 
-   INFO 08-12 00:04:47 [launcher.py:28] Available routes are:
-   INFO 08-12 00:04:47 [launcher.py:36] Route: /health, Methods: GET
-   INFO 08-12 00:04:47 [launcher.py:36] Route: /v1/chat/completions, Methods: POST
-   INFO 08-12 00:04:47 [launcher.py:36] Route: /v1/completions, Methods: POST
+   INFO 07-21 17:17:07 [api_server.py:617] Starting vLLM server on http://0.0.0.0:8080
+   INFO 07-21 17:17:07 [launcher.py:37] Available routes are:
+   INFO 07-21 17:17:07 [launcher.py:46] Route: /health, Methods: GET
+   INFO 07-21 17:17:07 [launcher.py:46] Route: /v1/models, Methods: GET
+   INFO 07-21 17:17:07 [launcher.py:46] Route: /v1/chat/completions, Methods: POST
+   INFO 07-21 17:17:07 [launcher.py:46] Route: /v1/completions, Methods: POST
+   ...
+   INFO:     Application startup complete.
 
 .. note::
    During startup, you may see warning logs similar to the following, which can be safely ignored:
@@ -183,40 +185,29 @@ You should receive a response similar to:
 .. code-block:: json
 
    {
-     "id": "chatcmpl-ac7551dd2f2a4be3bd2c1aabffa79b4c",
+     "id": "chatcmpl-a59b03830e834b17",
      "object": "chat.completion",
-     "created": 1754958455,
-     "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+     "created": 1784598578,
+     "model": "openai/gpt-oss-20b",
      "choices": [
        {
          "index": 0,
          "message": {
            "role": "assistant",
-           "content": "The capital of Italy is Rome...",
+           "content": "The capital of Italy is **Rome**.",
            "tool_calls": []
          },
          "finish_reason": "stop"
        }
      ],
      "usage": {
-       "prompt_tokens": 23,
-       "total_tokens": 106,
-       "completion_tokens": 83
+       "prompt_tokens": 74,
+       "total_tokens": 108,
+       "completion_tokens": 34
      }
    }
 
 Congratulations! You have successfully deployed a vLLM inference server using a preconfigured Neuron DLC. If you encountered any issues, see the **Common issues** section below.
-
-Available API endpoints
------------------------
-
-The server provides various endpoints for different use cases:
-
-* **Health Check**: ``GET /health``
-* **Chat Completions**: ``POST /v1/chat/completions``
-* **Text Completions**: ``POST /v1/completions``
-* **Models Info**: ``GET /v1/models``
-* **API Documentation**: ``GET /docs``
 
 Common issues
 -------------
@@ -261,5 +252,6 @@ Now that you've completed this tutorial, explore these related topics:
 Further reading
 ---------------
 
+- `vLLM Neuron Plugin <https://github.com/vllm-project/vllm-neuron>`_ - Source code and configuration details for the vLLM Neuron plugin
 - `vLLM User Guide for NxD Inference <#>`_ - Complete documentation for vLLM on Neuron
 - `AWS Neuron SDK Documentation <https://awsdocs-neuron.readthedocs-hosted.com/>`_ - Full Neuron SDK reference
