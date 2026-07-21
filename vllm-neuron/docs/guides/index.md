@@ -26,6 +26,13 @@ All Neuron-specific options in `additional_config` and environment variables.
 Capture Neuron Runtime profiles via built-in profiler endpoints.
 :::
 
+:::{grid-item-card} Feature–model compatibility
+:link: reference-feature-model-compatibility
+:link-type: doc
+
+Supported feature and model combinations.
+:::
+
 ::::
 
 :::{toctree}

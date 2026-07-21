@@ -75,9 +75,16 @@ All Neuron-specific options in `additional_config` and environment variables.
 Capture Neuron Runtime profiles via built-in profiler endpoints.
 :::
 
+:::{grid-item-card} Feature–model compatibility
+:link: guides/reference-feature-model-compatibility
+:link-type: doc
+
+Supported feature and model combinations.
+:::
+
 ::::
 
-## Models
+## Model Recipes
 
 ::::{grid} 1 1 2 2
 :gutter: 3
@@ -89,12 +96,33 @@ Capture Neuron Runtime profiles via built-in profiler endpoints.
 Model recipe for GPT-OSS 20B and 120B (MoE) on Trn2/Trn3.
 :::
 
+:::{grid-item-card} Deploy Qwen3-VL
+:link: model-recipes/qwen3-vl
+:link-type: doc
+
+Model recipe for Qwen3-VL 32B (multimodal) on Trn2/Trn3.
+:::
+
 ::::
 
 ## Tutorials
 
 ::::{grid} 1 1 2 2
 :gutter: 3
+
+:::{grid-item-card} GPT-OSS deployment tutorial
+:link: tutorials/tutorial-gpt-oss
+:link-type: doc
+
+End-to-end deployment of GPT-OSS on Trn2/Trn3.
+:::
+
+:::{grid-item-card} Qwen3-VL multimodal tutorial
+:link: tutorials/tutorial-qwen3-vl-32b
+:link-type: doc
+
+Deploy Qwen3-VL 32B for multimodal inference.
+:::
 
 :::{grid-item-card} Disaggregated inference: 1P1D and xPyD
 :link: tutorials/tutorial-di-1p1d-xpyd
@@ -156,12 +184,15 @@ Methodology for isolating where accuracy drift is introduced.
 | [Data parallelism](design/parallelism/data_parallelism.md) | Data parallelism overview |
 | [Expert parallelism](design/parallelism/expert_parallelism.md) | Expert parallelism for MoE |
 | [Tensor parallelism](design/parallelism/tensor_parallelism.md) | Tensor parallelism overview |
+| [Vision encoder parallelism](design/parallelism/vision_encoder_parallelism.md) | Vision encoder parallelism for multimodal models |
 
 ### Multimodal
 
 | Topic | Description |
 |---|---|
 | [M-RoPE](design/multimodal/mrope.md) | Spatial position embeddings for VLMs |
+| [Block packing attention](design/multimodal/block_packing_attention.md) | Block packing attention for multimodal |
+| [On-device encoder cache](design/multimodal/on_device_encoder_cache.md) | On-device encoder cache design |
 
 ### vLLM integration
 
