@@ -156,7 +156,7 @@ Implementing Custom Models Directly on PyTorch
 
 If you want to implement models directly on PyTorch without using the NxD
 Inference library and need more fine-grained control, you can use the
-:ref:`NxD Core library <neuronx-distributed-api-guide>`
+:ref:`NxD Core library <api_guide>`
 that offers Neuron essential primitives like tracing and compilation. The
 `Llama-3.2-1B <https://github.com/aws-neuron/neuronx-distributed/tree/main/examples/inference/llama>`_
 example provides a sample reference implementation showing how to build custom

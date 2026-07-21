@@ -53,6 +53,9 @@ Archived feature docs
    * - :doc:`torch-neuron/index`
      - Neuron 2.22.0
      - Archived on: 3/11/2026
+   * - :doc:`Neuron application notes <appnotes/index>`
+     - Mixed — legacy per-component app notes
+     - Archived on: 7/21/2026
 
 Archived deployment flows
 --------------------------
@@ -151,9 +154,11 @@ Archived tutorials
     tutorials/training_codegen25_7b
     tutorials/multinode-training-model-profiling
     tutorials/training-gpt-neox
+    appnotes/index
     tensorboard/getting-started-tensorboard-neuron-plugin
     tensorboard/index
     neuronperf/index
+    profiler/index
     helper-tools/index
     transformers-neuronx/index
     mxnet-neuron/index

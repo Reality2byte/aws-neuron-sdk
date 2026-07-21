@@ -2,17 +2,31 @@
 .. _neuron-appnotes:
 
 .. meta::
-   :description: AWS Neuron SDK application notes for support announcements, performance optimization, migration guides, and framework-specific implementations.
-   :date-modified: 2025-10-03
+   :noindex:
+   :nofollow:
+   :description: Archived AWS Neuron SDK application notes for support announcements, performance optimization, migration guides, and framework-specific implementations.
+   :date-modified: 2026-07-21
 
 Neuron application notes
 ========================
+
+.. warning::
+
+   This content is archived and no longer actively maintained. These
+   application notes are provided for reference only and may describe
+   unsupported features, deprecated APIs, or older SDK releases. For current
+   documentation, see the `AWS Neuron SDK documentation
+   <https://awsdocs-neuron.readthedocs-hosted.com/en/latest/>`_.
 
 .. toctree:: 
    :maxdepth: 2
    :hidden:
 
    Neuron Runtime Library <neuron1x/introducing-libnrt>
+   Mixed precision (neuron-cc) <neuron-cc/mixed-precision>
+   Mixed precision (neuronx-cc) <neuronx-cc/neuronx-cc-training-mixed-precision>
+   Introducing NxD Inference <neuronx-distributed/introducing-nxd-inference>
+   Introducing NxD Training <neuronx-distributed/introducing-nxdt-training>
    Performance <perf/neuron-cc/performance-tuning>
    Parallel execution <perf/neuron-cc/parallel-ncgs>
    PyTorch for Neuron <torch-neuron/index>

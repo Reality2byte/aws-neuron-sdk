@@ -14,7 +14,6 @@ Developer Guide  (``torch-neuronx``)
     
     /frameworks/torch/torch-neuronx/programming-guide/inference/core-placement
     /frameworks/torch/torch-neuronx/programming-guide/inference/trace-vs-xla-lazytensor
-    /about-neuron/appnotes/torch-neuronx/torch-neuronx-dataparallel-app-note.rst
     
 
 .. dropdown::  Developer Guide for Inference (``torch-neuronx``)

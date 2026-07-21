@@ -1,102 +1,118 @@
 .. meta::
-   :description: Get started quickly with AWS Neuron SDK for PyTorch, JAX, and TensorFlow on Inferentia and Trainium
-   :keywords: neuron, quickstart, getting started, pytorch, jax, tensorflow, inferentia, trainium, training, inference
+   :description: Get started quickly with AWS Neuron SDK on Inferentia and Trainium — training, inference, vLLM serving, NKI, deployment, and tools quickstarts
+   :keywords: neuron, quickstart, getting started, pytorch, jax, vllm, nki, inferentia, trainium, training, inference
    :instance-types: inf2, trn1, trn2, trn3
    :content-type: navigation-hub
-   :date-modified: 2026-03-03
+   :date-modified: 2026-07-21
 
 .. _neuron-quickstart:
 
 Get Started with AWS Neuron
 ============================
 
-Get up and running with AWS Neuron SDK in minutes. These quickstarts guide you through your first training or inference workload on Inferentia and Trainium instances.
+Get up and running with the AWS Neuron SDK on Inferentia and Trainium. Pick a quickstart by task or by component below.
 
 .. note::
-   
+
    **First time using AWS Neuron?** These quickstarts assume you have:
-   
+
    - An active AWS account with EC2 access
-   - Basic familiarity with your chosen ML framework (PyTorch, JAX, or TensorFlow)
+   - Basic familiarity with your chosen ML framework (PyTorch or JAX)
    - SSH access to launch and connect to EC2 instances
-   
+
    For detailed installation instructions, see the :doc:`Setup Guide </setup/index>`.
 
-Choose Your Path
+Choose your path
 ----------------
 
-Select the quickstart that matches your use case:
+Start here if you want an end-to-end first workload.
 
 .. grid:: 1 1 2 2
    :gutter: 3
 
-   .. grid-item-card:: 🚀 Training Quickstart
+   .. grid-item-card:: 🚀 Training quickstart
       :link: training-quickstart
       :link-type: ref
       :class-card: sd-border-2
-      
-      Train your first model on Trainium
-      
-      - Launch a Trn1 instance
-      - Run a PyTorch training script
-      - Monitor training progress
-      
+
+      Train your first model on Trainium.
+
       **Time**: ~15 minutes
-      
+
       :bdg-primary:`Trn1` :bdg-primary:`Trn2` :bdg-primary:`Trn3`
 
-   .. grid-item-card:: 🎯 Inference Quickstart
+   .. grid-item-card:: 🎯 Inference quickstart
       :link: inference-quickstart
       :link-type: ref
       :class-card: sd-border-2
-      
-      Run your first inference on Inferentia
-      
-      - Launch an Inf2 instance
-      - Load a pre-compiled model
-      - Run predictions
-      
+
+      Run your first inference on Inferentia.
+
       **Time**: ~10 minutes
-      
+
       :bdg-success:`Inf2` :bdg-success:`Trn1`
 
-Specialized Quickstarts
------------------------
+LLM serving and agentic tooling
+-------------------------------
 
 .. grid:: 1 1 2 2
    :gutter: 3
 
-   .. grid-item-card:: 💬 LLM Serving with vLLM
+   .. grid-item-card:: 💬 LLM serving with vLLM
       :class-card: sd-border-1
-      
-      Deploy large language models for production inference
-      
-      - :doc:`Online serving </libraries/nxd-inference/vllm/quickstart-vllm-online-serving>` (OpenAI-compatible API)
+
+      Deploy large language models for production inference:
+
+      - :doc:`Online serving (OpenAI-compatible API) </libraries/nxd-inference/vllm/quickstart-vllm-online-serving>`
       - :doc:`Offline batch inference </libraries/nxd-inference/vllm/quickstart-vllm-offline-serving>`
-      
-      **Time**: ~20 minutes
-      
-      :bdg-info:`Inf2` :bdg-info:`Trn1`
+
+      :bdg-info:`Inf2` :bdg-info:`Trn1` :bdg-info:`Trn2`
 
    .. grid-item-card:: 🤖 Amazon AI helper tools
       :link: amazon-q-dev
       :link-type: ref
       :class-card: sd-border-1
-      
-      Use AI-powered code assistance for Neuron development
-      
-      - Get code suggestions
-      - Debug Neuron applications
-      - Optimize performance
-      
-      **Time**: ~5 minutes
 
-Framework-Specific Guides
--------------------------
+      Use AI-powered code assistance for Neuron development — code suggestions, debugging, and optimization.
+
+Quickstarts by component
+------------------------
+
+.. grid:: 1 1 2 2
+   :gutter: 3
+
+   .. grid-item-card:: Neuron Kernel Interface (NKI)
+      :class-card: sd-border-1
+
+      - :ref:`Get started with NKI <nki-get-started>`
+      - :ref:`Implement and run your first kernel <quickstart-run-nki-kernel>`
+      - :ref:`Get started with the NKI Library <nki-library-quickstart>`
+
+   .. grid-item-card:: Deployment (DLC and DLAMI)
+      :class-card: sd-border-1
+
+      - :ref:`Deploy a vLLM server with a Neuron DLC <quickstart_vllm_dlc_deploy>`
+      - :ref:`Run PyTorch inference with a Neuron DLC <quickstart_pytorch_inference_dlc>`
+      - :ref:`Get started with Neuron DLC using Docker <containers-getting-started>`
+      - :ref:`Get started with the multi-framework DLAMI <setup-multiframework-dlami>`
+
+   .. grid-item-card:: Developer tools
+      :class-card: sd-border-1
+
+      - :ref:`Get started with Neuron Explorer <new-neuron-profiler-setup>`
+      - :ref:`Get started with Neuron agentic development <neuron-agentic-development-getting-started>`
+
+   .. grid-item-card:: Neuron Runtime
+      :class-card: sd-border-1
+
+      - :ref:`Generate a Neuron runtime core dump <runtime-core-dump-quickstart>`
+
+Framework setup guides
+----------------------
 
 Need framework-specific setup instructions?
 
-.. grid:: 1 1 3 3
+.. grid:: 1 1 2 2
    :gutter: 2
 
    .. grid-item-card:: PyTorch
@@ -104,7 +120,7 @@ Need framework-specific setup instructions?
       :link-type: doc
       :class-card: sd-border-1
       :class-body: sphinx-design-class-title-small
-      
+
       PyTorch 2.9+ setup
 
    .. grid-item-card:: JAX
@@ -112,36 +128,20 @@ Need framework-specific setup instructions?
       :link-type: doc
       :class-card: sd-border-1
       :class-body: sphinx-design-class-title-small
-      
+
       JAX 0.7+ setup
 
-   .. grid-item-card:: TensorFlow
-      :link: /archive/tensorflow/index
-      :link-type: doc
-      :class-card: sd-border-1
-      :class-body: sphinx-design-class-title-small
-      
-      TensorFlow 2.x setup
-
-Additional Resources
+Additional resources
 --------------------
 
 - :doc:`/about-neuron/models/index` - Pre-tested model samples and tutorials
 - :doc:`/deploy/ec2/index` - Detailed EC2 deployment workflows
 - :doc:`/deploy/index` - Use Deep Learning Containers
-- :doc:`docs-quicklinks` - Quick links to all Neuron documentation
 - :doc:`github-samples` - GitHub sample repositories
 
-Legacy Quick-Start Pages (Inf1)
---------------------------------
+.. note::
 
-.. warning::
-   
-   The following pages are for legacy Inf1 instances only. For new projects, use the quickstarts above for Inf2, Trn1, Trn2, or Trn3.
-
-- :doc:`torch-neuron` - PyTorch on Inf1
-- :doc:`tensorflow-neuron` - TensorFlow on Inf1
-- :doc:`mxnet-neuron` - MXNet on Inf1
+   Legacy Inf1 quickstarts (PyTorch ``torch-neuron``, MXNet, and TensorFlow) have moved to the :doc:`archive </archive/index>` as those instances and frameworks reach end of support. Use the quickstarts above for Inf2, Trn1, Trn2, and Trn3.
 
 .. toctree::
    :hidden:
@@ -152,8 +152,6 @@ Legacy Quick-Start Pages (Inf1)
    /libraries/nxd-inference/vllm/quickstart-vllm-online-serving
    /libraries/nxd-inference/vllm/quickstart-vllm-offline-serving
    /about-neuron/amazonq-getstarted
-   docs-quicklinks
    github-samples
-   torch-neuron
-   tensorflow-neuron
-   mxnet-neuron
+
+   

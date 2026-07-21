@@ -233,7 +233,7 @@ Next steps
 
 * Explore prefix caching, Eagle speculative decoding, and other options in :ref:`nxdi-feature-guide`.
 * Review supported model architectures in :ref:`nxdi-supported-model-architectures`.
-* Switch to the online serving quickstart (:ref:`quickstart-online-serving`) when you need an API endpoint.
+* Switch to the :doc:`online serving quickstart </libraries/nxd-inference/vllm/quickstart-vllm-online-serving>` when you need an API endpoint.
 
 Further reading
 ---------------

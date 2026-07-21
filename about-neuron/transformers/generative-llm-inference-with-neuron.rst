@@ -27,7 +27,7 @@ that illustrates this in code:
     # vocabulary is used as the token_id (an integer representing that token)
     vocab = ["having", "I", "fun", "am", "learning", ".", "Neuron"]
 
-    # input token_ids: list of integers that represent the input tokens in this
+    # input token_ids: list of integers that represent the input tokens in this
     # case: "I", "am", "having", "fun"
     input_token_ids = [1, 3, 0, 2] 
                                    
@@ -39,7 +39,7 @@ that illustrates this in code:
                                   
 
     # by taking argmax on the output, we effectively perform a 'greedy sampling' process,
-    # i.e. we choose the token_id with the highest probability. Other sampling techniques
+    # i.e. we choose the token_id with the highest probability. Other sampling techniques
     # also exist, e.g. Top-K. By choosing a probabilistic sampling method we enable the model
     # to generate different outputs when called multiple times with the same input.
     next_token_id = np.argmax(output) 
@@ -77,7 +77,7 @@ append the predicted token back into the input:
 
 This process, of predicting a future value (regression) and adding
 it back into the input (auto), is sometimes referred to as
-autoregression. For more details, Jay Mody’s \ `GPT in 60 Lines of
+autoregression. For more details, Jay Mody’s \ `GPT in 60 Lines of
 NumPy <https://jaykmody.com/blog/gpt-from-scratch/>`__\  is an
 excellent writeup on GPTs (Generative Pre-trained Transformers).
 
@@ -234,8 +234,8 @@ the number of required NeuronCores can be computed as follows.
 
    num_neuron_cores = ceil_to_closest_supported_size (193.5GiB / 16GiB, Inf2)
                     = ceil_to_closest_supported_size (12.1) = 24
-                    ## Currently, the Neuron runtime supports tensor-parallelism degrees 2, 8, and 32 on Trn1
-                    ## and supports tensor-parallelism degrees 2, 4, 8, 12 and 24 on Inf2.
+                    ## Currently, the Neuron runtime supports tensor-parallelism degrees 2, 8, and 32 on Trn1
+                    ## and supports tensor-parallelism degrees 2, 4, 8, 12 and 24 on Inf2.
 
 
 Use the :ref:`neuron_calculator` to compute the number of cores needed for a custom hyper-parameter configuration.
@@ -275,5 +275,3 @@ Users may also consider pipelining the model beyond what is necessary
 to fit model parameters / KV-cache on devices, in order to free up
 device-memory space and thus allow the batch-size to increase
 without causing OOM issues.
-
-

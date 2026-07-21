@@ -18,8 +18,8 @@ Developer Guide (``torch-neuron``)
     :maxdepth: 1
     :hidden:
     
-    Running Inference on Variable Input Shapes with Bucketing </about-neuron/appnotes/torch-neuron/bucketing-app-note>
-    Data Parallel Inference on PyTorch Neuron </about-neuron/appnotes/torch-neuron/torch-neuron-dataparallel-app-note>
+    Running Inference on Variable Input Shapes with Bucketing </archive/appnotes/torch-neuron/bucketing-app-note>
+    Data Parallel Inference on PyTorch Neuron </archive/appnotes/torch-neuron/torch-neuron-dataparallel-app-note>
     /archive/torch-neuron/guides/torch-lstm-support
     /archive/torch-neuron/guides/core-placement/torch-core-placement
 

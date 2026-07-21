@@ -92,7 +92,10 @@
       {"name":"neuronx_distributed_training","component":"Neuron Distributed Training","category":"na","package_type":"os","use_cases":["inference","training"],"pin_major":"false"},
       {"name":"neuronx_distributed_inference","component":"Neuron Distributed Inference","category":"na","package_type":"os","use_cases":["inference"],"pin_major":"false"},
       {"name":"jax_neuronx","component":"Jax","category":"jax","package_type":"pip","use_cases":["inference"],"pin_major":"true"},
-      {"name":"nki","component":"NKI","category":"nki","package_type":"pip","use_cases":["inference","training"],"pin_major":"true"}
+      {"name":"nki","component":"NKI","category":"nki","package_type":"pip","use_cases":["inference","training"],"pin_major":"true"},
+      {"name":"torch-xla","component":"PyTorch","category":"pytorch","package_type":"pip","use_cases":["inference","training"],"pin_major":"true"},
+      {"name":"neuron_agentic_development","component":"Neuron Agentic Development","category":"agents","package_type":"na","use_cases":["inference","training"],"pin_major":"true"},
+      {"name":"libtorch_neuronx_lite","component":"PyTorch","category":"pytorch","package_type":"pip","use_cases":["inference","training"],"pin_major":"true"}
     ],
     "neuron_releases": [
       {"neuron_version":"2.31.0", "packages": [

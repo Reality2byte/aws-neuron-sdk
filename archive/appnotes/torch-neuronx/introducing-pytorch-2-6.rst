@@ -173,14 +173,14 @@ In PyTorch 2.6, training scripts might fail during activation checkpointing with
 
 
 The solution is to use ``torch_xla.utils.checkpoint.checkpoint`` instead of ``torch.utils.checkpoint.checkpoint`` as the checkpoint function while wrapping pytorch modules for activation checkpointing.
-Refer to the pytorch/xla discussion regarding this `issue <https://github.com/pytorch/xla/issues/5766>`_.
+Refer to the pytorch/xla discussion regarding this `issue <https://github.com/pytorch/xla/issues/5766>`__.
 Also set ``use_reentrant=True`` while calling the torch_xla checkpoint function. Failure to do so will lead to ``XLA currently does not support use_reentrant==False`` error.
 For more details on checkpointing, refer the `documentation <https://pytorch.org/docs/stable/checkpoint.html>`_.
 
 
 Error ``Attempted to access the data pointer on an invalid python storage`` when using HF Trainer API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-While using HuggingFace Transformers Trainer API to train (i.e. :ref:`HuggingFace Trainer API fine-tuning tutorial<torch-hf-bert-finetune>`), you may see the error "Attempted to access the data pointer on an invalid python storage". This is a known `issue <https://github.com/huggingface/transformers/issues/2.678>`_ and has been fixed in the version ``4.37.3`` of HuggingFace Transformers.
+While using HuggingFace Transformers Trainer API to train (i.e. :ref:`HuggingFace Trainer API fine-tuning tutorial<torch-hf-bert-finetune>`), you may see the error "Attempted to access the data pointer on an invalid python storage". This is a known `issue <https://github.com/huggingface/transformers/issues/2.678>`__ and has been fixed in the version ``4.37.3`` of HuggingFace Transformers.
 
 
 ``ImportError: libcrypt.so.1: cannot open shared object file: No such file or directory`` on Amazon Linux 2023

@@ -26,6 +26,7 @@ TensorFlow Neuron enables native TensorFlow models to be accelerated on Neuron d
     :hidden:
     
     /archive/tensorflow/tensorflow-setup
+    /archive/tensorflow/tensorflow-neuron-quickstart
 
 .. toctree::
     :maxdepth: 2

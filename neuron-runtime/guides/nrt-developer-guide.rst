@@ -18,16 +18,16 @@ The Neuron Runtime Library (``libnrt``) is the intermediate layer between an app
 
 .. figure:: /images/neuron-rt-diagram.png
 
-    `Individual processes executing models on one or more Neuron Devices`
+    Individual processes executing models on one or more Neuron Devices
 
 .. figure:: /images/neuron-rt-diagram-2.png
 
-    `Processes working together on executing models within the same instance - libnccom (The Neuron Collective Communication Library) handles inter-worker communication`
+    Processes working together on executing models within the same instance - libnccom (The Neuron Collective Communication Library) handles inter-worker communication
 
 
 .. figure:: /images/neuron-rt-diagram-3.png
 
-    `Processes working together on executing models across multiple instances - libnccom, libfabric and the EFA driver handle communication`
+    Processes working together on executing models across multiple instances - libnccom, libfabric and the EFA driver handle communication
 
 
 .. _reqs:
@@ -35,7 +35,7 @@ The Neuron Runtime Library (``libnrt``) is the intermediate layer between an app
 Requirements
 ------------
 
-A more comprehensive guide to installing Neuron software can be found in the :ref:`torch_quick_start` guide.
+A more comprehensive guide to installing Neuron software can be found in the :ref:`Setup Guide <setup-guide-index>`.
 
 The Neuron Runtime requires the Neuron Driver, which is provided by the ``aws-neuron-dkms`` package. Run the commands below to install the driver for the indicated operating system:
 

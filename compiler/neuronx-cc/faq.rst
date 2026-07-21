@@ -28,10 +28,9 @@ configuration management application to the inference fleet.
 What is the difference between ``neuron-cc`` and ``neuronx-cc``?
 ----------------------------------------------------------------
 
-* ``neuron-cc`` is the Neuron Compiler with TVM front-end, ``neuron-cc`` supports only :ref:`neuroncores-v1-arch`.
-* ``neuronx-cc`` is the Neuron Compiler with XLA front-end, ``neuronx-cc`` currently supports 
-  :ref:`neuroncores-v2-arch`, ``neuronx-cc`` support of :ref:`neuroncores-v1-arch` is currently a 
-  :ref:`Roadmap Item <neuron_roadmap>`.
+* ``neuron-cc`` is the Neuron Compiler with TVM front-end, ``neuron-cc``supports only :ref:`neuroncores-v1-arch`.
+* ``neuronx-cc`` is the Neuron Compiler with XLA fron-end, ``neuronx-cc`` currently supports 
+  :ref:`neuroncores-v2-arch`.
 
 Should I use ``neuron-cc`` or ``neuronx-cc``?
 ---------------------------------------------
@@ -69,8 +68,6 @@ need to partition the model using the framework prior to compilation.
 
   Starting with :ref:`neuroncores-v2-arch` Neuron supports control-flow and dynamic shapes.
 
-  Stay tuned and follow the :ref:`Neuron Roadmap <neuron_roadmap>`.
-
 Will I need to recompile again if I updated runtime/driver version?
 ----------------------------------------------------------------------
 
@@ -98,10 +95,10 @@ associated implications for performance and accuracy. The default casting mode
 is a pragmatic balance between performance and accuracy, however on some models
 it may result in loss of precision.
 
-See the :option:`--auto-cast` and :option:`--auto-cast-type` options in :ref:`neuron-compiler-cli-reference-guide` for details on how to adjust the casting mode.
+See the ``--auto-cast`` and ``--auto-cast-type`` options in :ref:`neuron-compiler-cli-reference-guide` for details on how to adjust the casting mode.
 
 Do you support model *<insert model type>*?
 -------------------------------------------
 
-``neuronx-cc`` has explicit support for select model families using the :option:`--model-type` option, though many other model types are supported. You can also inspect supported operators using the :option:`list-operators` sub-command. See th :ref:`neuron-compiler-cli-reference-guide` for details.
-More generally, support for new operators and models is continually being added. See our :ref:`neuron_roadmap` for details.
+``neuronx-cc`` has explicit support for select model families using the ``--model-type`` option, though many other model types are supported. You can also inspect supported operators using the ``list-operators`` sub-command. See th :ref:`neuron-compiler-cli-reference-guide` for details.
+More generally, support for new operators and models is continually being added.

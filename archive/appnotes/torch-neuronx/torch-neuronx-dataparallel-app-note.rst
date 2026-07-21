@@ -1,7 +1,7 @@
 .. _torch-neuronx-dataparallel-app-note:
 
 Data Parallel Inference on torch_neuronx
-=======================================
+========================================
 
 .. contents:: Table of Contents
    :local:
@@ -32,7 +32,7 @@ applications that have large batch size requirements.
 
 
 torch_neuronx.DataParallel
--------------------------
+--------------------------
 
 To fully leverage the Inferentia hardware, we want to use all available
 NeuronCores. An inf2.xlarge and inf2.8xlarge have two NeuronCores, an

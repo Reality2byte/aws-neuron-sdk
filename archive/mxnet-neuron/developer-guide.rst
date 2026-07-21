@@ -18,7 +18,7 @@ Developer Guide
     :maxdepth: 1
     :hidden:
     
-    /about-neuron/appnotes/mxnet-neuron/flex-eg
+    /archive/appnotes/mxnet-neuron/flex-eg
 
 
 .. include:: /archive/mxnet-neuron/developer-guide.txt

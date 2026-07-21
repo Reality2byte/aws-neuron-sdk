@@ -40,7 +40,7 @@ FP16 or BF16 in the ML framework prior to compilation for Inferentia.
 What are some of the important compiler defaults I should be aware of?
 -----------------------------------------------------------------------
 
-The compiler compiles the input graph for a single NeuronCore by default. Using the :option:`--neuroncore-pipeline-cores` option directs the compiler to
+The compiler compiles the input graph for a single NeuronCore by default. Using the ``--neuroncore-pipeline-cores`` option directs the compiler to
 partition so as to run on a specified number of NeuronCores. This number can
 be less than the total available NeuronCores on an instance.
 See :ref:`inferentia-arch` for more information on NeuronCores.
@@ -51,7 +51,7 @@ Which operators does Neuron support?
 see :ref:`neuron-supported-operators`.
 
 You can also use the "neuron-cc list-operators" command on the cli to list the
-operators. See :ref:`neuron-cc-list-operators`
+operators. See :ref:`neuron-cc list-operators <neuron-cc-list-operators>`
 
 If your model contains operators missing from the above list, and you can't reach your performance goals, please
 post a message on the Neuron developer forum or open a github issue to let us know.

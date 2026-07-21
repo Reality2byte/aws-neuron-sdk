@@ -283,7 +283,7 @@ Next steps
 
 * Explore prefix caching, Eagle speculative decoding, and other options in :ref:`nxdi-feature-guide`.
 * Review supported model architectures in :ref:`nxdi-supported-model-architectures`.
-* Try the offline batch quickstart (:ref:`quickstart-offline-serving`) if you need non-interactive inference.
+* Try the :doc:`offline batch quickstart </libraries/nxd-inference/vllm/quickstart-vllm-offline-serving>` if you need non-interactive inference.
 
 Further reading
 ---------------

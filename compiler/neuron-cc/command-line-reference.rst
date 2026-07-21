@@ -30,24 +30,24 @@ framework guides for the correct syntax.
 
 Common options for the Neuron CLI:
 
-    - :option:`--verbose` (string) default=“WARN”:
+    - ``--verbose`` (string) default=“WARN”:
 
         Valid values:
 
-        -  :option:`DEBUG`
-        -  :option:`INFO`
-        -  :option:`WARN`
-        -  :option:`ERROR`
+        -  ``DEBUG``
+        -  ``INFO``
+        -  ``WARN``
+        -  ``ERROR``
 
 
 
-Use :option:`neuron-cc <command> --help` for information on a specific command.
+Use ``neuron-cc <command> --help`` for information on a specific command.
 
 Available Commands:
 ~~~~~~~~~~~~~~~~~~~
 
--  :option:`compile`
--  :option:`list-operators`
+-  ``compile``
+-  ``list-operators``
 
 
 .. option:: neuron-cc compile [parameters]
@@ -60,7 +60,7 @@ Available Commands:
 
     **Compile Parameters:**
 
-    - :option:`<file names>`: Input containing model specification. The number
+    - ``<file names>``: Input containing model specification. The number
       of arguments required varies between frameworks:
 
         -  **TENSORFLOW**: A local filename or URI of a TensorFlow Frozen
@@ -79,15 +79,15 @@ Available Commands:
            parameters, respectively.
 
 
-    - :option:`--framework` (string): Framework in which the model was trained.
+    - ``--framework`` (string): Framework in which the model was trained.
 
       Valid values:
 
-        - :option:`TENSORFLOW`
-        - :option:`MXNET`
-        - :option:`XLA`
+        - ``TENSORFLOW``
+        - ``MXNET``
+        - ``XLA``
 
-    - :option:`--neuroncore-pipeline-cores` (int) (default=1): Number of neuron cores
+    - ``--neuroncore-pipeline-cores`` (int) (default=1): Number of neuron cores
       to be used in "NeuronCore Pipeline" mode. This is different from data
       parallel deployment (same model on multiple neuron cores). Refer to
       Runtime/Framework documentation for data parallel deployment options.
@@ -100,10 +100,10 @@ Available Commands:
         parallel deployment (ie the same model on multiple Neuron Cores). That
         is a runtime/framework configuration choice.
 
-    - :option:`--output` (string) (default=“out.neff”): Filename where compilation
+    - ``--output`` (string) (default=“out.neff”): Filename where compilation
       output (NEFF archive) will be recorded.
 
-    - :option:`--io-config` (string): Configuration containing the names and shapes
+    - ``--io-config`` (string): Configuration containing the names and shapes
       of input and output tensors.
 
       The io-config can be specified as a local filename, a URI, or a string
@@ -124,21 +124,21 @@ Available Commands:
          "outputs": ["output:0"]
         }
 
-    - :option:`--enable-saturate-infinity` : Convert +/- infinity values to MAX/MIN_FLOAT for certain computations that have a high risk of generating Not-a-Number (NaN) values. There is a potential performance impact during model execution when this conversion is enabled.
+    - ``--enable-saturate-infinity`` : Convert +/- infinity values to MAX/MIN_FLOAT for certain computations that have a high risk of generating Not-a-Number (NaN) values. There is a potential performance impact during model execution when this conversion is enabled.
 
 
-    - :option:`--enable-fast-loading-neuron-binaries` : Write the compilation
+    - ``--enable-fast-loading-neuron-binaries`` : Write the compilation
       output (NEFF archive) in uncompressed format which results
       in faster loading of the archive during inference.
 
-    - :option:`--enable-fast-context-switch` : Optimize for faster model switching
+    - ``--enable-fast-context-switch`` : Optimize for faster model switching
       rather than inference latency. This results in overall faster system
       performance when your application switches between models frequently
       on the same neuron core (or set of cores). The optimization
       triggered by this option for example defers loading some weight
       constants until the start of inference.
 
-    - :option:`--fast-math` : Controls tradeoff between performance and accuracy for fp32 operators. See more suggestions on how to use this option with the below arguments in :ref:`neuron-cc-training-mixed-precision`.
+    - ``--fast-math`` : Controls tradeoff between performance and accuracy for fp32 operators. See more suggestions on how to use this option with the below arguments in :ref:`neuron-cc-training-mixed-precision`.
 
 
         - ``all`` (Default): enables all optimizations that improve performance. This option can potentially lower precision/accuracy.
@@ -183,7 +183,7 @@ Available Commands:
             * For backward compatibility, the ``--fp32-cast`` option has higher priority over ``--fast-math``. It will overwrite the FP32 casting options in any of the ``--fast-math`` options if ``--fp32-cast`` option is present explicitly.
 
 
-    - :option:`--fp32-cast` : Refine the automatic casting of fp32 tensors. This is being replaced by a newer --fast-math.
+    - ``--fp32-cast`` : Refine the automatic casting of fp32 tensors. This is being replaced by a newer --fast-math.
 
         .. important ::
 
@@ -267,14 +267,14 @@ Available Commands:
 
     .. _options-1:
 
-    - :option:`--framework` (string): Framework in which the operators were
+    - ``--framework`` (string): Framework in which the operators were
       registered.
 
       Valid values:
 
-        - :option:`TENSORFLOW`
-        - :option:`MXNET`
-        - :option:`XLA`
+        - ``TENSORFLOW``
+        - ``MXNET``
+        - ``XLA``
 
     **Exit Status**
 
