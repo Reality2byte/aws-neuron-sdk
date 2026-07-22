@@ -11,9 +11,9 @@ vision-language, model recipe, model card, LLM serving, Trn2, Trn3, Trainium -->
 
 ## Introduction
 
-[Qwen3-VL](https://huggingface.co/collections/Qwen/qwen3-vl-67eb1e7a5d5b1c5b2b0e4b3f) is a multimodal language model developed by the Qwen team. It supports image-text understanding, visual reasoning, OCR, document analysis, and multi-image comparison. The `-Instruct` variant is instruction-tuned for chat and task-following, while the `-Thinking` variant adds extended chain-of-thought reasoning.
+[Qwen3-VL](https://huggingface.co/collections/Qwen/qwen3-vl) is a multimodal language model developed by the Qwen team. It supports image-text understanding, visual reasoning, OCR, document analysis, and multi-image comparison. The `-Instruct` variant is instruction-tuned for chat and task-following, while the `-Thinking` variant adds extended chain-of-thought reasoning.
 
-Qwen3-VL is now supported for inference serving with [vLLM](https://github.com/vllm-project/vllm) using the Neuron SDK on AWS Trainium2 (`trn2`) and Trainium3 (`trn3`) hardware.
+Qwen3-VL is now supported for inference serving with [vLLM Neuron Plugin](https://github.com/vllm-project/vllm-neuron) using the Neuron SDK on AWS Trainium2 (`trn2`) and Trainium3 (`trn3`) hardware.
 
 **Compatible model checkpoints:**
 
@@ -69,7 +69,7 @@ Vision encoder parallelism shards the encoder by the `num_blocks` dimension of t
 | Popular F1 | 85.63 |
 | Random F1 | 87.38 |
 
-**Reproduce:** Serve the `-Thinking` checkpoint following the [tutorial](../tutorials/tutorial-qwen3-vl-32b.md) and add `--served-model-name Qwen3-VL-32B-Thinking` to `vllm serve`, then run VLMEvalKit's `run.py` against the running server over its OpenAI-compatible endpoint:
+**Reproduce:** Serve the `-Thinking` checkpoint following the [tutorial](../tutorials/tutorial-qwen3-vl-32b.md), then run [VLMEvalKit](https://github.com/open-compass/vlmevalkit)'s `run.py` against the running server over its OpenAI-compatible endpoint:
 
 ```bash
 git clone https://github.com/open-compass/VLMEvalKit.git

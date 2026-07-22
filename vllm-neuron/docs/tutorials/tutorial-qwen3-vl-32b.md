@@ -39,7 +39,7 @@ export NEURON_CC_FLAGS="--temp-dir=/tmp/neuroncc_tmp"
 mkdir -p /tmp/neuroncc_tmp
 ```
 
-## Step 2: Download the Model
+## Step 2 (Optional): Download the Model
 
 ```bash
 huggingface-cli download \
@@ -47,7 +47,7 @@ huggingface-cli download \
     --local-dir /path/to/Qwen3-VL-32B-Instruct
 ```
 
-> **Tip:** On a `trn2` cluster, download to a shared filesystem instead of your home directory to avoid NFS write issues.
+> **Note:** This step is optional. You can pass the Hugging Face model ID (e.g. `Qwen/Qwen3-VL-32B-Instruct`) directly to `vllm serve`, and the weights will be downloaded automatically on first run.
 
 ## Step 3: Online Serving
 
