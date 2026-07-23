@@ -88,13 +88,13 @@ r"""No-op operator that passes data through unchanged. Used as the ``op0`` or ``
 class MemoryRegion(Enum):
     r"""Memory region constants for NKI tensors."""
 
-    sbuf = ...
+    sbuf = 'sbuf'
 
-    psum = ...
+    psum = 'psum'
 
-    private_hbm = ...
+    private_hbm = 'private_hbm'
 
-    shared_hbm = ...
+    shared_hbm = 'shared_hbm'
 
     ...
 

@@ -10,25 +10,25 @@ from nki.language import maximum
 class engine(Enum):
     r"""Neuron Device engines."""
 
-    tensor = ...
+    tensor = 1
     r"""Tensor Engine"""
 
-    vector = ...
+    vector = 5
     r"""Vector Engine"""
 
-    scalar = ...
+    scalar = 2
     r"""Scalar Engine"""
 
-    gpsimd = ...
+    gpsimd = 3
     r"""GpSIMD Engine"""
 
-    dma = ...
+    dma = 4
     r"""DMA Engine"""
 
-    sync = ...
+    sync = 6
     r"""Sync Engine"""
 
-    unknown = ...
+    unknown = 0
     r"""Unknown Engine"""
 
     ...
@@ -36,19 +36,19 @@ class engine(Enum):
 class reduce_cmd(Enum):
     r"""Engine register reduce commands."""
 
-    idle = ...
+    idle = 0
     r"""Not using the accumulator registers"""
 
-    reset = ...
+    reset = 1
     r"""Resets the accumulator registers to its initial state"""
 
-    reduce = ...
+    reduce = 2
     r"""Keeps accumulating over the current value of the accumulator registers"""
 
-    reset_reduce = ...
+    reset_reduce = 3
     r"""Resets the accumulator registers then immediately accumulate the results of the current instruction into the accumulators"""
 
-    load_reduce = ...
+    load_reduce = 4
     r"""Loads a value into the accumulator registers, then accumulate the results of the current instruction into the accumulators"""
 
     ...
@@ -56,16 +56,16 @@ class reduce_cmd(Enum):
 class dge_mode(Enum):
     r"""Descriptor Generation Engine mode."""
 
-    unknown = ...
+    unknown = 0
     r"""Unknown DGE mode, i.e., let compiler decide the DGE mode"""
 
-    swdge = ...
+    swdge = 1
     r"""Software DGE"""
 
-    hwdge = ...
+    hwdge = 2
     r"""Hardware DGE"""
 
-    none = ...
+    none = 3
     r"""Not using DGE"""
 
     ...
@@ -73,10 +73,10 @@ class dge_mode(Enum):
 class oob_mode(Enum):
     r"""Out-of-bounds access mode."""
 
-    error = ...
+    error = 0
     r"""Raise a runtime error when an out-of-bounds access is detected."""
 
-    skip = ...
+    skip = 1
     r"""Silently skip the runtime out-of-bounds access."""
 
     ...
@@ -84,10 +84,10 @@ class oob_mode(Enum):
 class matmul_perf_mode(Enum):
     r"""Performance mode for matmul."""
 
-    none = ...
+    none = 'none'
     r"""Default mode, no performance optimization"""
 
-    double_row = ...
+    double_row = 'double_row'
     r"""Double FP8 mode, 2x matmul throughput by packing two FP8 weight/ifmap element pairs"""
 
     ...
@@ -95,13 +95,13 @@ class matmul_perf_mode(Enum):
 class nc_version(Enum):
     r"""NeuronCore version."""
 
-    gen2 = ...
+    gen2 = 2
     r"""Trn1/Inf2 target"""
 
-    gen3 = ...
+    gen3 = 3
     r"""Trn2 target"""
 
-    gen4 = ...
+    gen4 = 4
     r"""Trn3 target"""
 
     ...
@@ -110,10 +110,10 @@ class dma_engine(Enum):
     r"""DMA transfer engine.
         """
 
-    dma = ...
+    dma = 1
     r"""Shared DMA with CoreBarrier synchronization (default). Can be triggered from any engine."""
 
-    gpsimd_dma = ...
+    gpsimd_dma = 2
     r"""GPSIMD's internal DMA engine for low-latency SB-to-SB swaps in LNC=2.
     Implies GPSIMD as the trigger engine."""
 
