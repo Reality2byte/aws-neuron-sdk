@@ -128,7 +128,7 @@ please check that Neuron RTD is running (neuron-rtd process).
     {
     "code": 500,
     "type": "InternalServerException",
-    "message": "Failed to start workers“
+    "message": "Failed to start workers"
     }
 
 .. code:: bash

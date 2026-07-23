@@ -149,7 +149,7 @@ Despite the name, this attribute returns the usable SBUF free dimension *per par
 SBUF capacity. It continues to work and returns the same value, but is deprecated. Use
 ``tile_size.sbuf_size_bytes`` for total SBUF capacity across all partitions, or
 ``tile_size.sbuf_fmax_bytes`` for the per-partition size. See
-:doc:`nki.language.tile_size </nki/api/generated/nki.language.tile_size>`.
+:doc:`nki.language.tile_size </nki/api/nki.language.tile_size>`.
 
 Behavior change: CPU simulator precision default
 ------------------------------------------------

@@ -13,7 +13,7 @@ Compute
 How do I get started with training my model on Trn1?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Once you select your machine learning framework, you can get started here: :ref:`docs-quick-links`
+Once you select your machine learning framework, you can get started here: :ref:`neuron-quickstart`
 
 
 How do I setup EFA for multi-node training?

@@ -212,7 +212,7 @@ GlibC error on Amazon Linux 2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 If using Torch-NeuronX 2.5 on Amazon Linux 2, you will see a GlibC error below. Please switch to a newer supported OS such as Ubuntu 22 or Amazon Linux 2023.
 
-.. code:: bash
+.. code:: text
 
    ImportError: /lib64/libc.so.6: version `GLIBC_2.27' not found (required by /tmp/debug/_XLAC.cpython-38-x86_64-linux-gnu.so)
 

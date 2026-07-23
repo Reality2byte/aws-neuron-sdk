@@ -54,7 +54,7 @@ For example:
 
 You can list the currently available metrics.
 
-.. code:: python
+.. code:: text
 
     >>> npf.list_metrics()                                                                                 │·····
     Name                     Description                                                                   │·····

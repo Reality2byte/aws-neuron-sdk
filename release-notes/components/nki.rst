@@ -142,7 +142,7 @@ New Features
   * ``tile_size.psum_bank_fmax`` — PSUM bank capacity in FP32 elements
   * ``tile_size.psum_bank_fmax_bytes`` — PSUM bank capacity in bytes
 
-  See :doc:`nki.language.tile_size </nki/api/generated/nki.language.tile_size>`.
+  See :doc:`nki.language.tile_size </nki/api/nki.language.tile_size>`.
 
 * **nki.isa.dma_compute oob_mode parameter**: ``dma_compute`` now accepts an ``oob_mode`` parameter (``oob_mode.error`` or ``oob_mode.skip``) to control handling of out-of-bounds indices in indirect gather/scatter operations with ``vector_offset``, mirroring existing ``dma_copy`` behavior. Validation ensures ``oob_mode.skip`` is used only with indirect indexing. See :doc:`nki.isa.dma_compute </nki/api/generated/nki.isa.dma_compute>`.
 
@@ -168,7 +168,7 @@ Deprecated and Removed APIs
 
 * ``nki.isa.tensor_copy_dynamic_src`` / ``nki.isa.tensor_copy_dynamic_dst`` — Removed. Use ``nisa.tensor_copy()`` with ``.ap()`` and ``scalar_offset`` instead. See :doc:`nki.isa.tensor_copy </nki/api/generated/nki.isa.tensor_copy>`.
 
-* ``nki.language.tile_size.total_available_sbuf_size`` — Deprecated. Despite the name, this attribute returns the usable SBUF free dimension *per partition*, not total SBUF capacity. Use ``tile_size.sbuf_size_bytes`` for total SBUF capacity across all partitions, or ``tile_size.sbuf_fmax_bytes`` for the per-partition size. The deprecated attribute continues to work and returns the same value as before. See :doc:`nki.language.tile_size </nki/api/generated/nki.language.tile_size>`.
+* ``nki.language.tile_size.total_available_sbuf_size`` — Deprecated. Despite the name, this attribute returns the usable SBUF free dimension *per partition*, not total SBUF capacity. Use ``tile_size.sbuf_size_bytes`` for total SBUF capacity across all partitions, or ``tile_size.sbuf_fmax_bytes`` for the per-partition size. The deprecated attribute continues to work and returns the same value as before. See :doc:`nki.language.tile_size </nki/api/nki.language.tile_size>`.
 
 Breaking Changes
 ~~~~~~~~~~~~~~~~
