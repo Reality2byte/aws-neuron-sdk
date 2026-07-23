@@ -73,11 +73,18 @@ This tutorial assumes that you have experience in the following areas:
   multi-node, two or more instances with EFA connectivity.
 - **vLLM Neuron environment**: Installed and verified. See
   [setup guide](../getting-started/setup-guide.md).
-- **NIXL installed**: The NIXL KV transfer library. Install with:
+- **NIXL and its runtime libraries**: The NIXL KV transfer library. Install with:
 
   ```bash
   pip install nixl
   ```
+
+  NIXL's LIBFABRIC backend also loads the `libcuda.so.1` and `libfabric.so.1`
+  shared libraries at runtime. If your environment does not already ship them
+  (some container images do not), follow
+  [Install dependencies for disaggregated inference](../getting-started/setup-guide.md#install-dependencies-for-disaggregated-inference)
+  before you start. Otherwise the servers fail at startup with
+  `unsupported backend 'LIBFABRIC'`.
 
 - **Model access**: Ability to pull the model on each server (for example, via
   Hugging Face Hub or a shared filesystem).

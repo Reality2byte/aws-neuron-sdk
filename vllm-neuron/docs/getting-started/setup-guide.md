@@ -4,7 +4,7 @@
 Trainium or Inferentia instances so you can serve LLMs with vLLM Neuron. -->
 <!-- meta: keywords: vLLM, Neuron, setup, install, vLLM Neuron plugin,
 Trainium, Inferentia, DLAMI -->
-<!-- meta: date_updated: 2026-06-11 -->
+<!-- meta: date_updated: 2026-07-23 -->
 <!-- Content type: procedural-how-to -->
 <!-- Jira: NDOC-179 -->
 
@@ -87,6 +87,134 @@ neuron-ls
 ```
 
 You should see output listing the available NeuronCores on your instance.
+
+### Install dependencies for disaggregated inference
+
+:::{note}
+This section is only required if you plan to run
+[disaggregated inference (DI)](../guides/features-guide.md#disaggregated-inference),
+which requires the NIXL LIBFABRIC transport (`"backends": ["LIBFABRIC"]`) for KV
+cache transfer over EFA. If you are not using it, skip ahead to
+[Configure environment variables](#configure-environment-variables).
+:::
+
+To use the NIXL LIBFABRIC backend for disaggregated inference, the following two
+shared libraries must be installed:
+
+- **`libcuda.so.1`** — the CUDA driver library. The plugin links against it for its
+  optional GPUDirect path, which is never exercised on Neuron, so a stub is
+  sufficient.
+- **`libfabric.so.1`** — the Libfabric/EFA library that carries the actual RDMA
+  transfer.
+
+The backend ships as a plugin (`libplugin_LIBFABRIC.so`) inside the `nixl` wheel
+that NIXL `dlopen`s when you start a server with `"backends": ["LIBFABRIC"]`. If
+either library is missing from the loader path, `dlopen` fails and NIXL reports
+`createBackend: unsupported backend 'LIBFABRIC'` followed by
+`nixlNotFoundError: NIXL_ERR_NOT_FOUND`, and every server worker exits.
+
+Some environments already ship one or both of these libraries. Run the checks
+below and provision only the libraries that are actually missing.
+
+#### 1. Check for `libcuda.so.1`
+
+```bash
+ldconfig -p | grep libcuda.so
+```
+
+If this prints a `libcuda.so.1` line, the CUDA stub is already present — skip to
+step 2. If it prints nothing, install the official CUDA driver stub (as root)
+and expose it as `libcuda.so.1`:
+
+```bash
+# Add the NVIDIA CUDA apt repo (the ubuntu2204 keyring works on Ubuntu 24.04)
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb
+dpkg -i cuda-keyring_1.0-1_all.deb && rm -f cuda-keyring_1.0-1_all.deb
+apt-get update
+
+# Minimal package that ships the CUDA driver stub (the full toolkit is not needed)
+apt-get install -y --no-install-recommends cuda-cudart-dev-12-6
+
+# Expose the stub as libcuda.so.1 on the system loader path.
+# /usr/local/lib is already on the default ldconfig search path, so the
+# symlink plus ldconfig is enough — no ld.so.conf.d entry is needed.
+ln -sf /usr/local/cuda-12.6/targets/x86_64-linux/lib/stubs/libcuda.so /usr/local/lib/libcuda.so.1
+ldconfig
+```
+
+If you cannot install packages (for example, a read-only or network-isolated
+container), put the directory containing a `libcuda.so.1` stub on
+`LD_LIBRARY_PATH` in the same shell that runs `vllm serve` instead of using
+`ldconfig`:
+
+```bash
+export LD_LIBRARY_PATH=/path/to/dir/with/libcuda.so.1:$LD_LIBRARY_PATH
+```
+
+:::{note}
+A `CUDA driver is a stub library (Error 34)` warning during server startup is
+**expected and harmless** — nothing on the Neuron/EFA path calls into the CUDA
+driver.
+:::
+
+#### 2. Check for `libfabric.so.1` (EFA)
+
+```bash
+ldconfig -p | grep libfabric.so
+fi_info -p efa   # should list at least one EFA provider
+```
+
+If `libfabric.so.1` resolves and `fi_info -p efa` lists a provider, EFA is ready —
+skip to the verification step. If `libfabric.so.1` is not found, install the
+[AWS EFA installer](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa-start.html)
+(userspace libraries only — the host supplies the kernel driver):
+
+```bash
+cd /tmp
+curl -O https://efa-installer.amazonaws.com/aws-efa-installer-latest.tar.gz
+tar -xf aws-efa-installer-latest.tar.gz
+cd aws-efa-installer
+# --skip-kmod installs userspace libraries only (the host supplies the EFA
+# kernel driver); --no-verify skips the installer's kernel-module verification
+# step, which otherwise reports a false failure inside a container even though
+# --skip-kmod is set.
+bash efa_installer.sh --yes --skip-kmod --no-verify
+```
+
+This installs Libfabric under `/opt/amazon/efa`. Add its library directories to
+`LD_LIBRARY_PATH` in the same shell that runs `vllm serve` so the loader can find
+`libfabric.so.1`:
+
+```bash
+export LD_LIBRARY_PATH=/opt/amazon/efa/lib64:/opt/amazon/efa/lib:$LD_LIBRARY_PATH
+export PATH=/opt/amazon/efa/bin:$PATH   # for fi_info and other EFA tools
+```
+
+If Libfabric is installed but simply not on the loader path (for example,
+`fi_info -p efa` works but `ldconfig -p | grep libfabric.so` is empty), setting
+`LD_LIBRARY_PATH` as above is all that is needed.
+
+#### 3. Verify the LIBFABRIC backend loads
+
+Before launching the server, confirm the backend instantiates end-to-end:
+
+```bash
+python -c "from nixl._api import nixl_agent, nixl_agent_config; \
+nixl_agent('probe', nixl_agent_config(backends=['LIBFABRIC'])); print('LIBFABRIC OK')"
+```
+
+A successful run prints `NIXL INFO Backend LIBFABRIC was instantiated` followed by
+`LIBFABRIC OK`. If you still see `unsupported backend 'LIBFABRIC'`, run
+`ldd` on the plugin to see which library is still unresolved:
+
+```bash
+ldd "$(find "$(python -c 'import site; print(site.getsitepackages()[0])')" \
+    -name libplugin_LIBFABRIC.so | head -1)" | grep 'not found'
+```
+
+Resolve any `not found` entry by adding its directory to `LD_LIBRARY_PATH`.
+Entries such as `libcudart.so.13` are used only by the GPUDirect path and can be
+left unresolved on Neuron.
 
 ### Configure environment variables
 

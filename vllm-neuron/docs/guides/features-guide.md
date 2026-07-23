@@ -298,6 +298,11 @@ Disaggregated inference separates prefill (prompt processing) and decode
 (token generation) onto different instances, allowing each phase to be
 scaled and optimized independently.
 
+Disaggregated inference transfers the KV cache over NIXL/LIBFABRIC (EFA),
+which requires the `libcuda.so.1` and `libfabric.so.1` shared libraries on the
+loader path. If your environment does not already ship them, see
+[Install dependencies for disaggregated inference](../getting-started/setup-guide.md#install-dependencies-for-disaggregated-inference).
+
 ### Configurations
 
 - **1P1D**: 1 prefill instance + 1 decode instance
