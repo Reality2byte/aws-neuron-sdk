@@ -214,10 +214,9 @@ Abbreviations
           NC
      - Neuron Core
 
-   * - .. glossary::
-          NeuronCore
+   * - NeuronCore
      - Neuron Core
-     
+
    * - .. glossary::
           ND
      - Neuron Device

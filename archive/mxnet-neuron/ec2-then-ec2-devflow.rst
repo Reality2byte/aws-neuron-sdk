@@ -14,4 +14,5 @@ Compile with Framework API and Deploy on EC2 Inf1 — Archived (MXNet)
    by the AWS Neuron SDK. It is provided for reference only. For current
    framework support, see :doc:`/frameworks/index`.
 
-.. include:: /deploy/ec2/inference.rst
+For the current EC2 Inf1 compile-and-deploy flow, see
+:ref:`ec2-then-ec2-devflow`.

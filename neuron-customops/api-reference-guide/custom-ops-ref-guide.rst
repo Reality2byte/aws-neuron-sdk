@@ -335,7 +335,7 @@ Element-wise add of two tensors using ``TensorWriteStreamAccessor`` and ``Tensor
 Class torch::TensorWriteStreamAccessor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. cpp:class:: template<typename T> class TensorReadStreamAccessor
+.. cpp:class:: template<typename T> TensorReadStreamAccessor
 
     The class template parameter ``T`` is the scalar type of the tensor data.
 
@@ -353,7 +353,7 @@ Member Functions
 Class torch::TensorWriteStreamAccessor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. cpp:class:: template<typename T> class torch::TensorWriteStreamAccessor
+.. cpp:class:: template<typename T> torch::TensorWriteStreamAccessor
 
     The class template parameter ``T`` is the scalar type of the tensor data.
 
@@ -455,7 +455,7 @@ TCM Management Functions
 Class torch::TensorTcmAccessor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. cpp:class:: template<bool read_only> class torch::TensorTcmAccessor
+.. cpp:class:: template<bool read_only> torch::TensorTcmAccessor
 
     The ``read_only`` template parameter controls whether or not you can write to the accessor's ``Tensor``. A ``const Tensor`` will return a read-only ``TensorTcmAccessor`` from ``Tensor::tcm_accessor()``.
 

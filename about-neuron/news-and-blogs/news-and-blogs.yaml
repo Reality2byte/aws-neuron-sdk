@@ -20,6 +20,42 @@
 #     featured: true|false  # Set to true for featured articles section
 
 featured_articles:
+  - title: "AWS Neuron 2.31.0 now available with NKI 0.5.0 and UltraServer Operator"
+    url: "https://aws.amazon.com/about-aws/whats-new/2026/07/aws-announce-neuron-2-31-0/"
+    description: "Neuron SDK 2.31.0 introduces NKI 0.5.0 with MX FP8 scale dtype support, tensor indirection, and new NkiTensor view APIs, plus the Neuron UltraServer Operator for Amazon EKS in public beta for Trainium UltraServer workloads."
+    author: "AWS"
+    author_url: "https://aws.amazon.com/machine-learning/neuron/"
+    date: "2026-07-08"
+    category: "news"
+    locale: "en-US"
+    keywords: ["neuron-2.31", "nki", "nki-library", "ultraserver-operator", "eks", "fp8", "release"]
+    featured: true
+    icon: "📣"
+
+  - title: "Stop hand-tuning kernels: How Neuron Agentic Development accelerates AWS Trainium optimizations"
+    url: "https://aws.amazon.com/blogs/machine-learning/stop-hand-tuning-kernels-how-neuron-agentic-development-accelerates-aws-trainium-optimizations/"
+    description: "Introducing Neuron Agentic Development: a collection of AI agents and NKI-focused skills for Kiro and Claude that author, debug, and profile Neuron Kernel Interface (NKI) kernels on AWS Trainium and Inferentia, bringing performance engineering to every developer."
+    author: "AWS"
+    author_url: "https://aws.amazon.com/blogs/machine-learning/"
+    date: "2026-06-10"
+    category: "blog"
+    locale: "en-US"
+    keywords: ["neuron-agentic-development", "nki", "trainium", "inferentia", "kernel-optimization", "neuron-explorer", "kiro"]
+    featured: true
+    icon: "🛠️"
+
+  - title: "AWS Neuron 2.30.0 now available with NKI 0.4.0 and 22 new NKI Library kernels"
+    url: "https://aws.amazon.com/about-aws/whats-new/2026/05/aws-announce-neuron-2-30-0/"
+    description: "Neuron SDK 2.30.0 delivers NKI 0.4.0 with AWS Trainium3-specific hardware capabilities, 22 new NKI Library kernels, and expanded Neuron Agentic Development skills for model porting and validation."
+    author: "AWS"
+    author_url: "https://aws.amazon.com/machine-learning/neuron/"
+    date: "2026-05-26"
+    category: "news"
+    locale: "en-US"
+    keywords: ["neuron-2.30", "nki", "nki-library", "trainium3", "neuron-agentic-development", "vllm", "release"]
+    featured: true
+    icon: "📣"
+
   - title: "Simplify AI infrastructure for AWS Trainium and Elastic Fabric Adapter with Kubernetes Dynamic Resource Allocation"
     url: "https://aws.amazon.com/blogs/containers/simplify-ai-infrastructure-for-aws-trainium-and-elastic-fabric-adapter-with-kubernetes-dynamic-resource-allocation/"
     description: "How the Neuron DRA driver for AWS Trainium and the EFA DRA driver in the upstream DRANET project use Kubernetes Dynamic Resource Allocation to simplify provisioning of accelerators and high-performance networking for AI workloads on Amazon EKS."

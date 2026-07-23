@@ -1025,8 +1025,8 @@ Initialization, configuration and teardown
         it has no other impact on the functioning of the runtime.
         Application using a custom framework or calling the Neuron Runtime directly should use ``NRT_FRAMEWORK_TYPE_NO_FW``.
 
-    :param const char *fw_version: version of the framework on top of which this runtime is running
-    :param const char *fal_version: version of the framework adapter on top of which this runtime is running
+    :param const char \*fw_version: version of the framework on top of which this runtime is running
+    :param const char \*fal_version: version of the framework adapter on top of which this runtime is running
 
     Applications using `NRT_FRAMEWORK_TYPE_NO_FW` for the first argument should use two empty strings for the versions.
 
@@ -1464,7 +1464,7 @@ Other APIs
     Fills a ``nrt_version_t`` struct with the provided size with version info. The ``size`` argument allows for backwards compatibility.
     if the struct changes in future releases.
 
-    :param *ver: Pointer to a ``nrt_version_t`` structure which is currently defined as:
+    :param \*ver: Pointer to a ``nrt_version_t`` structure which is currently defined as:
 
         .. code-block:: c
 

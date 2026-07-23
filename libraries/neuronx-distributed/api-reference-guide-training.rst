@@ -405,7 +405,7 @@ use higher tensor-parallel degree. Note: here instead of replicating the project
 end of replicating the weights `kv_size_multiplier` times. This would produce the same result, allow you to use 
 higher tp_degree degree, however, it would result in extra memory getting consumed.
 
-.. _parameters-11:
+.. _nxd-training-parameters-11:
 
 Parameters:
         
@@ -451,7 +451,7 @@ in the ``tp_rank_ii_pp_rank_ii`` folder.
 If ``save_xser`` is enabled, the folder name would be ``tp_rank_ii_pp_rank_ii.tensors``
 and there will be a ref data file named as ``tp_rank_ii_pp_rank_ii`` in save_dir for each rank.
 
-.. _parameters-4:
+.. _nxd-training-parameters-4:
 
 Parameters:
 
@@ -483,7 +483,7 @@ load API to load the weights directly into the model. This could avoid
 host OOM, as the load API would load the checkpoints for one tensor
 parallel rank at a time.
 
-.. _parameters-5:
+.. _nxd-training-parameters-5:
 
 Parameters:
 
@@ -516,7 +516,7 @@ This should be handled by the following API
    def neuronx_distributed.parallel_layers.clip_grad_norm(
        parameters, max_norm, norm_type=2)
 
-.. _parameters-6:
+.. _nxd-training-parameters-6:
 
 Parameters:
 
@@ -577,7 +577,7 @@ The interface is same as Zero1Optimizer in torch-xla
 
 .. note:: This method will be deprecated, use ``neuronx_distributed.trainer.save_checkpoint`` instead.
 
-.. _parameters-7:
+.. _nxd-training-parameters-7:
 
 Parameters:
 
@@ -592,7 +592,7 @@ Parameters:
 
 .. note:: This method will be deprecated, use ``neuronx_distributed.trainer.load_checkpoint`` instead.
 
-.. _parameters-8:
+.. _nxd-training-parameters-8:
 
 Parameters:
 
