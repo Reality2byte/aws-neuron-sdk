@@ -73,7 +73,7 @@ This guide provides an overview of the environment variables available to config
      - 0
      - 2.15+
    * - ``NEURON_RT_ALLOW_LEGACY_NEFF``
-     - Allow a NEFF compiled for an older arch to execute on a newer one. For example, executing a NEFF originally compiled for Trn1 architecture on Trn2.
+     - Allow a NEFF compiled for an older arch to execute on a newer one. For example, executing a NEFF originally compiled for ``Trn1`` architecture on ``Trn2``. **Caution**: Do not use this flag in production environments -- it is strictly for testing. See the warning below.
      - Boolean
      - TRUE or FALSE
      - FALSE
@@ -91,7 +91,7 @@ This guide provides an overview of the environment variables available to config
      - 2.24+
 
 .. warning::
-  When applying ``NEURON_RT_ALLOW_LEGACY_NEFF``, note that not all NEFF files, especially those from older architectures, may be compatible. In the case of an incompatibility, the operation will fail with a data mismatch error or stall out.
+  ``NEURON_RT_ALLOW_LEGACY_NEFF`` is intended for testing only and should not be used in production. Running a NEFF that was compiled for a different target architecture (such as running a NEFF targeting ``Trn2`` on a ``Trn3`` instance) can cause silent data corruption in model outputs or hangs at runtime, among other unexpected failure conditions.
 
 .. warning::
   When enabling ``NEURON_RT_NUMERICAL_ERRORS_VERBOSITY``, there is a hardware limitation that can cause numerical errors to be sticky and falsely reported. Once a numerical condition is flagged on an engine, the hardware status can remain set, so the same error may be reported again for subsequent operations that did not actually produce it. Treat the reports at any verbosity level as an indication that a numerical condition occurred somewhere in the execution, not as exact per-operation attribution, and expect possible false positives after a first genuine occurrence. This sticky hardware state is cleared when restarting the application.
@@ -99,7 +99,7 @@ This guide provides an overview of the environment variables available to config
 NeuronCore allocation
 ---------------------
 
-.. important ::
+.. important::
 
   ``NEURONCORE_GROUP_SIZES`` is being deprecated. If your application is using ``NEURONCORE_GROUP_SIZES``, see :ref:`neuron-migrating-apps-neuron-to-libnrt` for more details.
 

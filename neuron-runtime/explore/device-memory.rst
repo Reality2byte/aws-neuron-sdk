@@ -131,7 +131,7 @@ Another option for reducing memory usage further when profiling is to use the ``
 
    neuron-profile capture -n file.neff --single-io
 
-**NOTE**: only device profiles require extra device memory. System profiles do not. If you are only interested in a high-level view of performance kernel execution latency and time spent in Neuron runtime APIs, consider capturing a system profile with the ``nrt_sys_trace_fetch_events`` or ``NEURON_RT_INSPECT_ENABLE`` APIs.
+**NOTE**: only device profiles require extra device memory. System profiles do not. If you are only interested in a high-level view of performance kernel execution latency and time spent in Neuron runtime APIs, consider capturing a system profile with the ``nrt_sys_trace_fetch_events`` or ``NEURON_RT_INSPECT_ENABLE`` APIs. System profiles instead use a host-side per-NeuronCore event buffer, which can overflow and drop events on long or high-throughput runs — see :ref:`Handling dropped events and partial profiles <neuron-explorer-dropped-events>` for how to detect and control this.
 
 .. _nd-scratchpad:
 

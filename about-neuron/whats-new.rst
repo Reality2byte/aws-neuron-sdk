@@ -57,7 +57,7 @@ What's in this release
 
 * **Neuron Explorer** — Adds per-core host CPU utilization to the System Trace Viewer, CSV export of the current timeline selection from the Device Trace Viewer, a Tensor Engine throttling explainer with an automatic small-DMA-transfer warning, and profile folders and deletion in the Profile Manager. The ``neuron-explorer capture`` CLI replaces ``neuron-profile capture``. See :ref:`dev-tools-2-32-0-rn`.
 
-* **vLLM Neuron** — Upgraded to vLLM 0.24.0 (``vllm-neuron 0.24.0.1.1.0``) and integrated into the 2.32.0 DLAMIs and DLCs. See :ref:`vllm-neuron_rn`.
+* **vLLM Neuron** — Adds disaggregated vision-encoder processing with device-to-device NIXL transfer, context parallelism for long-context serving, and embedding-model serving via the ``/v1/embeddings`` endpoint. Throughput improves by up to 50% for GPT-OSS and up to 25% for Qwen3-VL-32B compared to the previous release. For model development, it adds an accuracy debugger tool for logit validation, tensor capture, and KV-cache analysis. Upgraded to vLLM 0.24.0 (``vllm-neuron 0.24.0.1.1.0``) and integrated into the 2.32.0 DLAMIs and DLCs. See the `vLLM Neuron v0.24.0.1.1.0 release notes <https://github.com/vllm-project/vllm-neuron/releases/tag/v0.24.0.1.1.0>`_.
 
 * **DLAMIs & Containers** — All packages upgraded to Neuron SDK 2.32.0, with JAX 0.10.0 and vLLM 0.24.0. See :ref:`dlami-2-32-0-rn` and :ref:`containers-2-32-0-rn`.
 
