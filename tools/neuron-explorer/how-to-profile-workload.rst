@@ -162,7 +162,8 @@ NeuronConfig parameters
    * - ``modes``
      - List of ``ProfileMode`` values to enable. Defaults to ``[DEVICE, RUNTIME]``.
    * - ``max_events_per_nc``
-     - Maximum number of trace events per NeuronCore.
+     - Maximum number of trace events per NeuronCore. If a run generates more events than this,
+       the oldest are dropped — see :ref:`Handling dropped events and partial profiles <neuron-explorer-dropped-events>`.
    * - ``capture_enabled_for_nc``
      - Comma-separated NeuronCore indices or ranges to capture (for example, ``"0,1,2-5"``).
    * - ``profile_output_dir``
@@ -566,7 +567,8 @@ Advanced configuration
      - Maximum trace events per NeuronCore before oldest events are overwritten
      - 1,000,000
 
-Increasing the event limit consumes more host memory.
+Increasing the event limit consumes more host memory. If your profile is missing early events, see
+:ref:`Handling dropped events and partial profiles <neuron-explorer-dropped-events>`.
 
 Basic usage
 ~~~~~~~~~~~
@@ -1112,6 +1114,60 @@ Reduce processing time by skipping one profile type:
    neuron-explorer view -d ./output --ignore-system-profile
 
 These work with ``--output-format parquet`` (default) or ``json``.
+
+.. _neuron-explorer-dropped-events:
+
+Handling dropped events and partial profiles in system trace
+------------------------------------------------------------
+
+On long or high-throughput workloads, the system trace can appear to cover only a short
+window near the **end** of the profiled region, leaving earlier events missing. This is a
+known limitation, not a data-processing bug.
+
+**Why it happens.** The Neuron Runtime stores system trace events in a fixed-size, per-NeuronCore
+ring buffer while your workload runs, and only flushes to disk when profiling stops. If a workload
+generates more events than the buffer can hold, the oldest events are silently overwritten, so the
+saved profile keeps only the most recent events.
+
+**How to detect it.** When events are dropped, the runtime emits a warning like:
+
+.. code-block:: text
+
+   WARN: System profile events were dropped due to full ring buffers (max <N> dropped on a
+   single NC). The profile will have incomplete system trace data.
+
+The capture metadata (``trace_info.pb``) also records whether the system trace overflowed and how
+many events were dropped, which Neuron Explorer uses to flag affected profiles.
+
+**How to capture longer profiles.** Increase the per-NeuronCore event buffer so it can hold the full run, then
+re-capture. Size it above the dropped-event count reported in the warning (a safe starting point is
+roughly the total events reported plus headroom):
+
+* **PyTorch profiling API** — raise ``max_events_per_nc`` in ``NeuronConfig``:
+
+  .. code-block:: python
+
+     neuron_config = NeuronConfig(
+         modes=[ProfileMode.DEVICE, ProfileMode.RUNTIME],
+         profile_output_dir="./profile_output",
+         max_events_per_nc=1_000_000,  # increase until the drop warning disappears
+     )
+
+* **Environment variables / CLI capture** — set the equivalent variable before running:
+
+  .. code-block:: bash
+
+     export NEURON_RT_INSPECT_SYS_TRACE_MAX_EVENTS_PER_NC=1000000
+
+.. note::
+
+   A larger event buffer increases host memory usage during capture. Increase it only as much as
+   needed to clear the drop warning. Profiling fewer active steps (for example, one instead of two)
+   also reduces the number of events generated.
+
+For **device profiles** (instruction-level traces), the on-device (HBM) notification buffers can
+saturate separately. See :ref:`Profile Buffers <nd-profile-buffers>` in the Neuron Runtime device
+memory guide for tuning the ``NEURON_RT_PROFILE_BUF_<buffer type>_MB`` buffers.
 
 Next steps
 ----------
